@@ -2,6 +2,7 @@ import FeatCarousel from '@/components/homepagecomps/carousel'
 import Footer from '@/components/homepagecomps/footer'
 import HeroSection from '@/components/homepagecomps/hersection'
 import Navbar from '@/components/homepagecomps/navbar'
+import SubFooter from '@/components/homepagecomps/subfooter'
 import Title from '@/components/homepagecomps/title'
 
 const Home = () => {
@@ -12,6 +13,7 @@ const Home = () => {
       <Title title={"Featured Artists"}/>
       <FeatCarousel/>
       <Title title={"Art Movements"}/>
+      <SubFooter/>
       <Footer/>
     </div>
   )
