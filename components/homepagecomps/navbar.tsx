@@ -3,7 +3,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="h-[10vh] flex justify-between items-center px-10 font-semibold border border-b-2">
+    <div className="h-[10vh] font-epilogue flex justify-between items-center px-10 font-semibold border border-b-2">
       {/* Logo Section */}
       <div className="logo flex justify-center items-center">
         <Image
@@ -13,8 +13,8 @@ const Navbar = () => {
           alt="MainLogo"
         />
         <Image
-          className="relative right-9"
-          width={60}
+          className="relative right-10 top-1.5"
+          width={70}
           height={60}
           src="/assets/homepageassets/logorest.png"
           alt="RestLogo"
