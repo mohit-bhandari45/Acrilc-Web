@@ -1,4 +1,4 @@
-const BASE_URL: string = "http://localhost:8000"
+const BASE_URL: string = "https://joyous-reeta-mohit123-198cb6c8.koyeb.app"
 
 // auth apis
 const SIGNUP_URL: string = `${BASE_URL}/auth/signup`;
