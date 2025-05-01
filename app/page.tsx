@@ -1,6 +1,6 @@
 import FeatCarousel from '@/components/homepagecomps/carousel'
 import Footer from '@/components/homepagecomps/footer'
-import HeroSection from '@/components/homepagecomps/hersection'
+import HeroSection from '@/components/homepagecomps/herosection'
 import Navbar from '@/components/homepagecomps/navbar'
 import SubFooter from '@/components/homepagecomps/subfooter'
 import Title from '@/components/homepagecomps/title'

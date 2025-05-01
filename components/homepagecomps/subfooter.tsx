@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { Button } from "../ui/button";
 
 const SubFooter = () => {
   return (
@@ -10,9 +11,9 @@ const SubFooter = () => {
       <div className="button">
         <Link href={"/auth/signup"}>
           {" "}
-          <button className="bg-[#FAA21B] cursor-pointer px-7 py-3 rounded-4xl text-lg font-semibold text-white">
+          <Button className="button text-white text-xl px-8 py-7 rounded-full bg-[#FAA21B] hover:bg-[#fa921b] font-semibold cursor-pointer">
             Create Your Profile
-          </button>
+          </Button>
         </Link>
       </div>
     </div>
