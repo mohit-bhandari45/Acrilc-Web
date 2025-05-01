@@ -79,15 +79,19 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
           return { ...prevUser, password: "" };
         });
       }
+      console.log(user);
       return;
     }
 
     const passCheck = passwordCheck(user.password);
     if (!passCheck) {
-      toast.error("Password must be at least 8 characters and include # or $.");
+      toast.error(
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
+      );
       setUser((prevUser) => {
         return { ...prevUser, password: "" };
       });
+      console.log(user);
       return;
     }
 
@@ -105,18 +109,19 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
+          toast.success("Logged In");
           router.push("/profile");
+        } else {
+          toast.error("Server Error. Please try again!");
+        }
 
+        setTimeout(() => {
           setUser({
             name: "",
             email: "",
             password: "",
           });
-          toast.success("Logged In");
-        } else {
-          toast.error("Server Error. Please try again!");
-        }
-
+        }, 500);
         setLoading(false);
       } catch (error: unknown) {
         const err = error as AxiosError<{ msg: string }>;
@@ -142,17 +147,19 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
         if (res.status === 201) {
           localStorage.setItem("token", res.data.token);
+          toast.success("Signed Up");
           router.push("/profile");
+        } else {
+          toast.error("Server Error. Please try again!");
+        }
+
+        setTimeout(() => {
           setUser({
             name: "",
             email: "",
             password: "",
           });
-          toast.success("Signed Up");
-        } else {
-          toast.error("Server Error. Please try again!");
-        }
-
+        }, 500);
         setLoading(false);
       } catch (error: unknown) {
         const err = error as AxiosError<{ msg: string }>;
