@@ -30,5 +30,9 @@ const LOGIN_URL: string = `${BASE_URL}/auth/login`;
 const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`
 const UPDATE_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
 
-export { SIGNUP_URL, LOGIN_URL, GET_OWN_PROFILE, UPDATE_PROFILE_PIC };
+/* Data(Posts, Storyboard, etc) */
+const GET_POST = `${BASE_URL}/api/posts/user`;
+const CREATE_POST = `${BASE_URL}/api/posts`;
+
+export { SIGNUP_URL, LOGIN_URL, GET_OWN_PROFILE, UPDATE_PROFILE_PIC, GET_POST, CREATE_POST };
 export default api;

@@ -1,31 +1,9 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import MarketPlace from "./marketplace";
 import Showcase from "./showcase";
 import Storyboard from "./storyboard";
-import MarketPlace from "./marketplace";
-
-const galleryItems = [
-  {
-    id: 1,
-    src: "/assets/profileassets/first.png",
-    label: "3D",
-    showMenu: true,
-  },
-  { id: 2, src: "/assets/profileassets/second.png", showMenu: false },
-  { id: 3, src: "/assets/profileassets/thirs.png", showMenu: true },
-  { id: 4, src: "/assets/profileassets/four.png", showMenu: false },
-  {
-    id: 5,
-    src: "/assets/profileassets/thirs.png",
-    label: "3D",
-    showMenu: false,
-  },
-  { id: 6, src: "/assets/profileassets/first.png", showMenu: true },
-  { id: 7, src: "/assets/profileassets/four.png", showMenu: true },
-  { id: 8, src: "/assets/profileassets/second.png", showMenu: false },
-  { id: 9, src: "/assets/profileassets/four.png", showMenu: true },
-];
 
 const GallerySection = () => {
   return (
@@ -52,16 +30,17 @@ const GallerySection = () => {
           </TabsTrigger>
         </TabsList>
 
+        {/* Actual Content */}
         <TabsContent value="showcase">
-          <Showcase gallery={galleryItems}/>
+          <Showcase />
         </TabsContent>
 
         <TabsContent value="storyboard">
-          <Storyboard/>
+          <Storyboard />
         </TabsContent>
 
         <TabsContent value="marketplace">
-          <MarketPlace/>
+          <MarketPlace />
         </TabsContent>
       </Tabs>
     </div>
