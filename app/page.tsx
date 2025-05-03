@@ -1,9 +1,9 @@
-import FeatCarousel from '@/components/homepagecomps/carousel'
-import Footer from '@/components/homepagecomps/footer'
-import HeroSection from '@/components/homepagecomps/herosection'
-import Navbar from '@/components/homepagecomps/navbar'
-import SubFooter from '@/components/homepagecomps/subfooter'
-import Title from '@/components/homepagecomps/title'
+import FeatCarousel from '@/components/homecomps/carousel'
+import Footer from '@/components/homecomps/footer'
+import HeroSection from '@/components/homecomps/herosection'
+import Navbar from '@/components/homecomps/navbar'
+import SubFooter from '@/components/homecomps/subfooter'
+import Title from '@/components/homecomps/title'
 
 const Home = () => {
   return (

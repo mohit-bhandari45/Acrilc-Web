@@ -13,8 +13,8 @@ import { useEffect } from "react";
 import api, { GET_OWN_PROFILE } from "@/apis/api";
 
 const Profile = () => {
-  const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
 
   const getUser = async () => {
     const response = await api.get(GET_OWN_PROFILE);
@@ -26,10 +26,11 @@ const Profile = () => {
 
   useEffect(() => {
     getUser();
+    console.log("Setted bro", user);
   }, []);
 
-  if (!user) {
-    return null; // Or show a loading spinner
+  if(!user){
+    return null;
   }
 
   return (

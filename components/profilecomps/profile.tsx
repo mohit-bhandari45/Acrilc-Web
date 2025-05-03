@@ -234,7 +234,7 @@ const ProfilePage: React.FC = () => {
                     user.preferences &&
                     user.preferences.map((category, index) => (
                       <div key={index} className="bg-gray-100 rounded-lg p-4">
-                        <div className="flex items-center gap-2 mb-2">
+                        {/* <div className="flex items-center gap-2 mb-2">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5 text-gray-700"
@@ -256,9 +256,9 @@ const ProfilePage: React.FC = () => {
                             )}
                           </svg>
                           <h3 className="font-medium">{category.name}</h3>
-                        </div>
-                        <p className="text-gray-600 text-sm">
-                          {category.description}
+                        </div> */}
+                        <p className="text-black text-sm">
+                          {category}
                         </p>
                       </div>
                     ))}
