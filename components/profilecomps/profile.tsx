@@ -71,7 +71,7 @@ const ProfilePage: React.FC = () => {
                     {/* Image wrapper for cropping */}
                     <div className="overflow-hidden rounded-full h-full w-full">
                       <Image
-                        src="/assets/homepageassets/heroimage1.png"
+                        src={user?.profilePicture || "/assets/homepageassets/heroimage1.png"}
                         alt="Profile Avatar"
                         width={96}
                         height={96}
