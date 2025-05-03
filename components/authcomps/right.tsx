@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { ISignupDetails } from "@/types/auth";
+import { ISignupDetails } from "@/app/auth/auth";
 import axios, { AxiosError } from "axios";
 import { LOGIN_URL, SIGNUP_URL } from "@/apis/api";
 import toast from "react-hot-toast";

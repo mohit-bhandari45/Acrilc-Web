@@ -3,13 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useAppSelector } from '@/store/hooks';
 
 const Navbar: React.FC = () => {
+  const user = useAppSelector((state) => state.user.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const router = useRouter();
   const pathname = usePathname();
 
   // Close menu on route change
@@ -115,7 +116,7 @@ const Navbar: React.FC = () => {
               <Link href="/profile" className="flex items-center">
                 <div className="h-8 w-8 rounded-full overflow-hidden bg-gray-300">
                   <Image
-                    src="/assets/profileassets/qr.png" 
+                    src={user?.profilePicture || "/assets/profileassets/qr.png"}
                     alt="Profile"
                     width={32}
                     height={32}

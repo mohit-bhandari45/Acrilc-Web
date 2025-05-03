@@ -1,0 +1,14 @@
+export interface IUser {
+    id?: string;
+    username?: string;
+    fullName: string;
+    profilePicture?: string;
+    bio?: string;
+    story?: string;
+    totalFollowers?: string[];
+    totalFollowing?: string[];
+    role?: "user" | "admin";
+    preferences?: string[];
+    services?: string[];
+    posts: number 
+}
