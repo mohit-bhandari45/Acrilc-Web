@@ -19,16 +19,18 @@ const Profile = () => {
   const getUser = async () => {
     const response = await api.get(GET_OWN_PROFILE);
 
-    if(response.status===200){
-      dispatch(
-        setUser(response.data.data)
-      )
+    if (response.status === 200) {
+      dispatch(setUser(response.data.data));
     }
   };
-  
-  useEffect(() => { 
+
+  useEffect(() => {
     getUser();
   }, []);
+
+  if (!user) {
+    return null; // Or show a loading spinner
+  }
 
   return (
     <div className="font-[Helvetica]">
