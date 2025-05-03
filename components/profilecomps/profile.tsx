@@ -1,41 +1,49 @@
 // pages/profile.tsx
-import Head from "next/head";
+import api, { UPDATE_PROFILE_PIC } from "@/apis/api";
+import { setUser } from "@/store/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
-import React from "react";
-import { ProfileData } from "./types";
+import React, { useRef } from "react";
+import { FaPencilAlt } from "react-icons/fa";
+import { Button } from "../ui/button";
 
 const ProfilePage: React.FC = () => {
-  // Mock data - in a real app, this would come from an API
-  const profileData: ProfileData = {
-    name: "Your Name",
-    location: "Contemporary artist based in New York City",
-    bio: "My work is an exploration of the human experience through abstraction. I use a variety of materials and techniques to create a rich surface that reflects the complexity of life.",
-    stats: {
-      supporters: 15000,
-      supporting: 896,
-      posts: 500,
-    },
-    socialLinks: [
-      { platform: "instagram", url: "#" },
-      { platform: "facebook", url: "#" },
-      { platform: "linkedin", url: "#" },
-      { platform: "behance", url: "#" },
-      { platform: "pinterest", url: "#" },
-      { platform: "youtube", url: "#" },
-    ],
-    categories: [
-      { name: "Paintings", description: "Abstract Paintings" },
-      { name: "Sculptures", description: "Sculptures" },
-    ],
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const user = useAppSelector((state) => state.user.user);
+  const dispatch = useAppDispatch();
+
+  /* Changing Images */
+  const handleEditClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const profilePic = event.target.files?.[0];
+    console.log(profilePic);
+
+    if (profilePic) {
+      const formData = new FormData();
+      formData.append("profilePic", profilePic);
+
+      const response = await api.put(UPDATE_PROFILE_PIC, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Required for file uploads
+        },
+      });
+
+      if (response.status === 200) {
+        dispatch(setUser(response.data.data));
+      }
+    }
   };
 
   return (
     <>
-      <Head>
-        <title>{profileData.name} | Acrilc</title>
-        <meta name="description" content={profileData.bio} />
-      </Head>
-
+      {" "}
       <div className="bg-white min-h-screen flex justify-center items-center">
         {/* Main profile content */}
         <div className="max-w-6xl mx-auto px-2 py-8">
@@ -58,13 +66,35 @@ const ProfilePage: React.FC = () => {
 
                 {/* Profile Avatar (positioned over the cover image) */}
                 <div className="absolute left-4 bottom-15 transform translate-y-1/2">
-                  <div className="border-4 border-white rounded-full overflow-hidden h-24 w-24">
-                    <Image
-                      src="/assets/homepageassets/heroimage1.png"
-                      alt="Profile Avatar"
-                      width={96}
-                      height={96}
-                      className="object-cover"
+                  {/* Outer relative container (for positioning button) */}
+                  <div className="group relative h-24 w-24 border-4 border-white rounded-full">
+                    {/* Image wrapper for cropping */}
+                    <div className="overflow-hidden rounded-full h-full w-full">
+                      <Image
+                        src="/assets/homepageassets/heroimage1.png"
+                        alt="Profile Avatar"
+                        width={96}
+                        height={96}
+                        className="object-cover"
+                      />
+                    </div>
+
+                    {/* Pencil icon sticking out from corner */}
+                    <button
+                      onClick={handleEditClick}
+                      aria-label="Edit profile picture"
+                      className="absolute top-0 right-0 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md opacity-0 group-hover:opacity-100"
+                    >
+                      <FaPencilAlt size={13} />
+                    </button>
+
+                    {/* Hidden file input */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      className="hidden"
                     />
                   </div>
                 </div>
@@ -76,19 +106,23 @@ const ProfilePage: React.FC = () => {
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Supporters</span>
                     <span className="font-bold text-2xl">
-                      {profileData.stats.supporters.toLocaleString()}
+                      {user &&
+                        user.totalFollowers &&
+                        user?.totalFollowers.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Supporting</span>
                     <span className="font-bold text-2xl">
-                      {profileData.stats.supporting.toLocaleString()}
+                      {user &&
+                        user.totalFollowing &&
+                        user?.totalFollowing.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-gray-600 text-sm">Posts</span>
                     <span className="font-bold text-2xl">
-                      {profileData.stats.posts.toLocaleString()}
+                      {user && user.posts && user?.posts.toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -179,8 +213,8 @@ const ProfilePage: React.FC = () => {
             <div className="w-full lg:w-3/6">
               {/* Artist Info */}
               <div className="mb-8">
-                <h1 className="text-3xl font-bold mb-1">{profileData.name}</h1>
-                <p className="text-gray-600">{profileData.location}</p>
+                <h1 className="text-3xl font-bold mb-1">{user?.fullName}</h1>
+                <p className="text-gray-600">{user?.story}</p>
 
                 <div className="flex flex-col md:flex-row gap-4 mt-4">
                   <button className="bg-yellow-500 hover:bg-yellow-600 text-white cursor-pointer font-medium py-2 px-6 w-full md:w-96 rounded-lg">
@@ -196,52 +230,56 @@ const ProfilePage: React.FC = () => {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold mb-4">Forte</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {profileData.categories.map((category, index) => (
-                    <div key={index} className="bg-gray-100 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-gray-700"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          {category.name === "Paintings" ? (
-                            <path
-                              fillRule="evenodd"
-                              d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z"
-                              clipRule="evenodd"
-                            />
-                          ) : (
-                            <path
-                              fillRule="evenodd"
-                              d="M7 2a1 1 0 00-.707 1.707L7 4.414v3.758a1 1 0 01-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0113 8.172V4.414l.707-.707A1 1 0 0013 2H7zm2 6.172V4h2v4.172a3 3 0 00.879 2.12l1.027 1.028a4 4 0 00-2.171.102l-.47.156a4 4 0 01-2.53 0l-.563-.187a1.993 1.993 0 00-.114-.035l1.063-1.063A3 3 0 009 8.172z"
-                              clipRule="evenodd"
-                            />
-                          )}
-                        </svg>
-                        <h3 className="font-medium">{category.name}</h3>
+                  {user &&
+                    user.preferences &&
+                    user.preferences.map((category, index) => (
+                      <div key={index} className="bg-gray-100 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 text-gray-700"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            {category.name === "Paintings" ? (
+                              <path
+                                fillRule="evenodd"
+                                d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z"
+                                clipRule="evenodd"
+                              />
+                            ) : (
+                              <path
+                                fillRule="evenodd"
+                                d="M7 2a1 1 0 00-.707 1.707L7 4.414v3.758a1 1 0 01-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0113 8.172V4.414l.707-.707A1 1 0 0013 2H7zm2 6.172V4h2v4.172a3 3 0 00.879 2.12l1.027 1.028a4 4 0 00-2.171.102l-.47.156a4 4 0 01-2.53 0l-.563-.187a1.993 1.993 0 00-.114-.035l1.063-1.063A3 3 0 009 8.172z"
+                                clipRule="evenodd"
+                              />
+                            )}
+                          </svg>
+                          <h3 className="font-medium">{category.name}</h3>
+                        </div>
+                        <p className="text-gray-600 text-sm">
+                          {category.description}
+                        </p>
                       </div>
-                      <p className="text-gray-600 text-sm">
-                        {category.description}
-                      </p>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
 
               {/* Story Section */}
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Story of the Artist</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  {profileData.bio}
-                </p>
-              </div>
+              {user?.bio && (
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold mb-4">
+                    Story of the Artist
+                  </h2>
+                  <p className="text-gray-700 leading-relaxed">{user?.bio}</p>
+                </div>
+              )}
 
               {/* View Portfolio Button */}
               <div className="mt-8">
-                <button className="w-full cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg">
+                <Button className="w-full cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg">
                   View Portfolio
-                </button>
+                </Button>
               </div>
             </div>
           </div>

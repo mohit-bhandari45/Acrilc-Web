@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Epilogue } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
+import ClientToaster from "./toaster";
+import ReduxProvider from "./provider"; // Import the new component
 
 // Load Geist Mono (optional)
 const geistMono = Geist_Mono({
@@ -31,8 +32,10 @@ export default function RootLayout({
       <body
         className={`${epilogue.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster position="top-center" />
-        {children}
+        <ReduxProvider>
+          <ClientToaster />
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );
