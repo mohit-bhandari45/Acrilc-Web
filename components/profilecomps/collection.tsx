@@ -74,6 +74,8 @@ const ArtworkCarousel: React.FC = () => {
             <Image
               src={art.image}
               alt={art.title || 'Artwork'}
+              width={100}
+              height={100}
               className="w-full h-52 object-cover rounded-xl"
             />
             <div className="mt-3 px-2 pb-4">

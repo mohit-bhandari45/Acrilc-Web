@@ -125,13 +125,18 @@ const CreateContent = ({
         response = await api.post(CREATE_STORYBOARD, formData);
       }
 
+      console.log(response);
+      const id = response.data.data._id;
+
       if (response.status === 200) {
+        const message =
+          type === "post" ? "Post Created!" : "Storyboard Created!";
         if (type === "post") {
-          toast.success("Post Created!");
+          router.push(`/content/${id}`);
         } else {
-          toast.success("Storyboard Created!");
+          router.push(`/profile`);
         }
-        router.push(`/content/fewgq2w`);
+        toast.success(message);
       }
     } catch (error) {
       console.log(error);
