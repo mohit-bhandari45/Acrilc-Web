@@ -1,25 +1,27 @@
 import api, { GET_STORYBOARD } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
+import { IStoryBoard } from "@/types/story";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 
 const Storyboard = () => {
-  const user = useAppSelector((state) => state.user.user);
-  const [storyboard, setStoryboard] = useState([]);
-
-  const getData = async () => {
-    const response = await api.get(`${GET_STORYBOARD}/${user?._id}`);
-    if (response.status === 200) {
-      setStoryboard(response.data.data);
-    }
-  };
+  const user = useAppSelector((state) => state.user.user)!;
+  const [storyboard, setStoryboard] = useState<IStoryBoard[] | null>(null);
 
   useEffect(() => {
-    getData();
-  }, []);
+    const getData = async () => {
+      const response = await api.get(`${GET_STORYBOARD}/${user?._id}`);
+      if (response.status === 200) {
+        setStoryboard(response.data.data);
+      }
+    };
 
-  if (storyboard.length === 0) {
+    getData();
+  }, [user?._id]);
+
+  if (storyboard && storyboard.length === 0) {
     return (
       <div className="h-32 w-full flex justify-center items-center">
         <HashLoader size={20} />
@@ -30,7 +32,7 @@ const Storyboard = () => {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {/* Stories */}
-      {storyboard.map((story, idx) => {
+      {storyboard && storyboard.map((story: IStoryBoard, idx) => {
         return (
           <div
             key={idx}
@@ -45,7 +47,7 @@ const Storyboard = () => {
                       key={index}
                       className="relative rounded-md overflow-hidden w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40"
                     >
-                      <img
+                      <Image
                         src={image.url}
                         alt={`${story.title} - image ${index + 1}`}
                         className="w-full h-full object-cover"
@@ -102,7 +104,9 @@ const Storyboard = () => {
               d="M5 10l7-7m0 0l7 7m-7-7v18"
             />
           </svg>
-          <span className="font-medium text-sm text-center">Create Storyboard</span>
+          <span className="font-medium text-sm text-center">
+            Create Storyboard
+          </span>
         </div>
       </Link>
     </div>

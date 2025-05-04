@@ -20,25 +20,24 @@ const Profile = () => {
   const router = useRouter();
   const user = useAppSelector((state) => state.user.user);
 
-  const getUser = async () => {
-    try {
-      const response = await api.get(GET_OWN_PROFILE);
-
-      if (response.status === 200) {
-        dispatch(setUser(response.data.data));
-      }
-    } catch (error: any) {
-      if (error.status === 401) {
-        localStorage.removeItem("token");
-        router.push("/auth/login");
-      }
-    }
-  };
-
   useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await api.get(GET_OWN_PROFILE);
+
+        if (response.status === 200) {
+          dispatch(setUser(response.data.data));
+        }
+      } catch (error: any) {
+        if (error.status === 401) {
+          localStorage.removeItem("token");
+          router.push("/auth/login");
+        }
+      }
+    };
+
     getUser();
-    console.log("Setted bro", user);
-  }, []);
+  }, [dispatch, router]);
 
   if (!user) {
     return (

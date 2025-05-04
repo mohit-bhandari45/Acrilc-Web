@@ -19,7 +19,7 @@ const CreateContent = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.user)!;
   const [loader, setLoader] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGES = 5;
@@ -39,7 +39,7 @@ const CreateContent = ({
     if (user?.preferences?.length) {
       setForte(user.preferences[0]);
     }
-  }, []);
+  }, [user.preferences]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -79,7 +79,7 @@ const CreateContent = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     // checks
@@ -299,7 +299,7 @@ const CreateContent = ({
                 onChange={(e) => setForte(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
               >
-                {user.preferences?.map((forte, idx) => {
+                {user!.preferences?.map((forte, idx) => {
                   return (
                     <option key={idx} value={forte}>
                       {forte}

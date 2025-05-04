@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -70,7 +71,7 @@ const ArtworkCarousel: React.FC = () => {
             key={art.id}
             className="rounded-xl overflow-hidden"
           >
-            <img
+            <Image
               src={art.image}
               alt={art.title || 'Artwork'}
               className="w-full h-52 object-cover rounded-xl"
