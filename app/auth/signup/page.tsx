@@ -1,15 +1,27 @@
-import Left from '@/components/universalcomps/left'
-import Right from '@/components/authcomps/right'
-import React from 'react'
-import { signupLabels } from '@/utils/auth'
+"use client"
+
+import Left from "@/components/universalcomps/left";
+import Right from "@/components/authcomps/right";
+import React from "react";
+import { signupLabels } from "@/utils/auth";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
-  return (
-    <div className='flex justify-center items-center w-full h-screen font-[Helvetica]'>
-      <Left/>
-      <Right labels={signupLabels} method='Signup Up'/>
-    </div>
-  )
-}
+  const user = localStorage.getItem("token");
+  const router = useRouter();
 
-export default Signup
+  if (user) {
+    router.push("/profile");
+  }
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center w-full h-screen font-[Helvetica]">
+        <Left />
+        <Right labels={signupLabels} method="Signup Up" />
+      </div>
+    );
+  }
+};
+
+export default Signup;

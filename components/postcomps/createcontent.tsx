@@ -1,32 +1,47 @@
 "use client";
 
-import api, { CREATE_POST } from "@/apis/api";
+import api, { CREATE_POST, CREATE_STORYBOARD } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
 import { Upload, X } from "lucide-react";
-import Error from "next/error";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { SetStateAction, useEffect, useRef, useState } from "react";
+import checkContent from "./utils";
+import toast from "react-hot-toast";
+import Image from "next/image";
 
-const CreatePost = () => {
+const CreateContent = ({
+  type,
+  setType,
+}: {
+  type: string | null;
+  setType: React.Dispatch<SetStateAction<string | null>>;
+}) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const user = useAppSelector((state) => state.user.user);
   const [loader, setLoader] = useState(false);
-  const [images, setImages] = useState([]);
-  const [previews, setPreviews] = useState([]);
-  const [title, setTitle] = useState("");
-  const [story, setStory] = useState("");
-  const [size, setSize] = useState("");
-  const [collection, setCollection] = useState("");
-  const [forte, setForte] = useState("");
-  const [keywords, setKeywords] = useState("");
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_IMAGES = 5;
 
-  if (!user) {
-    return null;
-  }
+  /*Content */
+  const [images, setImages] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [size, setSize] = useState("");
+  const [collection, setCollection] = useState("");
+  const [forte, setForte] = useState<string>("");
+  const [keywords, setKeywords] = useState("");
+  /*Content */
 
-  const handleImageUpload = (e) => {
+  useEffect(() => {
+    if (user?.preferences?.length) {
+      setForte(user.preferences[0]);
+    }
+  }, []);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
@@ -44,7 +59,7 @@ const CreatePost = () => {
     setPreviews(newPreviews);
   };
 
-  const removeImage = (index) => {
+  const removeImage = (index: number) => {
     const newImages = [...images];
     const newPreviews = [...previews];
 
@@ -64,9 +79,23 @@ const CreatePost = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    // Handle form submission here
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // checks
+    const result = checkContent(
+      type!,
+      title,
+      description,
+      size,
+      collection,
+      forte,
+      keywords
+    );
+    if (result.status === false) {
+      toast.error(result.msg);
+      return;
+    }
 
     setLoader(true);
     const formData = new FormData();
@@ -76,25 +105,46 @@ const CreatePost = () => {
       formData.append("media", image);
     });
 
-    formData.append("title", title);
-    formData.append("story", story);
-    formData.append("size", size);
-    formData.append("collectionId", collection);
-    formData.append("forte", forte);
+    if (type === "post") {
+      formData.append("size", size);
+      formData.append("collectionId", collection);
+      formData.append("forte", forte);
+      formData.append("story", description);
+    } else {
+      formData.append("description", description);
+    }
 
-    // Convert array or string to comma-separated string (backend will normalize)
+    formData.append("title", title);
     formData.append("hashTags", keywords); // Or transform if array: keywords.join(',')
 
     try {
-      const response = await api.post(CREATE_POST, formData);
+      let response;
+      if (type === "post") {
+        response = await api.post(CREATE_POST, formData);
+      } else {
+        response = await api.post(CREATE_STORYBOARD, formData);
+      }
 
       if (response.status === 200) {
-        router.push(`/post/${response.data.data._id}`);
+        if (type === "post") {
+          toast.success("Post Created!");
+        } else {
+          toast.success("Storyboard Created!");
+        }
+        router.push(`/content/fewgq2w`);
       }
-    } catch (error: Error) {
+    } catch (error) {
       console.log(error);
     }
     setLoader(false);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setType(e.target.value);
+
+    const params = new URLSearchParams(searchParams);
+    params.set("type", e.target.value);
+    router.replace(`/content/create?${params.toString()}`);
   };
 
   return (
@@ -106,10 +156,11 @@ const CreatePost = () => {
           <div className="flex mb-2">
             <select
               className="px-1 py-2 cursor-pointer border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              defaultValue="Post"
+              value={type!}
+              onChange={handleChange}
             >
-              <option>Post</option>
-              <option>Story Board</option>
+              <option value="post">Post</option>
+              <option value="storyboard">Storyboard</option>
             </select>
           </div>
 
@@ -120,10 +171,12 @@ const CreatePost = () => {
                 key={index}
                 className="relative h-32 border rounded-md overflow-hidden"
               >
-                <img
+                <Image
                   src={preview}
                   alt={`Upload ${index + 1}`}
                   className="w-full h-full object-cover"
+                  width={40}
+                  height={40}
                 />
                 <button
                   type="button"
@@ -173,31 +226,48 @@ const CreatePost = () => {
         </div>
 
         {/* Story of the Art */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Story of the Art
-          </label>
-          <textarea
-            value={story}
-            onChange={(e) => setStory(e.target.value)}
-            rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <div className="text-right text-xs text-gray-500">0/100</div>
-        </div>
+        {type === "post" ? (
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Story of the Art
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div className="text-right text-xs text-gray-500">0/100</div>
+          </div>
+        ) : (
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div className="text-right text-xs text-gray-500">0/1000</div>
+          </div>
+        )}
 
         {/* Size */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Size (inches,cm,ft)
-          </label>
-          <input
-            type="text"
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        {type === "post" && (
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Size (inches,cm,ft)
+            </label>
+            <input
+              type="text"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        )}
 
         {/* Add to Collection */}
         {/* <div className="mb-6">
@@ -218,26 +288,28 @@ const CreatePost = () => {
         </div> */}
 
         {/* Forte */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Forte
-          </label>
-          <div className="relative">
-            <select
-              value={forte}
-              onChange={(e) => setForte(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-            >
-              {user.preferences?.map((forte, idx) => {
-                return (
-                  <option key={idx} value={forte}>
-                    {forte}
-                  </option>
-                );
-              })}
-            </select>
+        {type === "post" && (
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Forte
+            </label>
+            <div className="relative">
+              <select
+                value={forte}
+                onChange={(e) => setForte(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+              >
+                {user.preferences?.map((forte, idx) => {
+                  return (
+                    <option key={idx} value={forte}>
+                      {forte}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Key Words */}
         <div className="mb-8">
@@ -268,4 +340,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default CreateContent;

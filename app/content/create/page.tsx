@@ -1,24 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import ArtworkCarousel from "@/components/profilecomps/collection";
+import api, { GET_OWN_PROFILE } from "@/apis/api";
+import CreateContent from "@/components/postcomps/createcontent";
 import Footer from "@/components/profilecomps/footer";
 import Navbar from "@/components/profilecomps/navbar";
-import ProfilePage from "@/components/profilecomps/profile";
-import GallerySection from "@/components/profilecomps/gallery";
-
-/* Redux */
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setUser } from "@/store/features/userSlice";
-import { useEffect } from "react";
-import api, { GET_OWN_PROFILE } from "@/apis/api";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
-import { useRouter } from "next/navigation";
 
-const Profile = () => {
+const Create = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [type, setType] = useState<string | null>("");
   const user = useAppSelector((state) => state.user.user);
 
+  useEffect(() => {
+    setType(searchParams.get("type"));
+  }, [searchParams]);
+
+  // Getting User
   const getUser = async () => {
     try {
       const response = await api.get(GET_OWN_PROFILE);
@@ -36,7 +40,6 @@ const Profile = () => {
 
   useEffect(() => {
     getUser();
-    console.log("Setted bro", user);
   }, []);
 
   if (!user) {
@@ -50,14 +53,10 @@ const Profile = () => {
   return (
     <div className="font-[Helvetica]">
       <Navbar />
-      <ProfilePage />
-      <ArtworkCarousel />
-
-      {/* Main Three Sections */}
-      <GallerySection />
+      <CreateContent type={type} setType={setType} />
       <Footer />
     </div>
   );
 };
 
-export default Profile;
+export default Create;
