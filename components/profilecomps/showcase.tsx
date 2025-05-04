@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import api, { GET_POST } from "@/apis/api";
+import api, { GET_POSTS } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
-import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,16 +12,17 @@ const Showcase = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const response = await api.get(`${GET_POST}/${user?._id}`);
-  
+      const response = await api.get(`${GET_POSTS}/${user?._id}`);
+
       if (response.status === 200) {
         setPosts(response.data.data);
       }
     };
-  
 
     getData();
   }, [user?._id]);
+
+  console.log(posts);
 
   if (posts.length === 0) {
     return (
@@ -34,34 +34,25 @@ const Showcase = () => {
 
   return (
     <>
-      <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+      <div className="flex flex-wrap justify-center gap-4">
         {posts.map((item: any) => (
           <div
             key={item._id}
-            className="relative w-full overflow-hidden rounded-xl"
+            className="relative w-[calc(100%-1rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] overflow-hidden rounded-xl"
           >
-            <Link href={`/post/${item._id}`}>
+            <Link href={`/content/${item._id}`}>
               <Image
-                src={item.media[0].url}
+                src={item.thumbnail}
                 alt={`Artwork ${item.id}`}
                 width={400}
                 height={500}
-                className="w-full rounded-xl"
+                className="w-full rounded-xl object-cover"
               />
             </Link>
-            {item.label && (
-              <div className="absolute top-2 left-2 bg-white text-xs font-semibold px-2 py-1 rounded-full shadow">
-                {item.label}
-              </div>
-            )}
-            {item.showMenu && (
-              <div className="absolute top-2 right-2 bg-white p-1 rounded-full shadow">
-                <MoreHorizontal size={16} />
-              </div>
-            )}
           </div>
         ))}
       </div>
+
       {/* Create Post Button */}
       <Link href={{ pathname: "/content/create", query: { type: "post" } }}>
         <div className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
