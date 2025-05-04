@@ -114,9 +114,9 @@ const Navbar: React.FC = () => {
               </button>
               
               <Link href="/profile" className="flex items-center">
-                <div className="h-8 w-8 rounded-full overflow-hidden bg-gray-300">
+                <div className="h-8 w-8 rounded-full overflow-hidden bg-[#FAA21B]">
                   <Image
-                    src={user?.profilePicture || "/assets/profileassets/qr.png"}
+                    src={user!.profilePicture!}
                     alt="Profile"
                     width={32}
                     height={32}

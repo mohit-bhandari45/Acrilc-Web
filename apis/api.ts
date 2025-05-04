@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const BASE_URL: string = "https://joyous-reeta-mohit123-198cb6c8.koyeb.app"
-// const BASE_URL: string = "http://localhost:8000";
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -33,6 +32,8 @@ const UPDATE_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
 /* Data(Posts, Storyboard, etc) */
 const GET_POST = `${BASE_URL}/api/posts/user`;
 const CREATE_POST = `${BASE_URL}/api/posts`;
+const CREATE_STORYBOARD = `${BASE_URL}/api/story`;
+const GET_STORYBOARD = `${BASE_URL}/api/story/user`;
 
-export { SIGNUP_URL, LOGIN_URL, GET_OWN_PROFILE, UPDATE_PROFILE_PIC, GET_POST, CREATE_POST };
+export { SIGNUP_URL, LOGIN_URL, GET_OWN_PROFILE, UPDATE_PROFILE_PIC, GET_POST, CREATE_POST, CREATE_STORYBOARD, GET_STORYBOARD };
 export default api;

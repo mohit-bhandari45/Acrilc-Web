@@ -3,14 +3,16 @@ import api, { UPDATE_PROFILE_PIC } from "@/apis/api";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { Button } from "../ui/button";
+import { HashLoader } from "react-spinners";
 
 const ProfilePage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
+  const [loader, setLoader] = useState(false);
 
   /* Changing Images */
   const handleEditClick = () => {
@@ -23,7 +25,7 @@ const ProfilePage: React.FC = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const profilePic = event.target.files?.[0];
-    console.log(profilePic);
+    setLoader(true);
 
     if (profilePic) {
       const formData = new FormData();
@@ -38,6 +40,7 @@ const ProfilePage: React.FC = () => {
       if (response.status === 200) {
         dispatch(setUser(response.data.data));
       }
+      window.location.reload();
     }
   };
 
@@ -69,14 +72,18 @@ const ProfilePage: React.FC = () => {
                   {/* Outer relative container (for positioning button) */}
                   <div className="group relative h-24 w-24 border-4 border-white rounded-full">
                     {/* Image wrapper for cropping */}
-                    <div className="overflow-hidden rounded-full h-full w-full">
-                      <Image
-                        src={user?.profilePicture || "/assets/homepageassets/heroimage1.png"}
-                        alt="Profile Avatar"
-                        width={96}
-                        height={96}
-                        className="object-cover"
-                      />
+                    <div className="overflow-hidden bg-[#FAA21B] rounded-full h-full w-full flex justify-center items-center">
+                      {loader ? (
+                          <HashLoader color="white" size={20} />
+                      ) : (
+                        <Image
+                          src={user!.profilePicture!}
+                          alt="Profile Avatar"
+                          width={96}
+                          height={96}
+                          className="object-cover"
+                        />
+                      )}
                     </div>
 
                     {/* Pencil icon sticking out from corner */}
@@ -257,9 +264,7 @@ const ProfilePage: React.FC = () => {
                           </svg>
                           <h3 className="font-medium">{category.name}</h3>
                         </div> */}
-                        <p className="text-black text-sm">
-                          {category}
-                        </p>
+                        <p className="text-black text-sm">{category}</p>
                       </div>
                     ))}
                 </div>

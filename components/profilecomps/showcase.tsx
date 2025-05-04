@@ -4,41 +4,49 @@ import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { HashLoader } from "react-spinners";
 
 const Showcase = () => {
   const user = useAppSelector((state) => state.user.user);
   const [posts, setPosts] = useState([]);
 
   const getData = async () => {
-    console.log(user);
     const response = await api.get(`${GET_POST}/${user?._id}`);
 
     if (response.status === 200) {
       setPosts(response.data.data);
     }
-
-    console.log(posts);
   };
 
   useEffect(() => {
     getData();
   }, []);
 
+  if (posts.length === 0) {
+    return (
+      <div className="h-32 w-full flex justify-center items-center">
+        <HashLoader size={20} />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
         {posts.map((item: any) => (
           <div
-            key={item.id}
+            key={item._id}
             className="relative w-full overflow-hidden rounded-xl"
           >
-            <Image
-              src={item.src}
-              alt={`Artwork ${item.id}`}
-              width={400}
-              height={500}
-              className="w-full rounded-xl"
-            />
+            <Link href={`/post/${item._id}`}>
+              <Image
+                src={item.media[0].url}
+                alt={`Artwork ${item.id}`}
+                width={400}
+                height={500}
+                className="w-full rounded-xl"
+              />
+            </Link>
             {item.label && (
               <div className="absolute top-2 left-2 bg-white text-xs font-semibold px-2 py-1 rounded-full shadow">
                 {item.label}
@@ -53,7 +61,7 @@ const Showcase = () => {
         ))}
       </div>
       {/* Create Post Button */}
-      <Link href={"/post/create"}>
+      <Link href={{ pathname: "/content/create", query: { type: "post" } }}>
         <div className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
           <svg
             xmlns="http://www.w3.org/2000/svg"
