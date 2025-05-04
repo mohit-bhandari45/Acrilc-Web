@@ -2,19 +2,26 @@
 
 import Left from "@/components/universalcomps/left";
 import Right from "@/components/authcomps/right";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { loginLabels } from "@/utils/auth";
 import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const user = localStorage.getItem("token");
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
-  if (user) {
-    router.push("/profile");
-  }
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, [])
+  
 
-  if (!user) {
+  useEffect(() => {
+    if (token) {
+      router.push("/profile");
+    }
+  }, [token, router]);
+
+  if (!token) {
     return (
       <div className="flex justify-center items-center w-full h-screen font-[Helvetica]">
         <Left />

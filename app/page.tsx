@@ -7,16 +7,23 @@ import Navbar from "@/components/homecomps/navbar";
 import SubFooter from "@/components/homecomps/subfooter";
 import Title from "@/components/homecomps/title";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  const user = localStorage.getItem("token");
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
-  if (user) {
-    router.push("/profile");
-  }
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
-  if (!user) {
+  useEffect(() => {
+    if (token) {
+      router.push("/profile");
+    }
+  }, [token, router]);
+
+  if (!token) {
     return (
       <div className="font-[Helvetica]">
         <Navbar />

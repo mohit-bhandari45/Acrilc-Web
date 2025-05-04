@@ -8,20 +8,21 @@ import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 
 const Showcase = () => {
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.user)!;
   const [posts, setPosts] = useState([]);
 
-  const getData = async () => {
-    const response = await api.get(`${GET_POST}/${user?._id}`);
-
-    if (response.status === 200) {
-      setPosts(response.data.data);
-    }
-  };
-
   useEffect(() => {
+    const getData = async () => {
+      const response = await api.get(`${GET_POST}/${user?._id}`);
+  
+      if (response.status === 200) {
+        setPosts(response.data.data);
+      }
+    };
+  
+
     getData();
-  }, []);
+  }, [user?._id]);
 
   if (posts.length === 0) {
     return (
