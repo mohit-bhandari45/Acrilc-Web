@@ -1,17 +1,16 @@
 "use client"
 
-import { FC } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
+import { Input } from '@/components/ui/input';
+import {
+  ArrowRight,
+  Facebook,
+  Instagram,
   Linkedin,
-  ArrowRight
+  Twitter
 } from 'lucide-react';
+import Link from 'next/link';
+import { FC } from 'react';
 
 const Footer: FC = () => {
   return (
