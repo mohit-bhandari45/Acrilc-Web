@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import api, { GET_POST } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
 import { MoreHorizontal } from "lucide-react";
