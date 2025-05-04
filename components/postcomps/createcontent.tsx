@@ -30,7 +30,7 @@ const CreateContent = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [size, setSize] = useState("");
-  const [collection, setCollection] = useState("");
+  // const [collection, setCollection] = useState("");
   const [forte, setForte] = useState<string>("");
   const [keywords, setKeywords] = useState("");
   /*Content */
@@ -88,7 +88,7 @@ const CreateContent = ({
       title,
       description,
       size,
-      collection,
+      // collection,
       forte,
       keywords
     );
@@ -107,7 +107,7 @@ const CreateContent = ({
 
     if (type === "post") {
       formData.append("size", size);
-      formData.append("collectionId", collection);
+      // formData.append("collectionId", collection);
       formData.append("forte", forte);
       formData.append("story", description);
     } else {

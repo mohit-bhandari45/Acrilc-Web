@@ -3,7 +3,7 @@ interface RObject {
     status: boolean
 }
 
-function checkContent(type: string, title: string, description: string, size: string, collection: string, forte: string, keywords: string) {
+function checkContent(type: string, title: string, description: string, size: string, forte: string, keywords: string) {
     const robject: RObject = {
         msg: "",
         status: true
