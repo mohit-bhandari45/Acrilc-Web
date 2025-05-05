@@ -36,18 +36,6 @@ export default function FortePage() {
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
 
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      router.push("/profile");
-    }
-  }, [token, router]);
-
   const toggleSelection = (forte: string) => {
     if (selected.includes(forte)) {
       setSelected((prev) => prev.filter((item) => item !== forte));
