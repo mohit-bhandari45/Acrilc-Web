@@ -3,7 +3,7 @@
 import api, { FORTE_URL } from "@/apis/api";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 const PREFERENCE_ENUM = [
