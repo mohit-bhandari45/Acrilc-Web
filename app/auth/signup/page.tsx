@@ -22,9 +22,9 @@ const Signup = () => {
 
   if (!token) {
     return (
-      <div className="flex justify-center items-center w-full h-screen font-[Helvetica]">
+      <div className="flex flex-col lg:flex-row w-full min-h-screen font-[Helvetica] justify-center items-center">
         <Left />
-        <Right labels={signupLabels} method="Signup Up" />
+        <Right labels={signupLabels} method="Sign Up" />
       </div>
     );
   }

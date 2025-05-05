@@ -44,7 +44,7 @@ const Showcase = () => {
           >
             <Link href={`/content/${item._id}`}>
               <Image
-                src={item.media[0]}
+                src={item.media[0].url}
                 alt={`Artwork ${item.id}`}
                 width={400}
                 height={500}
@@ -56,8 +56,7 @@ const Showcase = () => {
       </div>
 
       {/* Create Post Button */}
-      <Link href={{ pathname: "/content/create", query: { type: "post" } }}>
-        <div className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
+        <Link href={{ pathname: "/content/create", query: { type: "post" } }} className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8 mb-2"
@@ -73,7 +72,6 @@ const Showcase = () => {
             />
           </svg>
           <span className="font-medium text-sm text-center">Create Post</span>
-        </div>
       </Link>
     </>
   );

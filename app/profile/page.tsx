@@ -41,7 +41,6 @@ const Profile = () => {
 
     getUser();
   }, [dispatch, router]);
-  console.log(user);
 
   if (!user) {
     return (

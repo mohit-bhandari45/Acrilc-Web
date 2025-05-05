@@ -18,232 +18,171 @@ interface InputProps {
   width: string;
   user: ISignupDetails;
   setUser: React.Dispatch<React.SetStateAction<ISignupDetails>>;
+  type?: string;
 }
 
-const InputComp = ({ label, user, width, setUser }: InputProps) => {
+const InputComp = ({ label, user, width, setUser, type = "text" }: InputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUser((prevUser) => {
-      return { ...prevUser, [name]: value };
-    });
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name.toLowerCase()]: value,
+    }));
   };
 
+  const fieldName = label.toLowerCase() as keyof ISignupDetails;
+
   return (
-    <div
-      className={`${width} flex flex-col px-3 justify-center items-start gap-1`}
-    >
-      <div className="text-[rgba(172,82,9,1)] font-semibold">{label}</div>
+    <div className={`${width} flex flex-col px-3 justify-center items-start gap-1`}>
+      <label htmlFor={fieldName} className="text-[rgba(172,82,9,1)] font-semibold">
+        {label}
+      </label>
       <Input
+        id={fieldName}
         onChange={handleChange}
-        name={label.toLowerCase()}
-        value={user[label.toLowerCase() as keyof ISignupDetails]}
+        name={fieldName}
+        value={user[fieldName] || ""}
         placeholder={`Enter Your ${label}`}
-        className="rounded-full border-black placeholder:text-gray-600 px-5 h-14"
+        className="rounded-full border-black placeholder:text-gray-600 px-5 h-14 focus-visible:ring-orange-500"
+        type={type}
+        autoComplete={fieldName === "password" ? "current-password" : fieldName}
       />
     </div>
   );
 };
 
 const Right = ({ labels, method }: { labels: string[]; method: string }) => {
-  /* States */
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<ISignupDetails>({
     name: "",
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState<Partial<ISignupDetails>>({});
   const router = useRouter();
 
-  /* Methods */
-  const handleSubmit = async () => {
-    console.log(user);
+  const validateForm = () => {
+    const newErrors: Partial<ISignupDetails> = {};
 
-    // checks
-    if (!user.email || !user.password || (method !== "Login" && !user.name)) {
-      toast.error("All fields are required.");
-      return;
+    if (method !== "Login" && !user.name) {
+      newErrors.name = "Name is required";
     }
 
-    const mailCheck = emailCheck(user.email);
-    if (!mailCheck) {
-      toast.error("Invalid email");
-      setUser((prevUser) => {
-        return { ...prevUser, email: "" };
-      });
-      const passCheck = passwordCheck(user.password);
-      if (!passCheck) {
-        toast.error(
-          "Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
-        );
-        setUser((prevUser) => {
-          return { ...prevUser, password: "" };
-        });
-      }
-      console.log(user);
-      return;
+    if (!user.email) {
+      newErrors.email = "Email is required";
+    } else if (!emailCheck(user.email)) {
+      newErrors.email = "Invalid email format";
     }
 
-    const passCheck = passwordCheck(user.password);
-    if (!passCheck) {
-      toast.error(
-        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
-      );
-      setUser((prevUser) => {
-        return { ...prevUser, password: "" };
-      });
-      console.log(user);
-      return;
+    if (!user.password) {
+      newErrors.password = "Password is required";
+    } else if (!passwordCheck(user.password)) {
+      newErrors.password = "Password must be at least 8 characters with uppercase, lowercase, number, and special character";
     }
 
-    /* Login vs signup API calls*/
-    if (method === "Login") {
-      setLoading(true);
-      let res;
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-      try {
-        const data = {
-          email: user.email,
-          password: user.password,
-        };
-        res = await axios.post(LOGIN_URL, data);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
 
-        if (res.status === 200) {
-          localStorage.setItem("token", res.data.token);
-          toast.success("Logged In");
-          router.push("/profile");
-        } else {
-          toast.error("Server Error. Please try again!");
-        }
+    setLoading(true);
 
-        setTimeout(() => {
-          setUser({
-            name: "",
-            email: "",
-            password: "",
-          });
-        }, 500);
-        setLoading(false);
-      } catch (error: unknown) {
-        const err = error as AxiosError<{ msg: string }>;
-        console.log(err);
+    try {
+      const endpoint = method === "Login" ? LOGIN_URL : SIGNUP_URL;
+      const data = method === "Login" 
+        ? { email: user.email, password: user.password }
+        : { fullName: user.name, email: user.email, password: user.password };
 
-        toast.error(err.response?.data?.msg || "Something went wrong.");
+      const res = await axios.post(endpoint, data);
 
-        setUser({
-          name: "",
-          email: "",
-          password: "",
-        });
-        setLoading(false);
+      if (res.status === (method === "Login" ? 200 : 201)) {
+        localStorage.setItem("token", res.data.token);
+        toast.success(method === "Login" ? "Logged In Successfully" : "Account Created");
+        router.push(method === "Login" ? "/profile" : "/auth/forte");
       }
-    } else {
-      setLoading(true);
-      let res;
-
-      try {
-        const { name, ...rest } = user;
-        const data = { fullName: name, ...rest };
-        res = await axios.post(SIGNUP_URL, data);
-
-        if (res.status === 201) {
-          localStorage.setItem("token", res.data.token);
-          toast.success("Signed Up");
-          router.push("/auth/forte");
-        } else {
-          toast.error("Server Error. Please try again!");
-        }
-
-        setTimeout(() => {
-          setUser({
-            name: "",
-            email: "",
-            password: "",
-          });
-        }, 500);
-        setLoading(false);
-      } catch (error: unknown) {
-        const err = error as AxiosError<{ msg: string }>;
-        console.log(err);
-
-        toast.error(err.response?.data?.msg || "Something went wrong.");
-
-        setUser({
-          name: "",
-          email: "",
-          password: "",
-        });
-        setLoading(false);
-      }
+    } catch (error) {
+      const err = error as AxiosError<{ msg: string }>;
+      toast.error(err.response?.data?.msg || "An unexpected error occurred");
+    } finally {
+      setLoading(false);
+      setUser({ name: "", email: "", password: "" });
     }
   };
 
   return (
-    <div className="w-[55%] h-full relative flex justify-center items-center flex-col">
-      <div className="w-[70%] h-[80%] flex flex-col justify-center items-center">
+    <div className="w-full lg:w-[55%] h-full flex justify-center items-center flex-col p-4">
+      <form 
+        onSubmit={handleSubmit}
+        className="w-full max-w-md h-full flex flex-col justify-center items-center"
+      >
         {/* Header */}
         <AuthHead />
 
         {/* Inputs */}
-        <div className="inputs w-full h-[60%] flex justify-center items-center flex-col">
-          <div className="w-full h-[85%] flex justify-center items-center flex-col gap-4">
-            {labels &&
-              labels.map((label, idx) => {
-                return (
-                  <InputComp
-                    key={idx}
-                    label={label}
-                    height="h-[60%]"
-                    width="w-[90%]"
-                    user={user}
-                    setUser={setUser}
-                  />
-                );
-              })}
-          </div>
-          <div className="w-[90%] h-[15%] px-3 mt-5">
-            <Button
-              onClick={handleSubmit}
-              className="rounded-4xl w-full h-full bg-[#834C3D] cursor-pointer"
-            >
-              {loading ? (
-                <div className="flex justify-center items-center gap-3">
-                  <div className="font-bold text-md">
-                    {method === "Login" ? "Logging in..." : "Signing Up..."}
-                  </div>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                </div>
-              ) : (
-                <div className="font-bold text-lg">{method}</div>
-              )}
-            </Button>
-          </div>
+        <div className="w-full space-y-6">
+          {labels.map((label) => {
+            const fieldName = label.toLowerCase() as keyof ISignupDetails;
+            return (
+              <div key={label}>
+                <InputComp
+                  label={label}
+                  height="h-[60%]"
+                  width="w-full"
+                  user={user}
+                  setUser={setUser}
+                  type={fieldName === "password" ? "password" : "text"}
+                />
+                {errors[fieldName] && (
+                  <p className="mt-1 text-sm text-red-600 px-3">
+                    {errors[fieldName]}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {/* More */}
-        <div className="h-[10%] flex justify-center items-center gap-2">
+        {/* Submit Button */}
+        <div className="w-full mt-8">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full h-14 bg-[#834C3D] hover:bg-[#6e3f32] rounded-full text-lg font-bold"
+          >
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <span>{method === "Login" ? "Logging in..." : "Signing Up..."}</span>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              </div>
+            ) : (
+              method
+            )}
+          </Button>
+        </div>
+
+        {/* Auth Toggle */}
+        <div className="mt-6 text-center">
           {method === "Login" ? (
-            <>
-              <div>Don&apos;t have an account?</div>
-              <Link
-                href={"/auth/signup"}
-                className="underline underline-offset-2"
-              >
-                Signup
+            <p>
+              Don&apos;t have an account?{" "}
+              <Link href="/auth/signup" className="hover:underline">
+                Sign up
               </Link>
-            </>
+            </p>
           ) : (
-            <>
-              <div>Already have an account?</div>
-              <Link
-                href={"/auth/login"}
-                className="underline underline-offset-2"
-              >
-                Login
+            <p>
+              Already have an account?{" "}
+              <Link href="/auth/login" className="hover:underline">
+                Log in
               </Link>
-            </>
+            </p>
           )}
         </div>
-      </div>
+      </form>
     </div>
   );
 };
