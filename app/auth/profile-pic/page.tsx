@@ -10,17 +10,6 @@ export default function ProfilePicPage() {
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
   const [loader, setLoader] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-      setToken(localStorage.getItem("token"));
-    }, []);
-  
-    useEffect(() => {
-      if (token) {
-        router.push("/profile");
-      }
-    }, [token, router]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
