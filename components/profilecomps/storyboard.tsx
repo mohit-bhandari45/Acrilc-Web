@@ -21,7 +21,7 @@ const Storyboard = () => {
     getData();
   }, [user?._id]);
 
-  if (!storyboard || storyboard.length === 0) {
+  if (!storyboard) {
     return (
       <div className="h-32 w-full flex justify-center items-center">
         <HashLoader size={20} />

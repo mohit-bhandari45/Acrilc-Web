@@ -3,7 +3,7 @@ interface RObject {
     status: boolean
 }
 
-function checkContent(type: string, title: string, description: string, size: string, forte: string, keywords: string) {
+function checkContent(type: string, title: string, description: string, size: string, forte: string, keywords: string, images: File[]) {
     const robject: RObject = {
         msg: "",
         status: true
@@ -24,6 +24,12 @@ function checkContent(type: string, title: string, description: string, size: st
     if (!description || description.trim().length === 0) {
         robject.status = false;
         robject.msg = `${type === "post" ? "Story" : "Description"} is required`;
+        return robject;
+    }
+
+    if (!images || images.length <1) {
+        robject.status = false;
+        robject.msg = `Atleast One image is required`;
         return robject;
     }
 

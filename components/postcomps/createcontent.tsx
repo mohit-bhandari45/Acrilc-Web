@@ -1,6 +1,6 @@
 "use client";
 
-import api, { CREATE_POST, CREATE_STORYBOARD } from "@/apis/api";
+import api, { CREATE_POST, CREATE_STORYBOARD, UPDATE_POST } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
 import { Upload, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -8,14 +8,23 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import checkContent from "./utils";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import IPost from "@/types/post";
+
+interface CreateContentProps {
+  isCreate: boolean;
+  data?: IPost;
+  type: string | null;
+  setType: React.Dispatch<SetStateAction<string | null>>;
+  setEdit?: React.Dispatch<SetStateAction<boolean>>;
+}
 
 const CreateContent = ({
   type,
   setType,
-}: {
-  type: string | null;
-  setType: React.Dispatch<SetStateAction<string | null>>;
-}) => {
+  isCreate,
+  data,
+  setEdit,
+}: CreateContentProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -40,6 +49,20 @@ const CreateContent = ({
       setForte(user.preferences[0]);
     }
   }, [user.preferences]);
+
+  useEffect(() => {
+    if (!isCreate) {
+      if (type === "post" && data) {
+        setImages(data.media as unknown as File[]);
+        const previewUrls = data.media.map((m) => m.url); // assuming `m.url` is already a string
+        setPreviews(previewUrls!);
+        setTitle(data.title);
+        setDescription(data.story);
+        setSize(data.size);
+        setForte(data.forte);
+      }
+    }
+  }, [data, isCreate, type]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -90,7 +113,8 @@ const CreateContent = ({
       size,
       // collection,
       forte,
-      keywords
+      keywords,
+      images
     );
     if (result.status === false) {
       toast.error(result.msg);
@@ -101,8 +125,19 @@ const CreateContent = ({
     const formData = new FormData();
 
     // Appending images
-    images.forEach((image) => {
-      formData.append("media", image);
+    images.forEach(async (image) => {
+      // if (image.url) {
+      //   console.log("Mohit");
+      //   const res = await fetch(image.url);
+      //   const blob = await res.blob();
+      //   console.log(blob);
+      //   const im = new File([blob], `${idx}.${blob.type.split("/")[1]}`, { type: blob.type });
+      //   console.log(im);
+      //   formData.append("media", im);
+      // } else {
+        console.log(image);
+        formData.append("media", image);
+      // }
     });
 
     if (type === "post") {
@@ -117,6 +152,35 @@ const CreateContent = ({
     formData.append("title", title);
     formData.append("hashTags", keywords); // Or transform if array: keywords.join(',')
 
+    if (!isCreate) {
+      try {
+        let response;
+        if (type === "post") {
+          console.log(`${UPDATE_POST}/${data!._id}`);
+          response = await api.patch(`${UPDATE_POST}/${data!._id}`, formData);
+        } else {
+          response = await api.patch(CREATE_STORYBOARD, formData);
+        }
+
+        if (response.status === 200) {
+          const message =
+            type === "post" ? "Post Updated!" : "Storyboard Updated!";
+          if (type === "post") {
+            // window.location.reload();
+          } else {
+            router.push(`/profile`);
+          }
+          toast.success(message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+      }
+      setLoader(false);
+
+      return;
+    }
+
     try {
       let response;
       if (type === "post") {
@@ -125,7 +189,6 @@ const CreateContent = ({
         response = await api.post(CREATE_STORYBOARD, formData);
       }
 
-      console.log(response);
       const id = response.data.data._id;
 
       if (response.status === 200) {
@@ -140,6 +203,7 @@ const CreateContent = ({
       }
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
     setLoader(false);
   };
@@ -330,12 +394,35 @@ const CreateContent = ({
           />
         </div>
 
+        {/* Cancel button */}
+        {!isCreate && (
+          <button
+            onClick={() => {
+              if (setEdit) {
+                setEdit(false);
+              }
+            }} // or any custom cancel logic
+            className="w-full mb-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+          >
+            Cancel
+          </button>
+        )}
+
         {/* Publish Button */}
         <button
           onClick={handleSubmit}
-          className="w-full py-3 bg-yellow-500 flex justify-center items-center text-white rounded-md hover:bg-yellow-600 cursor-pointer transition-colors"
+          className="w-full py-3 bg-yellow-500 gap-3 flex justify-center items-center text-white rounded-md hover:bg-yellow-600 cursor-pointer transition-colors"
         >
-          <div>{loader ? "Publishing..." : "Publish"}</div>
+          <div>
+            {isCreate
+              ? loader
+                ? "Publishing..."
+                : "Publish"
+              : loader
+              ? "Saving..."
+              : "Save Changes"}
+          </div>
+
           {loader && (
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
           )}

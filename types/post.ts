@@ -27,6 +27,7 @@ interface IComment {
 }
 
 interface IPost {
+    _id: string
     author: string;
     title: string;
     subtitle: string;

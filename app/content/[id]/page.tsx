@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
 import api, { GET_OWN_PROFILE, GET_POST } from "@/apis/api";
-import IPost from "@/types/post";
-import Navbar from "@/components/profilecomps/navbar";
-import Footer from "@/components/profilecomps/footer";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { HashLoader } from "react-spinners";
 import PostDescription from "@/components/postcomps/postdescription";
 import { setUser } from "@/store/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import IPost from "@/types/post";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { HashLoader } from "react-spinners";
 
 const Post = () => {
   const router = useRouter();
@@ -59,9 +57,7 @@ const Post = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <Navbar />
       <PostDescription post={post} />
-      <Footer />
     </div>
   );
 };

@@ -148,7 +148,7 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
         if (res.status === 201) {
           localStorage.setItem("token", res.data.token);
           toast.success("Signed Up");
-          router.push("/profile");
+          router.push("/auth/forte");
         } else {
           toast.error("Server Error. Please try again!");
         }
