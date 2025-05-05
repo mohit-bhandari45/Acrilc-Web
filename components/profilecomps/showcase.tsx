@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api, { GET_POSTS } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
+import IPost from "@/types/post";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,7 +9,7 @@ import { HashLoader } from "react-spinners";
 
 const Showcase = () => {
   const user = useAppSelector((state) => state.user.user)!;
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<IPost[] | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -17,20 +18,21 @@ const Showcase = () => {
       if (response.status === 200) {
         setPosts(response.data.data);
       }
+      console.log(response);
     };
 
     getData();
   }, [user?._id]);
 
-  console.log(posts);
-
-  if (posts.length === 0) {
+  if (!posts) {
     return (
       <div className="h-32 w-full flex justify-center items-center">
         <HashLoader size={20} />
       </div>
     );
   }
+
+  console.log(posts);
 
   return (
     <>
@@ -42,7 +44,7 @@ const Showcase = () => {
           >
             <Link href={`/content/${item._id}`}>
               <Image
-                src={item.thumbnail}
+                src={item.media[0]}
                 alt={`Artwork ${item.id}`}
                 width={400}
                 height={500}

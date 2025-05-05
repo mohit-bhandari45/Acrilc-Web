@@ -72,17 +72,29 @@ const ProfilePage: React.FC = () => {
                   {/* Outer relative container (for positioning button) */}
                   <div className="group relative h-24 w-24 border-4 border-white rounded-full">
                     {/* Image wrapper for cropping */}
-                    <div className="overflow-hidden bg-[#FAA21B] rounded-full h-full w-full flex justify-center items-center">
-                      {loader ? (
-                          <HashLoader color="white" size={20} />
-                      ) : (
+                    <div className="overflow-hidden bg-black rounded-full h-full w-full flex justify-center items-center">
+                      {!user?.profilePicture ? (
                         <Image
-                          src={user!.profilePicture!}
+                          src={"/assets/empty.png"}
                           alt="Profile Avatar"
-                          width={96}
-                          height={96}
+                          width={100}
+                          height={100}
                           className="object-cover"
                         />
+                      ) : (
+                        <>
+                          {loader ? (
+                            <HashLoader color="white" size={20} />
+                          ) : (
+                            <Image
+                              src={user!.profilePicture!}
+                              alt="Profile Avatar"
+                              width={96}
+                              height={96}
+                              className="object-cover"
+                            />
+                          )}
+                        </>
                       )}
                     </div>
 

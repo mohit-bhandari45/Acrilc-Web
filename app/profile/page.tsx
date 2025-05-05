@@ -2,18 +2,17 @@
 "use client";
 
 import ArtworkCarousel from "@/components/profilecomps/collection";
-import Footer from "@/components/profilecomps/footer";
+import GallerySection from "@/components/profilecomps/gallery";
 import Navbar from "@/components/profilecomps/navbar";
 import ProfilePage from "@/components/profilecomps/profile";
-import GallerySection from "@/components/profilecomps/gallery";
 
 /* Redux */
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setUser } from "@/store/features/userSlice";
-import { useEffect } from "react";
 import api, { GET_OWN_PROFILE } from "@/apis/api";
-import { HashLoader } from "react-spinners";
+import { setUser } from "@/store/features/userSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { HashLoader } from "react-spinners";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +21,10 @@ const Profile = () => {
 
   useEffect(() => {
     const getUser = async () => {
+      if(!localStorage.getItem("token")){
+        router.push("/auth/login");
+      }
+
       try {
         const response = await api.get(GET_OWN_PROFILE);
 
@@ -38,6 +41,7 @@ const Profile = () => {
 
     getUser();
   }, [dispatch, router]);
+  console.log(user);
 
   if (!user) {
     return (
@@ -55,7 +59,6 @@ const Profile = () => {
 
       {/* Main Three Sections */}
       <GallerySection />
-      <Footer />
     </div>
   );
 };

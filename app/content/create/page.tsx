@@ -3,8 +3,6 @@
 
 import api, { GET_OWN_PROFILE } from "@/apis/api";
 import CreateContent from "@/components/postcomps/createcontent";
-import Footer from "@/components/profilecomps/footer";
-import Navbar from "@/components/profilecomps/navbar";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -52,9 +50,7 @@ const Create = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <Navbar />
-      <CreateContent type={type} setType={setType} />
-      <Footer />
+      <CreateContent type={type} setType={setType} isCreate={true}/>
     </div>
   );
 };
