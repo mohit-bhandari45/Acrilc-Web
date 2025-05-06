@@ -1,5 +1,3 @@
-// app/profile/layout.tsx
-
 import Footer from "@/components/profilecomps/footer";
 
 

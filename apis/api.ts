@@ -25,12 +25,15 @@ api.interceptors.request.use(
 // auth apis
 const SIGNUP_URL: string = `${BASE_URL}/auth/signup`;
 const LOGIN_URL: string = `${BASE_URL}/auth/login`;
+const ADD_USERNAME_URL: string = `${BASE_URL}/api/user/username`;
 const FORTE_URL: string = `${BASE_URL}/api/user/preferences`;
 const ADD_PROFILE_PIC_URL: string = `${BASE_URL}/api/user/profile-pic`;
+export { SIGNUP_URL, LOGIN_URL, ADD_USERNAME_URL, FORTE_URL, ADD_PROFILE_PIC_URL };
 
 // api apis
 const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`
 const UPDATE_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
+export { GET_OWN_PROFILE, UPDATE_PROFILE_PIC };
 
 /* Data(Posts, Storyboard, etc) */
 const GET_POSTS = `${BASE_URL}/api/posts/user`;
@@ -42,5 +45,5 @@ const DELETE_POST = `${BASE_URL}/api/posts`;
 const CREATE_STORYBOARD = `${BASE_URL}/api/story`;
 const GET_STORYBOARD = `${BASE_URL}/api/story/user`;
 
-export { SIGNUP_URL, LOGIN_URL, FORTE_URL, ADD_PROFILE_PIC_URL, GET_OWN_PROFILE, UPDATE_PROFILE_PIC, GET_POSTS, CREATE_POST, CREATE_STORYBOARD, GET_STORYBOARD, GET_POST, UPDATE_POST, DELETE_POST };
+export { GET_POSTS, CREATE_POST, CREATE_STORYBOARD, GET_STORYBOARD, GET_POST, UPDATE_POST, DELETE_POST };
 export default api;

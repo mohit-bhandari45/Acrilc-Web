@@ -1,39 +1,25 @@
 "use client";
 
-import Left from "@/components/universalcomps/left";
 import Right from "@/components/authcomps/right";
-import React, { useEffect, useState } from "react";
+import Left from "@/components/universalcomps/left";
 import { loginLabels } from "@/utils/auth";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { HashLoader } from "react-spinners";
+import useProfileRedirect from "../useProfileRedirect";
 
 const Login = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
+  const [loader, setLoader] = useState<boolean>(true);
+  useProfileRedirect({ setLoader });
 
-  useEffect(() => {
-    // Check if window is defined (client-side)
-    if (typeof window !== "undefined") {
-      setToken(localStorage.getItem("token"));
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      router.push("/profile");
-    }
-  }, [token, router]);
-
-  if (isLoading) {
+  if (loader) {
     return (
-      <div className="flex justify-center items-center w-full h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+      <div className="h-screen w-full flex justify-center items-center">
+        <HashLoader color="#FAA21B" size={200} />
       </div>
     );
   }
 
-  if (!token) {
+  if (!loader) {
     return (
       <div className="flex flex-col lg:flex-row w-full min-h-screen font-[Helvetica] justify-center items-center">
         <Left />

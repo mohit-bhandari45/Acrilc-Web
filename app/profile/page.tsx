@@ -21,7 +21,7 @@ const Profile = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      if(!localStorage.getItem("token")){
+      if (!localStorage.getItem("token")) {
         router.push("/auth/login");
       }
 
