@@ -1,6 +1,7 @@
 "use client";
 
 import api, { UPDATE_PROFILE_PIC } from "@/apis/api";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -66,7 +67,7 @@ export default function ProfilePicPage() {
           <p className="text-gray-500 mb-6">
             This will be displayed on your profile.
           </p>
-
+          
           <div className="flex justify-center mb-6">
             <div className="w-32 h-32 rounded-full border-4 border-yellow-400 overflow-hidden">
               {preview ? (
