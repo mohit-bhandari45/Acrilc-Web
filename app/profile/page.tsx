@@ -10,14 +10,12 @@ import ProfilePage from "@/components/profilecomps/profile";
 import api, { GET_OWN_PROFILE } from "@/apis/api";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { HashLoader } from "react-spinners";
-import { useParams } from "next/navigation";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
-  const params = useParams();
   const router = useRouter();
   const user = useAppSelector((state) => state.user.user);
 

@@ -6,6 +6,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import useProfileRedirect from "../useProfileRedirect";
 import { HashLoader } from "react-spinners";
+import Image from "next/image";
 
 export default function ProfilePicPage() {
   const [loader, setLoader] = useState<boolean>(true);
@@ -69,7 +70,7 @@ export default function ProfilePicPage() {
           <div className="flex justify-center mb-6">
             <div className="w-32 h-32 rounded-full border-4 border-yellow-400 overflow-hidden">
               {preview ? (
-                <img
+                <Image
                   src={preview}
                   alt="Profile Preview"
                   className="object-cover w-full h-full"

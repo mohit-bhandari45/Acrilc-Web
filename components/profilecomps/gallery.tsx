@@ -34,26 +34,36 @@ const GallerySection = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-2 py-8">
-      <Tabs defaultValue="showcase" value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <Tabs
+        defaultValue="showcase"
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full"
+      >
         <div className="relative">
           <TabsList className="flex w-full justify-between md:justify-evenly mb-6 relative cursor-pointer">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                ref={(el) => (tabRefs.current[tab.value] = el)}
+                ref={(el) => {
+                  tabRefs.current[tab.value] = el;
+                }}
                 className={`relative px-4 py-2 text-sm sm:text-base font-medium text-gray-600 transition-colors ${
                   activeTab === tab.value ? "text-black font-bold" : ""
                 }`}
               >
-                {tab.label} 
+                {tab.label}
               </TabsTrigger>
             ))}
 
             {/* Animated Underline */}
             <motion.div
               className="absolute bottom-0 h-[2px] bg-black"
-              animate={{ left: underlineStyle.left, width: underlineStyle.width }}
+              animate={{
+                left: underlineStyle.left,
+                width: underlineStyle.width,
+              }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
             />
           </TabsList>
