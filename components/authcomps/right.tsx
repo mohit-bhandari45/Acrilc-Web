@@ -11,6 +11,7 @@ import { emailCheck, passwordCheck } from "../../utils/authtest";
 import Link from "next/link";
 import AuthHead from "../universalcomps/authhead";
 import { useRouter } from "next/navigation";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface InputProps {
   label: string;
@@ -21,7 +22,13 @@ interface InputProps {
   type?: string;
 }
 
-const InputComp = ({ label, user, width, setUser, type = "text" }: InputProps) => {
+const InputComp = ({
+  label,
+  user,
+  width,
+  setUser,
+  type = "text",
+}: InputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prevUser) => ({
@@ -33,8 +40,13 @@ const InputComp = ({ label, user, width, setUser, type = "text" }: InputProps) =
   const fieldName = label.toLowerCase() as keyof ISignupDetails;
 
   return (
-    <div className={`${width} flex flex-col px-3 justify-center items-start gap-1`}>
-      <label htmlFor={fieldName} className="text-[rgba(172,82,9,1)] font-semibold">
+    <div
+      className={`${width} flex flex-col px-3 justify-center items-start gap-1`}
+    >
+      <label
+        htmlFor={fieldName}
+        className="text-[rgba(172,82,9,1)] font-semibold"
+      >
         {label}
       </label>
       <Input
@@ -60,6 +72,7 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
   });
   const [errors, setErrors] = useState<Partial<ISignupDetails>>({});
   const router = useRouter();
+  const [visible, setVisible] = useState<boolean>(false);
 
   const validateForm = () => {
     const newErrors: Partial<ISignupDetails> = {};
@@ -77,7 +90,8 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
     if (!user.password) {
       newErrors.password = "Password is required";
     } else if (!passwordCheck(user.password)) {
-      newErrors.password = "Password must be at least 8 characters with uppercase, lowercase, number, and special character";
+      newErrors.password =
+        "Password must be at least 8 characters with uppercase, lowercase, number, and special character";
     }
 
     setErrors(newErrors);
@@ -86,22 +100,25 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setLoading(true);
 
     try {
       const endpoint = method === "Login" ? LOGIN_URL : SIGNUP_URL;
-      const data = method === "Login" 
-        ? { email: user.email, password: user.password }
-        : { fullName: user.name, email: user.email, password: user.password };
+      const data =
+        method === "Login"
+          ? { email: user.email, password: user.password }
+          : { fullName: user.name, email: user.email, password: user.password };
 
       const res = await axios.post(endpoint, data);
 
       if (res.status === (method === "Login" ? 200 : 201)) {
         localStorage.setItem("token", res.data.token);
-        toast.success(method === "Login" ? "Logged In Successfully" : "Account Created");
+        toast.success(
+          method === "Login" ? "Logged In Successfully" : "Account Created"
+        );
         router.push(method === "Login" ? "/profile" : "/auth/forte");
       }
     } catch (error) {
@@ -115,7 +132,7 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
   return (
     <div className="w-full lg:w-[55%] h-full flex justify-center items-center flex-col p-4">
-      <form 
+      <form
         onSubmit={handleSubmit}
         className="w-full max-w-md h-full flex flex-col justify-center items-center"
       >
@@ -127,15 +144,28 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
           {labels.map((label) => {
             const fieldName = label.toLowerCase() as keyof ISignupDetails;
             return (
-              <div key={label}>
+              <div key={label} className="relative w-full">
                 <InputComp
                   label={label}
                   height="h-[60%]"
                   width="w-full"
                   user={user}
                   setUser={setUser}
-                  type={fieldName === "password" ? "password" : "text"}
+                  type={
+                    fieldName === "password" && !visible ? "password" : "text"
+                  }
                 />
+
+                {/* Eye Icon Toggle for Password Field */}
+                {fieldName === "password" && (
+                  <div
+                    className="absolute right-8 top-14 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                    onClick={() => setVisible(!visible)}
+                  >
+                    {visible ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                  </div>
+                )}
+
                 {errors[fieldName] && (
                   <p className="mt-1 text-sm text-red-600 px-3">
                     {errors[fieldName]}
@@ -151,11 +181,13 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full h-14 bg-[#834C3D] hover:bg-[#6e3f32] rounded-full text-lg font-bold"
+            className="w-full h-14 bg-[#834C3D] cursor-pointer hover:bg-[#6e3f32] rounded-full text-lg font-bold"
           >
             {loading ? (
               <div className="flex items-center gap-2">
-                <span>{method === "Login" ? "Logging in..." : "Signing Up..."}</span>
+                <span>
+                  {method === "Login" ? "Logging in..." : "Signing Up..."}
+                </span>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               </div>
             ) : (

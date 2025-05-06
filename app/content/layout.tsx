@@ -1,16 +1,17 @@
 // app/profile/layout.tsx
-
-import Navbar from "@/components/homecomps/navbar";
 import Footer from "@/components/profilecomps/footer";
+import Navbar from "@/components/profilecomps/navbar";
 
 export default function ContentLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="">
-    <Navbar/>
-    {children}
-    <Footer/>
-  </div>;
+  return (
+    <div className="">
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
+  );
 }

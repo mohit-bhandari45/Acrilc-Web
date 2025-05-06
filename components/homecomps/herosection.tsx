@@ -65,7 +65,7 @@ const HeroSection = () => {
         </div>
         <Link href={"/auth/signup"}>
           <Button
-            className="button text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-5 rounded-full bg-[#FAA21B] hover:bg-[#fa921b] font-semibold cursor-pointer transition-transform hover:scale-105"
+            className="button text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-3 sm:px-6 sm:py-4 md:px-8 md:py-6 rounded-full bg-[#FAA21B] hover:bg-[#fa921b] font-semibold cursor-pointer transition-transform hover:scale-105"
             aria-label="Discover Art"
           >
             Discover Art
