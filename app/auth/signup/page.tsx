@@ -1,26 +1,25 @@
 "use client";
 
-import Left from "@/components/universalcomps/left";
 import Right from "@/components/authcomps/right";
-import React, { useEffect, useState } from "react";
+import Left from "@/components/universalcomps/left";
 import { signupLabels } from "@/utils/auth";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import useProfileRedirect from "../useProfileRedirect";
+import { HashLoader } from "react-spinners";
 
 const Signup = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const router = useRouter();
+  const [loader, setLoader] = useState<boolean>(true);
+  useProfileRedirect({ setLoader });
 
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
+  if (loader) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <HashLoader color="#FAA21B" size={200} />
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    if (token) {
-      router.push("/profile");
-    }
-  }, [token, router]);
-
-  if (!token) {
+  if (!loader) {
     return (
       <div className="flex flex-col lg:flex-row w-full min-h-screen font-[Helvetica] justify-center items-center">
         <Left />
