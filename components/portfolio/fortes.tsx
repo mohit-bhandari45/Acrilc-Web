@@ -1,22 +1,20 @@
 import { IUser } from "@/store/types";
 
 interface ForteProps {
-  user: IUser
+  user: IUser;
 }
 
 export const ForteSection = ({ user }: ForteProps) => {
   return (
-    <div className="w-[65%] mx-auto py-8">
-      <h2 className="text-3xl font-bold mb-6">Forte</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="w-full max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:py-12">
+      <h2 className="text-2xl font-bold mx-10 lg:mx-0 mb-6 sm:text-3xl lg:text-4xl">Forte</h2>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 mx-10 lg:mx-0 lg:grid-cols-3 lg:gap-6">
         {user.preferences!.map((skill, index) => (
           <div
             key={index}
-            className="bg-gray-100 rounded-lg p-4 flex flex-col items-center sm:items-start"
+            className="bg-gray-100 rounded-xl p-4 flex flex-col items-center text-center sm:items-start sm:text-left transition-all hover:bg-gray-200"
           >
-            {/* <div className="mb-2">{skill.icon}</div> */}
-            <h3 className="text-lg font-medium">{skill}</h3>
-            {/* <p className="text-sm text-gray-500">Skill Level: {skill.level}</p> */}
+            <h3 className="text-base font-medium sm:text-lg lg:text-xl">{skill}</h3>
           </div>
         ))}
       </div>

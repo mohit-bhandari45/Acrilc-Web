@@ -34,69 +34,54 @@ export const FeaturedWorks = () => {
     },
   ];
 
-    return (
-      <div className="w-[65%] mx-auto py-8">
-        <h2 className="text-3xl font-bold mb-6">Featured Works</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {/* Left Column - Large portrait */}
-          <div className="row-span-2">
+  return (
+    <div className="w-full max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:py-12">
+      <h2 className="text-2xl font-bold mb-6 sm:text-3xl lg:text-4xl mx-10 lg:mx-0">Featured Works</h2>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-6">
+        {/* Large portrait on left for larger screens, full width on mobile */}
+        <div className="sm:row-span-2 mx-10 lg:mx-0">
+          <Image
+            src={works[0]?.image || "/api/placeholder/400/600"}
+            alt={works[0]?.title || "Featured artwork"}
+            className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+            width={400}
+            height={600}
+            priority
+          />
+        </div>
+
+        {/* Right column grid for larger screens, stacked on mobile */}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-1 lg:grid-cols-2 mx-10 lg:mx-0">
+          <Image
+            src={works[1]?.image || "/api/placeholder/200/200"}
+            alt={works[1]?.title || "Featured artwork"}
+            className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+            width={200}
+            height={200}
+          />
+          <Image
+            src={works[2]?.image || "/api/placeholder/200/200"}
+            alt={works[2]?.title || "Featured artwork"}
+            className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+            width={200}
+            height={200}
+          />
+        </div>
+
+        {/* Additional works */}
+        <div className="grid grid-cols-1 gap-4 sm:col-span-2 lg:grid-cols-3 mx-10 lg:mx-0">
+          {works.slice(3).map((work) => (
             <Image
-              src={works[0]?.image || "/api/placeholder/400/600"} 
-              alt={works[0]?.title || "Featured artwork"} 
-              className="w-full h-full object-cover rounded-lg"
-              width={100}
-              height={100}
+              key={work.id}
+              src={work.image || "/api/placeholder/400/200"}
+              alt={work.title || "Featured artwork"}
+              className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+              width={400}
+              height={200}
             />
-          </div>
-          
-          {/* Right Column - Top Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <Image 
-              src={works[1]?.image || "/api/placeholder/200/200"} 
-              alt={works[1]?.title || "Featured artwork"} 
-              className="w-full h-full object-cover rounded-lg"
-              width={100}
-              height={100}
-            />
-            <Image 
-              src={works[2]?.image || "/api/placeholder/200/200"} 
-              alt={works[2]?.title || "Featured artwork"} 
-              className="w-full h-full object-cover rounded-lg"
-              width={100}
-              height={100}
-            />
-          </div>
-          
-          {/* Right Column - Bottom Grid */}
-          <div className="grid grid-cols-1 gap-4">
-            <Image 
-              src={works[3]?.image || "/api/placeholder/400/200"} 
-              alt={works[3]?.title || "Featured artwork"} 
-              className="w-full h-full object-cover rounded-lg"
-              width={100}
-              height={100}
-            />
-          </div>
-          
-          {/* Bottom Row */}
-          <div className="col-span-2 grid grid-cols-2 gap-4">
-            <Image 
-              src={works[4]?.image || "/api/placeholder/400/200"} 
-              alt={works[4]?.title || "Featured artwork"} 
-              className="w-full h-full object-cover rounded-lg"
-              width={100}
-              height={100}
-            />
-            <Image 
-              src={works[5]?.image || "/api/placeholder/400/200"} 
-              alt={works[5]?.title || "Featured artwork"} 
-              className="w-full h-full object-cover rounded-lg"
-              width={100}
-              height={100}
-            />
-          </div>
+          ))}
         </div>
       </div>
-    );
-  };
-  
+    </div>
+  );
+};

@@ -26,7 +26,6 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
 
   const handleShare = async () => {
     await handleCheck();
-
     setShowModal(true);
   };
 
@@ -35,26 +34,20 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
       const response = await api.get(CHECK_PORTFOLIO);
 
       if (response.status === 200) {
-        setAll((prev) => {
-          return { ...prev, del: false };
-        });
+        setAll((prev) => ({ ...prev, del: false }));
       }
     } catch (error) {
       const axiosError = error as AxiosError;
       const status = axiosError?.response?.status;
       if (status === 409) {
-        setAll((prev) => {
-          return { ...prev, del: true };
-        });
+        setAll((prev) => ({ ...prev, del: true }));
       }
     }
   };
 
   const handleShorten = async () => {
     if (all.customSlug.length === 0) {
-      setAll((prev) => {
-        return { ...prev, error: "Enter a shorturl" };
-      });
+      setAll((prev) => ({ ...prev, error: "Enter a short URL" }));
       return;
     }
 
@@ -64,13 +57,11 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
       const response = await api.post(ADD_PORTFOLIO, { url: all.customSlug });
 
       if (response.status === 200) {
-        setAll((prev) => {
-          return { ...prev, shortUrl: `${host}/${all.customSlug}` };
-        });
-        console.log(response.data.data);
-        setAll((prev) => {
-          return { ...prev, generated: true };
-        });
+        setAll((prev) => ({
+          ...prev,
+          shortUrl: `${host}/${all.customSlug}`,
+          generated: true,
+        }));
         toast.success("URL Generated");
       }
     } catch (error) {
@@ -81,16 +72,14 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setAll((prev) => {
-      return {
-        ...prev,
-        generated: false,
-        error: "",
-        customSlug: "",
-        shortUrl: "",
-        del: false,
-      };
-    });
+    setAll((prev) => ({
+      ...prev,
+      generated: false,
+      error: "",
+      customSlug: "",
+      shortUrl: "",
+      del: false,
+    }));
   };
 
   const handlerDelete = async () => {
@@ -99,9 +88,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
 
       if (response.status === 200) {
         toast.success("URL deleted!");
-        setAll((prev) => {
-          return { ...prev, del: true };
-        });
+        setAll((prev) => ({ ...prev, del: true }));
         setShowModal(false);
       }
     } catch (error) {
@@ -113,14 +100,14 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
   return (
     <>
       {isSame && (
-        <div className="w-[65%] mx-auto py-8 flex flex-wrap gap-20 mb-20 justify-center">
+        <div className="w-[65%] mx-auto py-8 flex flex-row flex-wrap gap-4 sm:gap-6 justify-center mb-12">
           <button
             onClick={handleShare}
-            className="flex cursor-pointer items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-full"
+            className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-4 w-4 sm:h-5 sm:w-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -139,12 +126,11 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
 
           {!isSame && (
             <button
-              // onClick={handleContact}
-              className="flex items-center cursor-pointer gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-full"
+              className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-4 w-4 sm:h-5 sm:w-5"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -160,12 +146,11 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
           )}
 
           <button
-            // onClick={handleExport}
-            className="flex items-center gap-2 cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-full"
+            className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-4 w-4 sm:h-5 sm:w-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -183,28 +168,29 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
       )}
 
       {showModal &&
-        (all.del === true ? (
+        (all.del ? (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white rounded-lg p-6 w-[90%] max-w-md">
-              <h2 className={`text-lg font-semibold mb-4`}>
+            <div className="bg-white rounded-lg p-4 sm:p-6 w-[90%] max-w-md">
+              <h2 className="text-base sm:text-lg font-semibold mb-4">
                 Previous URL:{" "}
                 <a
                   target="_blank"
                   href={`${window.location.origin}/${user.portfolioURL}`}
+                  className="underline"
+                  rel="noopener noreferrer"
                 >
                   Link
                 </a>
               </h2>
               <button
                 onClick={handlerDelete}
-                className={`bg-orange-400 cursor-pointer text-white px-4 py-2 rounded-full hover:bg-orange-500 w-full`}
+                className="bg-orange-400 text-white px-4 py-2 rounded-full hover:bg-orange-500 w-full text-sm sm:text-base transition-colors"
               >
                 Delete Previous URL?
               </button>
-
               <button
                 onClick={handleCloseModal}
-                className="mt-6 text-sm cursor-pointer text-gray-500 hover:underline w-full"
+                className="mt-4 sm:mt-6 text-sm text-gray-500 hover:underline w-full"
               >
                 Close
               </button>
@@ -212,15 +198,14 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
           </div>
         ) : (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white rounded-lg p-6 w-[90%] max-w-md">
+            <div className="bg-white rounded-lg p-4 sm:p-6 w-[90%] max-w-md">
               <h2
-                className={`text-lg font-semibold mb-4 ${
+                className={`text-base sm:text-lg font-semibold mb-4 ${
                   all.generated && "hidden"
                 }`}
               >
                 Customize your share URL
               </h2>
-
               <label
                 className={`block text-sm text-gray-700 mb-1 ${
                   all.generated && "hidden"
@@ -233,32 +218,30 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
                 value={all.customSlug}
                 name="customSlug"
                 hidden={all.generated}
-                onChange={(e) => {
+                onChange={(e) =>
                   setAll((prev) => ({
                     ...prev,
                     error: "",
                     [e.target.name]: e.target.value,
-                  }));
-                }}
-                className="w-full border rounded px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  }))
+                }
+                className="w-full border rounded px-3 py-2 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                 placeholder="e.g. my-portfolio"
               />
               {all.error && (
                 <p className="text-red-500 text-sm mb-2">{all.error}</p>
               )}
-
               <button
                 onClick={handleShorten}
-                className={`bg-orange-400 cursor-pointer text-white px-4 py-2 rounded-full hover:bg-orange-500 w-full ${
+                className={`bg-orange-400 text-white px-4 py-2 rounded-full hover:bg-orange-500 w-full text-sm sm:text-base transition-colors ${
                   all.generated && "hidden"
                 }`}
               >
                 Generate URL
               </button>
-
               {all.shortUrl && (
                 <div className="mt-4 text-center">
-                  <p className="text-xl mb-1">Shortened URL:</p>
+                  <p className="text-base sm:text-xl mb-1">Shortened URL:</p>
                   <a
                     href={all.shortUrl}
                     className="underline break-all"
@@ -269,10 +252,9 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
                   </a>
                 </div>
               )}
-
               <button
                 onClick={handleCloseModal}
-                className="mt-6 text-sm cursor-pointer text-gray-500 hover:underline w-full"
+                className="mt-4 sm:mt-6 text-sm text-gray-500 hover:underline w-full"
               >
                 Close
               </button>

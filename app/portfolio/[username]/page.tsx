@@ -14,6 +14,8 @@ import useUserByUsername from "@/hooks/useUserByUsername";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
+import { setUser } from "@/store/features/userSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 interface IParams {
   username: string;
@@ -24,6 +26,7 @@ const Portfolio = () => {
   const username = params.username;
   const [isSame, setIsSame] = useState<boolean>(false);
   const [token, setToken] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   /* Getting the user and updating things */
   useEffect(() => {
@@ -35,6 +38,7 @@ const Portfolio = () => {
     username,
   });
   const { currentUser, loading: currUserLoading } = useCurrentUser({ token });
+  dispatch(setUser(currentUser!));
 
   useEffect(() => {
     if (

@@ -68,12 +68,14 @@ export default function ProfilePicPage() {
           </p>
           
           <div className="flex justify-center mb-6">
-            <div className="w-32 h-32 rounded-full border-4 border-yellow-400 overflow-hidden">
+            <div className="w-32 h-32 rounded-full border-4 border-yellow-400 overflow-hidden flex justify-center items-center">
               {preview ? (
                 <Image
                   src={preview}
                   alt="Profile Preview"
-                  className="object-cover w-full h-full"
+                  className="object-cover"
+                  width={100}
+                  height={100}
                 />
               ) : (
                 <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
