@@ -5,6 +5,7 @@ export interface IUser {
     profilePicture?: string;
     bio?: string;
     story?: string;
+    portfolioURL: string
     totalFollowers?: string[];
     totalFollowing?: string[];
     role?: "user" | "admin";

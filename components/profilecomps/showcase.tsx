@@ -18,7 +18,6 @@ const Showcase = () => {
       if (response.status === 200) {
         setPosts(response.data.data);
       }
-      console.log(response);
     };
 
     getData();
@@ -31,8 +30,6 @@ const Showcase = () => {
       </div>
     );
   }
-
-  console.log(posts);
 
   return (
     <>

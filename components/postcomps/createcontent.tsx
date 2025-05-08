@@ -135,7 +135,6 @@ const CreateContent = ({
       //   console.log(im);
       //   formData.append("media", im);
       // } else {
-        console.log(image);
         formData.append("media", image);
       // }
     });
@@ -156,7 +155,6 @@ const CreateContent = ({
       try {
         let response;
         if (type === "post") {
-          console.log(`${UPDATE_POST}/${data!._id}`);
           response = await api.patch(`${UPDATE_POST}/${data!._id}`, formData);
         } else {
           response = await api.patch(CREATE_STORYBOARD, formData);
