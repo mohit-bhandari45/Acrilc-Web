@@ -32,6 +32,7 @@ const Profile = () => {
           dispatch(setUser(response.data.data));
         }
       } catch (error: any) {
+        console.log(error);
         if (error.status === 401) {
           localStorage.removeItem("token");
           router.push("/auth/login");

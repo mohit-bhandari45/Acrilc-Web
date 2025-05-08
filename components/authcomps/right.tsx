@@ -113,7 +113,6 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
           : { fullName: user.name, email: user.email, password: user.password };
 
       const res = await axios.post(endpoint, data);
-      console.log(res.data.data);
 
       if (res.status === (method === "Login" ? 200 : 201)) {
         localStorage.setItem("token", res.data.token);
@@ -124,20 +123,20 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
         if (method === "Login") {
           const d = res.data.data;
           if (!d.username) {
-            console.log("Hey");
             router.push("/auth/username");
           } else if (d.preferences.length === 0) {
-            console.log("Hey2");
             router.push("/auth/forte");
           } else if (!d.profilePicture) {
-            console.log("Hey3");
             router.push("/auth/profile-pic");
+          } else{
+            router.push("/profile");
           }
         } else {
           router.push("/auth/username");
         }
       }
     } catch (error) {
+      console.log(error);
       const err = error as AxiosError<{ msg: string }>;
       toast.error(err.response?.data?.msg || "An unexpected error occurred");
     } finally {

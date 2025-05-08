@@ -6,6 +6,7 @@ import React, { useRef, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { Button } from "../ui/button";
 import { HashLoader } from "react-spinners";
+import Link from "next/link";
 
 const ProfilePage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -114,19 +115,25 @@ const ProfilePage: React.FC = () => {
             <div className="bg-orange-50 rounded-lg p-4 sm:p-6 flex flex-col gap-5">
               <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                 <div className="flex flex-col">
-                  <span className="text-gray-600 text-xs sm:text-sm">Supporters</span>
+                  <span className="text-gray-600 text-xs sm:text-sm">
+                    Supporters
+                  </span>
                   <span className="font-bold text-xl sm:text-2xl">
                     {user?.totalFollowers?.toLocaleString() || 0}
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-gray-600 text-xs sm:text-sm">Supporting</span>
+                  <span className="text-gray-600 text-xs sm:text-sm">
+                    Supporting
+                  </span>
                   <span className="font-bold text-xl sm:text-2xl">
                     {user?.totalFollowing?.toLocaleString() || 0}
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-gray-600 text-xs sm:text-sm">Posts</span>
+                  <span className="text-gray-600 text-xs sm:text-sm">
+                    Posts
+                  </span>
                   <span className="font-bold text-xl sm:text-2xl">
                     {user?.posts?.toLocaleString() || 0}
                   </span>
@@ -135,7 +142,9 @@ const ProfilePage: React.FC = () => {
               <div className="border-2 border-black opacity-40"></div>
               {/* Social Links */}
               <div className="mt-2">
-                <h3 className="text-base sm:text-lg mb-3 ml-4 font-bold">Social URLs</h3>
+                <h3 className="text-base sm:text-lg mb-3 ml-4 font-bold">
+                  Social URLs
+                </h3>
                 <div className="flex flex-wrap gap-4 sm:gap-6 justify-center items-center">
                   <a href="#" className="text-gray-800 hover:text-gray-600">
                     <svg
@@ -174,9 +183,11 @@ const ProfilePage: React.FC = () => {
                       fill="currentColor"
                       className="w-5 h-5 sm:w-6 sm:h-6"
                     >
-                      <path d="M22 7h-7v-2h7v2zm1
+                      <path
+                        d="M22 7h-7v-2h7v2zm1
 
-.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z" />
+.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"
+                      />
                     </svg>
                   </a>
                   <a href="#" className="text-gray-800 hover:text-gray-600">
@@ -208,8 +219,12 @@ const ProfilePage: React.FC = () => {
           <div className="w-full lg:w-3/5">
             {/* Artist Info */}
             <div className="mb-6 sm:mb-8">
-              <h1 className="text-2xl sm:text-3xl font-bold mb-1">{user?.fullName}</h1>
-              <p className="text-gray-600 text-sm sm:text-base">{user?.story}</p>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1">
+                {user?.fullName}
+              </h1>
+              <p className="text-gray-600 text-sm sm:text-base">
+                {user?.story}
+              </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
                 <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
                   Edit Profile
@@ -225,7 +240,10 @@ const ProfilePage: React.FC = () => {
               <h2 className="text-xl sm:text-2xl font-bold mb-4">Forte</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {user?.preferences?.map((category, index) => (
-                  <div key={index} className="bg-gray-100 rounded-lg p-3 sm:p-4">
+                  <div
+                    key={index}
+                    className="bg-gray-100 rounded-lg p-3 sm:p-4"
+                  >
                     <p className="text-black text-sm">{category}</p>
                   </div>
                 ))}
@@ -235,16 +253,22 @@ const ProfilePage: React.FC = () => {
             {/* Story Section */}
             {user?.bio && (
               <div className="mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4">Story of the Artist</h2>
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">{user?.bio}</p>
+                <h2 className="text-xl sm:text-2xl font-bold mb-4">
+                  Story of the Artist
+                </h2>
+                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
+                  {user?.bio}
+                </p>
               </div>
             )}
 
             {/* View Portfolio Button */}
             <div className="mt-6 sm:mt-8">
-              <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg">
-                View Portfolio
-              </Button>
+              <Link href={`/portfolio/${user?.username}`}>
+                <Button className="w-full cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg">
+                  View Portfolio
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
