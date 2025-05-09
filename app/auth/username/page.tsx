@@ -76,6 +76,7 @@ export default function UsernameChooser() {
 
             <Button
               onClick={handleSubmit}
+              disabled={loading}
               className="w-full mt-4 bg-[#FDBA2D] cursor-pointer hover:bg-[#f8a90a] text-white"
             >
               {loading ? (

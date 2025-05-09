@@ -116,10 +116,7 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
       if (res.status === (method === "Login" ? 200 : 201)) {
         localStorage.setItem("token", res.data.token);
-        toast.success(
-          method === "Login" ? "Logged In Successfully" : "Account Created"
-        );
-
+        
         if (method === "Login") {
           const d = res.data.data;
           if (!d.username) {
@@ -134,6 +131,10 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
         } else {
           router.push("/auth/username");
         }
+        
+        toast.success(
+          method === "Login" ? "Logged In Successfully" : "Account Created"
+        );
       }
     } catch (error) {
       console.log(error);

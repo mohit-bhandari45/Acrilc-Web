@@ -7,6 +7,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import useProfileRedirect from "../useProfileRedirect";
 import { HashLoader } from "react-spinners";
+import { Button } from "@/components/ui/button";
 
 const PREFERENCE_ENUM = [
   "Woolen Craft",
@@ -116,12 +117,12 @@ export default function FortePage() {
 
         {/* Navigation Buttons */}
         <div className="mt-12 flex justify-between items-center gap-5">
-          <button
+          <Button
             className={cn(
               "bg-[#FF7A00] text-white font-semibold px-6 py-3 rounded-full transition cursor-pointer",
               selected.length === 0 && "opacity-50 cursor-not-allowed"
             )}
-            disabled={selected.length === 0}
+            disabled={selected.length === 0 || loading}
             onClick={handleUpload}
           >
             {loading ? (
@@ -132,7 +133,7 @@ export default function FortePage() {
             ) : (
               <div>Next</div>
             )}
-          </button>
+          </Button>
         </div>
       </div>
     );

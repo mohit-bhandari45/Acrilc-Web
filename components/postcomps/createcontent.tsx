@@ -9,6 +9,7 @@ import checkContent from "./utils";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import IPost from "@/types/post";
+import { Button } from "../ui/button";
 
 interface CreateContentProps {
   isCreate: boolean;
@@ -125,19 +126,20 @@ const CreateContent = ({
     const formData = new FormData();
 
     // Appending images
-    images.forEach(async (image) => {
-      // if (image.url) {
-      //   console.log("Mohit");
-      //   const res = await fetch(image.url);
-      //   const blob = await res.blob();
-      //   console.log(blob);
-      //   const im = new File([blob], `${idx}.${blob.type.split("/")[1]}`, { type: blob.type });
-      //   console.log(im);
-      //   formData.append("media", im);
-      // } else {
+    images.forEach(async (image, idx) => {
+      if (image.url) {
+        const res = await fetch(image.url);
+        const blob = await res.blob();
+        const f = new File([blob], `${idx}/${blob.type.split("/")[1]}`, {
+          type: blob.type,
+        });
+        formData.append("media", f);
+      } else {
         formData.append("media", image);
-      // }
+      }
     });
+
+    console.log(formData.get("media"));
 
     if (type === "post") {
       formData.append("size", size);
@@ -407,9 +409,13 @@ const CreateContent = ({
         )}
 
         {/* Publish Button */}
-        <button
+        <Button
           onClick={handleSubmit}
-          className="w-full py-3 bg-yellow-500 gap-3 flex justify-center items-center text-white rounded-md hover:bg-yellow-600 cursor-pointer transition-colors"
+          disabled={loader}
+          variant={"outline"}
+          className={`
+    w-full py-3 gap-3 flex justify-center cursor-pointer items-center text-white rounded-md transition-colors
+  `}
         >
           <div>
             {isCreate
@@ -424,7 +430,7 @@ const CreateContent = ({
           {loader && (
             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
           )}
-        </button>
+        </Button>
       </div>
     </div>
   );

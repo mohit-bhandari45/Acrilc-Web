@@ -7,6 +7,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import useProfileRedirect from "../useProfileRedirect";
 import { HashLoader } from "react-spinners";
+import { Button } from "@/components/ui/button";
 
 export default function ProfilePicPage() {
   const [loader, setLoader] = useState<boolean>(true);
@@ -107,8 +108,9 @@ export default function ProfilePicPage() {
             >
               Skip
             </button>
-            <button
+            <Button
               onClick={handleSubmit}
+              disabled={loading}
               className="px-5 cursor-pointer text-white font-semibold py-2  rounded-lg bg-yellow-600 hover:bg-yellow-700 transition"
             >
               {loading ? (
@@ -119,7 +121,7 @@ export default function ProfilePicPage() {
               ) : (
                 "Upload"
               )}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

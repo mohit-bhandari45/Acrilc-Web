@@ -79,7 +79,7 @@ const PostDescription = ({ post }: { post: IPost | null }) => {
             <div className="absolute top-3 right-3 z-20">
               <button
                 onClick={toggleMenu}
-                className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition"
+                className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition cursor-pointer"
               >
                 <MoreVertical size={20} className="text-white" />
               </button>
