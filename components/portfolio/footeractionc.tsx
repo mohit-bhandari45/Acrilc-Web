@@ -125,9 +125,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
           </button>
 
           {!isSame && (
-            <button
-              className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors"
-            >
+            <button className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 sm:h-5 sm:w-5"
@@ -145,9 +143,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
             </button>
           )}
 
-          <button
-            className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors"
-          >
+          <button className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 sm:h-5 sm:w-5"
@@ -247,6 +243,9 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
                     className="underline break-all"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => {
+                      setTimeout(() => window.location.reload(), 100); // slight delay to allow navigation
+                    }}
                   >
                     {all.shortUrl}
                   </a>

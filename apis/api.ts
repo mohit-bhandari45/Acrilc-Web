@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const BASE_URL: string = "https://joyous-reeta-mohit123-198cb6c8.koyeb.app"
+// const BASE_URL: string = "https://joyous-reeta-mohit123-198cb6c8.koyeb.app"
 // const BASE_URL: string = "https://acrilc-backend-production.up.railway.app"
 // const BASE_URL: string = "http://localhost:8000"
+const BASE_URL: string = "http://13.202.135.126:8000"
 
 const api = axios.create({
     baseURL: BASE_URL,
