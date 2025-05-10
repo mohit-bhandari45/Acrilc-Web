@@ -126,17 +126,17 @@ const CreateContent = ({
     const formData = new FormData();
 
     // Appending images
-    images.forEach(async (image, idx) => {
-      if (image.url) {
-        const res = await fetch(image.url);
-        const blob = await res.blob();
-        const f = new File([blob], `${idx}/${blob.type.split("/")[1]}`, {
-          type: blob.type,
-        });
-        formData.append("media", f);
-      } else {
+    images.forEach(async (image) => {
+      // if (image.url) {
+      //   const res = await fetch(image.url);
+      //   const blob = await res.blob();
+      //   const f = new File([blob], `${idx}/${blob.type.split("/")[1]}`, {
+      //     type: blob.type,
+      //   });
+      //   formData.append("media", f);
+      // } else {
         formData.append("media", image);
-      }
+      // }
     });
 
     console.log(formData.get("media"));
