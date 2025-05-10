@@ -1,6 +1,6 @@
 // hooks/useCurrentUser.ts
 import api, { GET_OWN_PROFILE } from "@/apis/api";
-import { IUser } from "@/store/types";
+import { IUser } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -29,7 +29,6 @@ const useCurrentUser = ({ token }: { token: string | null }) => {
         const status = axiosError?.response?.status;
 
         if (status === 401) {
-          console.log(401);
           localStorage.removeItem("token");
           toast.error("Please Login Again to continue making!");
           router.push("/auth/login");

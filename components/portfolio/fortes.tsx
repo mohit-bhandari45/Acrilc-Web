@@ -1,4 +1,4 @@
-import { IUser } from "@/store/types";
+import { IUser } from "@/types/types";
 
 interface ForteProps {
   user: IUser;

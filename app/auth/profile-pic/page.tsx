@@ -1,17 +1,16 @@
 "use client";
 
-import api, { UPDATE_PROFILE_PIC } from "@/apis/api";
+import api, { UPLOAD_PROFILE_PIC } from "@/apis/api";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import useProfileRedirect from "../useProfileRedirect";
 import { HashLoader } from "react-spinners";
-import { Button } from "@/components/ui/button";
+import useProfileRedirect from "../useProfileRedirect";
 
 export default function ProfilePicPage() {
-  const [loader, setLoader] = useState<boolean>(true);
-  useProfileRedirect({ setLoader });
+  const { loader } = useProfileRedirect();
 
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -37,7 +36,7 @@ export default function ProfilePicPage() {
     formData.append("profilePic", file);
 
     try {
-      const res = await api.put(UPDATE_PROFILE_PIC, formData);
+      const res = await api.put(UPLOAD_PROFILE_PIC, formData);
 
       if (res.status === 200) {
         toast.success("Profile Pic Added");
@@ -47,8 +46,9 @@ export default function ProfilePicPage() {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   if (loader) {
@@ -67,16 +67,15 @@ export default function ProfilePicPage() {
           <p className="text-gray-500 mb-6">
             This will be displayed on your profile.
           </p>
-          
+
           <div className="flex justify-center mb-6">
-            <div className="w-32 h-32 rounded-full border-4 border-yellow-400 overflow-hidden flex justify-center items-center">
+            <div className="w-32 h-32 rounded-full border-4 border-yellow-400 overflow-hidden relative">
               {preview ? (
                 <Image
                   src={preview}
                   alt="Profile Preview"
+                  fill
                   className="object-cover"
-                  width={100}
-                  height={100}
                 />
               ) : (
                 <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-400">
@@ -111,7 +110,7 @@ export default function ProfilePicPage() {
             <Button
               onClick={handleSubmit}
               disabled={loading}
-              className="px-5 cursor-pointer text-white font-semibold py-2  rounded-lg bg-yellow-600 hover:bg-yellow-700 transition"
+              className="px-5 cursor-pointer text-white font-semibold py-2  rounded-lg bg-[#FAA21B] hover:bg-[#fa921b] transition"
             >
               {loading ? (
                 <div className="flex justify-center items-center">

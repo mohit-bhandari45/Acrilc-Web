@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { ISignupDetails } from "@/app/auth/auth";
-import axios, { AxiosError } from "axios";
 import { LOGIN_URL, SIGNUP_URL } from "@/apis/api";
-import toast from "react-hot-toast";
-import { emailCheck, passwordCheck } from "../../utils/authtest";
+import { ISignupDetails } from "@/types/types";
+import { validateForm } from "@/utils/auth";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
-import AuthHead from "../universalcomps/authhead";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import AuthHead from "../universalcomps/authhead";
 
 interface InputProps {
   label: string;
@@ -74,34 +74,14 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
   const router = useRouter();
   const [visible, setVisible] = useState<boolean>(false);
 
-  const validateForm = () => {
-    const newErrors: Partial<ISignupDetails> = {};
-
-    if (method !== "Login" && !user.name) {
-      newErrors.name = "Name is required";
-    }
-
-    if (!user.email) {
-      newErrors.email = "Email is required";
-    } else if (!emailCheck(user.email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (!user.password) {
-      newErrors.password = "Password is required";
-    } else if (!passwordCheck(user.password)) {
-      newErrors.password =
-        "Password must be at least 8 characters with uppercase, lowercase, number, and special character";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    const errors = validateForm(method, user);
+    setErrors(errors);
+
+    const wrong_form = Object.keys(errors).length === 0;
+    if (!wrong_form) return;
 
     setLoading(true);
 
@@ -116,7 +96,7 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
       if (res.status === (method === "Login" ? 200 : 201)) {
         localStorage.setItem("token", res.data.token);
-        
+
         if (method === "Login") {
           const d = res.data.data;
           if (!d.username) {
@@ -125,13 +105,13 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
             router.push("/auth/forte");
           } else if (!d.profilePicture) {
             router.push("/auth/profile-pic");
-          } else{
+          } else {
             router.push("/profile");
           }
         } else {
           router.push("/auth/username");
         }
-        
+
         toast.success(
           method === "Login" ? "Logged In Successfully" : "Account Created"
         );
@@ -139,7 +119,18 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
     } catch (error) {
       console.log(error);
       const err = error as AxiosError<{ msg: string }>;
-      toast.error(err.response?.data?.msg || "An unexpected error occurred");
+
+      if (err.response) {
+        const { status, data } = err.response;
+
+        if (status >= 400 && status < 500) {
+          toast.error(data.msg);
+        } else {
+          toast.error("Something went wrong. Try Again!");
+        }
+      } else {
+        toast.error("Something went wrong. Try Again!");
+      }
     } finally {
       setLoading(false);
       setUser({ name: "", email: "", password: "" });

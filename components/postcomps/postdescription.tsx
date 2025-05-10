@@ -1,6 +1,6 @@
 "use client";
 
-import IPost from "@/types/post";
+import { IPost } from "@/types/types";
 import {
   ChevronLeft,
   ChevronRight,

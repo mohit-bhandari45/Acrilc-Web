@@ -1,6 +1,6 @@
 import api, { GET_STORYBOARD } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
-import { IStoryBoard } from "@/types/story";
+import { IStoryBoard } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";

@@ -3,7 +3,7 @@ import api, {
   CHECK_PORTFOLIO,
   DELETE_PORTFOLIO,
 } from "@/apis/api";
-import { IUser } from "@/store/types";
+import { IUser } from "@/types/types";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -103,7 +103,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
         <div className="w-[65%] mx-auto py-8 flex flex-row flex-wrap gap-4 sm:gap-6 justify-center mb-12">
           <button
             onClick={handleShare}
-            className="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors"
+            className="flex items-center gap-2 cursor-pointer bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 sm:px-5 sm:py-3 rounded-full text-sm sm:text-base transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -180,13 +180,13 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
               </h2>
               <button
                 onClick={handlerDelete}
-                className="bg-orange-400 text-white px-4 py-2 rounded-full hover:bg-orange-500 w-full text-sm sm:text-base transition-colors"
+                className="bg-[#FAA21B] hover:bg-[#fa921b] text-white px-4 py-2 rounded-full cursor-pointer w-full text-sm sm:text-base transition-colors"
               >
                 Delete Previous URL?
               </button>
               <button
                 onClick={handleCloseModal}
-                className="mt-4 sm:mt-6 text-sm text-gray-500 hover:underline w-full"
+                className="mt-4 sm:mt-6 text-sm cursor-pointer text-gray-500 hover:underline w-full"
               >
                 Close
               </button>
@@ -229,7 +229,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
               )}
               <button
                 onClick={handleShorten}
-                className={`bg-orange-400 text-white px-4 py-2 rounded-full hover:bg-orange-500 w-full text-sm sm:text-base transition-colors ${
+                className={`text-white cursor-pointer px-4 py-2 rounded-full bg-[#FAA21B] hover:bg-[#fa921b] w-full text-sm sm:text-base transition-colors ${
                   all.generated && "hidden"
                 }`}
               >
@@ -253,7 +253,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
               )}
               <button
                 onClick={handleCloseModal}
-                className="mt-4 sm:mt-6 text-sm text-gray-500 hover:underline w-full"
+                className="mt-4 sm:mt-6 text-sm cursor-pointer text-gray-500 hover:underline w-full"
               >
                 Close
               </button>

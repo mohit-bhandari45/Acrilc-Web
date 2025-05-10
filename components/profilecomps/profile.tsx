@@ -1,18 +1,23 @@
-import api, { UPDATE_PROFILE_PIC } from "@/apis/api";
+import api, { UPLOAD_PROFILE_PIC } from "@/apis/api";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
-import { FaPencilAlt } from "react-icons/fa";
-import { Button } from "../ui/button";
-import { HashLoader } from "react-spinners";
 import Link from "next/link";
+import React, { SetStateAction, useRef } from "react";
+import { FaPencilAlt } from "react-icons/fa";
+import { HashLoader } from "react-spinners";
+import { Button } from "../ui/button";
+import toast from "react-hot-toast";
 
-const ProfilePage: React.FC = () => {
+type Props = {
+  loader?: boolean; // ✅ optional
+  setLoader: React.Dispatch<SetStateAction<boolean>>; // ✅ optional
+};
+
+const ProfilePage = ({ loader, setLoader }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
-  const [loader, setLoader] = useState(false);
 
   /* Changing Images */
   const handleEditClick = () => {
@@ -31,16 +36,18 @@ const ProfilePage: React.FC = () => {
       const formData = new FormData();
       formData.append("profilePic", profilePic);
 
-      const response = await api.put(UPDATE_PROFILE_PIC, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      try {
+        const response = await api.put(UPLOAD_PROFILE_PIC, formData);
 
-      if (response.status === 200) {
-        dispatch(setUser(response.data.data));
+        if (response.status === 200) {
+          dispatch(setUser(response.data.data));
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong. Please Try again!");
+      } finally {
+        window.location.reload();
       }
-      window.location.reload();
     }
   };
 
@@ -68,7 +75,7 @@ const ProfilePage: React.FC = () => {
               {/* Profile Avatar */}
               <div className="absolute left-4 bottom-0 transform translate-y-1/2">
                 <div className="group relative h-24 w-24 bottom-15 border-4 border-white rounded-full">
-                  <div className="overflow-hidden bg-black rounded-full h-full w-full flex justify-center items-center">
+                  <div className="overflow-hidden bg-black rounded-full h-full w-full flex justify-center items-center relative">
                     {!user?.profilePicture ? (
                       <Image
                         src="/assets/empty.png"
@@ -85,8 +92,7 @@ const ProfilePage: React.FC = () => {
                           <Image
                             src={user!.profilePicture!}
                             alt="Profile Avatar"
-                            width={96}
-                            height={96}
+                            fill
                             className="object-cover"
                           />
                         )}
@@ -226,10 +232,10 @@ const ProfilePage: React.FC = () => {
                 {user?.story}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
-                <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
                   Edit Profile
                 </button>
-                <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
                   Share Profile
                 </button>
               </div>
@@ -239,7 +245,7 @@ const ProfilePage: React.FC = () => {
             <div className="mb-6 sm:mb-8">
               <h2 className="text-xl sm:text-2xl font-bold mb-4">Forte</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                {user?.preferences?.map((category, index) => (
+                {user?.preferences?.map((category: string, index: number) => (
                   <div
                     key={index}
                     className="bg-gray-100 rounded-lg p-3 sm:p-4"
@@ -265,7 +271,7 @@ const ProfilePage: React.FC = () => {
             {/* View Portfolio Button */}
             <div className="mt-6 sm:mt-8">
               <Link href={`/portfolio/${user?.username}`}>
-                <Button className="w-full cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-lg">
+                <Button className="w-full bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-bold text-lg py-6 px-6 rounded-lg">
                   View Portfolio
                 </Button>
               </Link>

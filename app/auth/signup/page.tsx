@@ -2,14 +2,12 @@
 
 import Right from "@/components/authcomps/right";
 import Left from "@/components/universalcomps/left";
-import { signupLabels } from "@/utils/auth";
-import { useState } from "react";
-import useProfileRedirect from "../useProfileRedirect";
+import { signupLabels } from "@/types/types";
 import { HashLoader } from "react-spinners";
+import useProfileRedirect from "../useProfileRedirect";
 
 const Signup = () => {
-  const [loader, setLoader] = useState<boolean>(true);
-  useProfileRedirect({ setLoader });
+  const { loader } = useProfileRedirect();
 
   if (loader) {
     return (

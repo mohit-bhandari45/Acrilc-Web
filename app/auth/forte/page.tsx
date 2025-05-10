@@ -1,13 +1,13 @@
 "use client";
 
 import api, { FORTE_URL } from "@/apis/api";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import useProfileRedirect from "../useProfileRedirect";
 import { HashLoader } from "react-spinners";
-import { Button } from "@/components/ui/button";
+import useProfileRedirect from "../useProfileRedirect";
 
 const PREFERENCE_ENUM = [
   "Woolen Craft",
@@ -36,8 +36,7 @@ const PREFERENCE_ENUM = [
 ];
 
 export default function FortePage() {
-  const [loader, setLoader] = useState<boolean>(true);
-  useProfileRedirect({ setLoader });
+  const { loader } = useProfileRedirect();
 
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
@@ -53,16 +52,20 @@ export default function FortePage() {
 
   const handleUpload = async () => {
     setLoading(true);
-    const res = await api.post(FORTE_URL, { preferences: selected });
 
-    if (res.status === 200) {
-      router.push("/auth/profile-pic");
-      toast.success("Forte Added");
-    } else {
-      toast.error("Try Again");
+    try {
+      const res = await api.post(FORTE_URL, { preferences: selected });
+
+      if (res.status === 200) {
+        router.push("/auth/profile-pic");
+        toast.success("Forte Added");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong. Try Again!");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   if (loader) {
@@ -119,7 +122,7 @@ export default function FortePage() {
         <div className="mt-12 flex justify-between items-center gap-5">
           <Button
             className={cn(
-              "bg-[#FF7A00] text-white font-semibold px-6 py-3 rounded-full transition cursor-pointer",
+              "bg-[#FAA21B] hover:bg-[#fa921b] text-white font-semibold px-6 py-3 rounded-full transition cursor-pointer",
               selected.length === 0 && "opacity-50 cursor-not-allowed"
             )}
             disabled={selected.length === 0 || loading}
@@ -131,7 +134,7 @@ export default function FortePage() {
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               </div>
             ) : (
-              <div>Next</div>
+              <div>Add</div>
             )}
           </Button>
         </div>

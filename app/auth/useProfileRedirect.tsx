@@ -1,17 +1,17 @@
-// hooks/useProfileRedirect.ts
-import { SetStateAction, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import api, { GET_OWN_PROFILE } from "@/apis/api";
-import toast from "react-hot-toast";
-import { IUser } from "@/store/types";
+"use client";
 
-const useProfileRedirect = ({
-  setLoader,
-}: {
-  setLoader: React.Dispatch<SetStateAction<boolean>>;
-}) => {
+// hooks/useProfileRedirect.ts
+import api, { GET_OWN_PROFILE } from "@/apis/api";
+import { IUser } from "@/types/types";
+import { AxiosError } from "axios";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+const useProfileRedirect = () => {
   const pathName = usePathname();
   const router = useRouter();
+  const [loader, setLoader] = useState<boolean>(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -72,7 +72,10 @@ const useProfileRedirect = ({
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        if (error?.status === 401) {
+        const err = error as AxiosError<{ msg: string }>;
+        const { status } = err.response!;
+
+        if (status === 401) {
           localStorage.removeItem("token");
           router.push("/auth/login");
         } else {
@@ -83,6 +86,8 @@ const useProfileRedirect = ({
 
     getUser();
   }, [pathName, router, setLoader]);
+
+  return { loader };
 };
 
 export default useProfileRedirect;

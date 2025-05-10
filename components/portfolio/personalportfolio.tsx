@@ -64,7 +64,7 @@ export default function PersonalPort({
                       <h3 className="text-lg font-medium">{category}</h3>
                       <Button
                         variant="ghost"
-                        className="w-full mt-2 text-orange-400 hover:text-orange-500 hover:bg-orange-50"
+                        className="w-full mt-2 text-orange-400 cursor-pointer hover:text-orange-500 hover:bg-orange-50"
                         onClick={() => toggleCategory(category)}
                       >
                         See All
@@ -81,7 +81,7 @@ export default function PersonalPort({
         <div className="flex justify-center mt-8">
           <Button
             variant="outline"
-            className="border-orange-400 cursor-pointer text-orange-400 hover:bg-orange-50 px-8"
+            className="cursor-pointer bg-[#FAA21B] hover:bg-[#fa921b] text-white px-8"
             onClick={toggleShowAll}
           >
             {showAll ? "See Less" : "See More"}

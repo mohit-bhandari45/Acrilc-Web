@@ -1,4 +1,4 @@
-import { IUser } from "@/store/types";
+import { IUser } from "@/types/types";
 
 export const StorySection = ({ user }: {user: IUser}) => {
   return (

@@ -8,7 +8,7 @@ import { SetStateAction, useEffect, useRef, useState } from "react";
 import checkContent from "./utils";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import IPost from "@/types/post";
+import { IPost } from "@/types/types";
 import { Button } from "../ui/button";
 
 interface CreateContentProps {
@@ -368,7 +368,7 @@ const CreateContent = ({
                 onChange={(e) => setForte(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
               >
-                {user!.preferences?.map((forte, idx) => {
+                {user!.preferences?.map((forte: string, idx: number) => {
                   return (
                     <option key={idx} value={forte}>
                       {forte}
@@ -414,7 +414,7 @@ const CreateContent = ({
           disabled={loader}
           variant={"outline"}
           className={`
-    w-full py-3 gap-3 flex justify-center cursor-pointer items-center text-white rounded-md transition-colors
+    w-full py-3 gap-3 flex justify-center cursor-pointer items-center text-white rounded-md transition-colors bg-[#FAA21B] hover:bg-[#fa921b]
   `}
         >
           <div>

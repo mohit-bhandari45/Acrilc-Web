@@ -11,13 +11,14 @@ import api, { GET_OWN_PROFILE } from "@/apis/api";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 
 const Profile = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const user = useAppSelector((state) => state.user.user);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -54,7 +55,7 @@ const Profile = () => {
   return (
     <div className="font-[Helvetica]">
       <Navbar />
-      <ProfilePage />
+      <ProfilePage loader={loader} setLoader={setLoader} />
       <ArtworkCarousel />
 
       {/* Main Three Sections */}

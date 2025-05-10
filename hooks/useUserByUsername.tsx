@@ -1,5 +1,5 @@
 import api, { GET_USER_PROFILE } from "@/apis/api";
-import { IUser } from "@/store/types";
+import { IUser } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";

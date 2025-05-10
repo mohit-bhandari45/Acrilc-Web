@@ -4,7 +4,7 @@ import api, { GET_OWN_PROFILE, GET_POST } from "@/apis/api";
 import PostDescription from "@/components/postcomps/postdescription";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import IPost from "@/types/post";
+import { IPost } from "@/types/types";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";

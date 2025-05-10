@@ -6,12 +6,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAppSelector } from "@/store/hooks";
+import { useRouter } from "next/navigation";
+import { HashLoader } from "react-spinners";
 
 const Navbar: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const pathname = usePathname();
+  const router = useRouter();
 
   // Close menu on route change
   useEffect(() => {
@@ -39,9 +42,17 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleLogOut=()=>{
+  const handleLogOut = () => {
     localStorage.removeItem("token");
-    window.location.reload();
+    router.push("/");
+  };
+
+  if (!user) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <HashLoader color="#FAA21B" size={200} />
+      </div>
+    );
   }
 
   return (
@@ -132,34 +143,40 @@ const Navbar: React.FC = () => {
               {pathname !== "/profile" && (
                 <Link
                   href="/profile"
-                  className="hidden sm:inline-block bg-yellow-500 text-white font-medium text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2"
+                  className="hidden sm:inline-block bg-[#FAA21B] hover:bg-[#fa921b] text-white font-medium text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2"
                 >
                   Profile
                 </Link>
               )}
 
               {/* Logout Icon */}
-              <button onClick={handleLogOut} className="text-gray-500 cursor-pointer hover:text-black p-1">
-                <Image src="/assets/exit.png" alt="exit" width={20} height={20} />
+              <button
+                onClick={handleLogOut}
+                className="text-gray-500 cursor-pointer hover:text-black p-1"
+              >
+                <Image
+                  src="/assets/exit.png"
+                  alt="exit"
+                  width={20}
+                  height={20}
+                />
               </button>
 
               {/* Profile Avatar */}
               <Link href="/profile" className="flex items-center">
-                <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full overflow-hidden bg-black">
-                  {!user?.profilePicture ? (
+                <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full overflow-hidden bg-black relative">
+                  {!user.profilePicture ? (
                     <Image
                       src="/assets/empty.png"
                       alt="Profile Avatar"
-                      width={100}
-                      height={100}
+                      fill
                       className="object-cover"
                     />
                   ) : (
                     <Image
-                      src={user!.profilePicture!}
+                      src={user.profilePicture}
                       alt="Profile"
-                      width={32}
-                      height={32}
+                      fill
                       className="object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;

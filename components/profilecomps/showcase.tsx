@@ -1,27 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api, { GET_POSTS } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
-import IPost from "@/types/post";
+import { IPost } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HashLoader } from "react-spinners";
 
 const Showcase = () => {
   const user = useAppSelector((state) => state.user.user)!;
   const [posts, setPosts] = useState<IPost[] | null>(null);
+  const [menuOpen, setMenuOpen] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const getData = async () => {
       const response = await api.get(`${GET_POSTS}/${user?._id}`);
-
       if (response.status === 200) {
         setPosts(response.data.data);
       }
     };
-
     getData();
   }, [user?._id]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleEdit = (postId: string) => {
+    console.log("Edit", postId);
+    setMenuOpen(null);
+  };
+
+  const handleDelete = (postId: string) => {
+    console.log("Delete", postId);
+    setMenuOpen(null);
+  };
 
   if (!posts) {
     return (
@@ -33,27 +53,63 @@ const Showcase = () => {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center gap-4">
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
         {posts.map((item: any) => (
           <div
             key={item._id}
-            className="relative w-[calc(100%-1rem)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] overflow-hidden rounded-xl"
+            className="break-inside-avoid rounded-xl overflow-hidden w-full relative"
           >
-            <Link href={`/content/${item._id}`}>
+            <Link
+              href={`/content/${item._id}`}
+              className="block w-full overflow-hidden"
+            >
               <Image
                 src={item.media[0].url}
                 alt={`Artwork ${item.id}`}
-                width={400}
-                height={500}
-                className="w-full rounded-xl object-cover"
+                width={600}
+                height={400}
+                className="w-full h-auto object-contain rounded-xl"
               />
             </Link>
+
+            <div className="absolute bottom-2 right-2 z-10">
+              <button
+                onClick={() =>
+                  setMenuOpen(menuOpen === item._id ? null : item._id)
+                }
+                className="text-gray-600 rotate-90 hover:text-black px-2 cursor-pointer text-3xl font-bold"
+              >
+                &#8942;
+              </button>
+
+              {menuOpen === item._id && (
+                <div
+                  ref={menuRef}
+                  className="absolute right-0 mt-2 bg-white border rounded shadow-md w-32 z-30"
+                >
+                  <button
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                    onClick={() => handleEdit(item._id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100"
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         ))}
-      </div>
 
-      {/* Create Post Button */}
-        <Link href={{ pathname: "/content/create", query: { type: "post" } }} className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
+        {/* Create Post Button as part of Masonry layout */}
+        <Link
+          href={{ pathname: "/content/create", query: { type: "post" } }}
+          className="break-inside-avoid flex flex-col mt-2 items-center justify-center w-full aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-8 w-8 mb-2"
@@ -69,7 +125,8 @@ const Showcase = () => {
             />
           </svg>
           <span className="font-medium text-sm text-center">Create Post</span>
-      </Link>
+        </Link>
+      </div>
     </>
   );
 };

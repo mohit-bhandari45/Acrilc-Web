@@ -9,10 +9,10 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useProfileRedirect from "../useProfileRedirect";
 import { HashLoader } from "react-spinners";
+import { AxiosError } from "axios";
 
 export default function UsernameChooser() {
-  const [loader, setLoader] = useState<boolean>(true);
-  useProfileRedirect({ setLoader });
+  const { loader } = useProfileRedirect();
 
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
@@ -35,14 +35,27 @@ export default function UsernameChooser() {
 
         toast.success("UserName Added");
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data?.msg);
-    }
 
-    setError("");
-    setLoading(false);
+      const err = error as AxiosError<{ msg: string }>;
+
+      if (err.response) {
+        const { status, data } = err.response;
+
+        if (status === 409) {
+          toast.error(data.msg);
+        } else {
+          toast.error("Something went wrong. Try Again!");
+        }
+      } else {
+        toast.error("Something went wrong. Try Again!");
+      }
+    } finally {
+      setError("");
+      setLoading(false);
+    }
   };
 
   if (loader) {
@@ -77,13 +90,13 @@ export default function UsernameChooser() {
             <Button
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full mt-4 bg-[#FDBA2D] cursor-pointer hover:bg-[#f8a90a] text-white"
+              className="w-full mt-4 cursor-pointer bg-[#FAA21B] hover:bg-[#fa921b] text-white"
             >
               {loading ? (
                 <div className="flex justify-center items-center">
-                <div className="pr-1">Saving...</div>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              </div>
+                  <div className="pr-1">Saving...</div>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                </div>
               ) : (
                 "Save Username"
               )}

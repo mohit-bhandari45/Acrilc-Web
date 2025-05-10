@@ -13,7 +13,7 @@ const SubFooter = () => {
       <div className="button mt-2 sm:mt-3 md:mt-4">
         <Link href={"/auth/signup"}>
           <Button className="text-white rounded-full bg-[#FAA21B] hover:bg-[#fa921b] 
-                           font-semibold cursor-pointer transition-transform hover:scale-105
+                           font-semibold cursor-pointer
                            text-sm sm:text-base md:text-lg lg:text-xl
                            px-5 sm:px-6 md:px-7 lg:px-8
                            py-4 sm:py-5 md:py-6 lg:py-7">

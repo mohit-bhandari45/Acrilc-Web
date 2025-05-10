@@ -8,7 +8,7 @@ import HeroSection from "@/components/portfolio/hero";
 import { PartnershipsSection } from "@/components/portfolio/partners";
 import PersonalPort from "@/components/portfolio/personalportfolio";
 import { StorySection } from "@/components/portfolio/story";
-import { IUser } from "@/store/types";
+import { IUser } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";

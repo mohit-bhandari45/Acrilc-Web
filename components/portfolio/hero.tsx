@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar } from "../ui/avatar";
-import { IUser } from "@/store/types";
+import { IUser } from "@/types/types";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { ChevronDown, MessageSquare } from "lucide-react";
@@ -38,12 +38,12 @@ const HeroSection = ({ user, isSame }: HeroSectionProps) => {
         {/* Action Buttons */}
         {!isSame && (
           <div className="flex flex-col gap-4 mt-6 sm:flex-row sm:gap-3 md:mt-10">
-            <Button className="bg-orange-400 py-6 w-44 text-base sm:w-48 md:w-52 md:text-lg hover:bg-orange-500 text-white flex items-center gap-2">
+            <Button className="py-6 w-44 text-base sm:w-48 md:w-52 md:text-lg bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white flex items-center gap-2">
               Request Services <ChevronDown className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="border-orange-400 py-6 w-44 text-base sm:w-48 md:w-52 md:text-lg text-orange-400 hover:bg-orange-50 flex items-center gap-2"
+              className="py-6 w-44 text-base sm:w-48 md:w-52 text-white md:text-lg bg-[#FAA21B] hover:bg-[#fa921b]  cursor-pointer flex items-center gap-2"
             >
               Message <MessageSquare className="h-4 w-4" />
             </Button>
