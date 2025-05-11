@@ -177,6 +177,7 @@ const Navbar: React.FC = () => {
                       src={user.profilePicture}
                       alt="Profile"
                       fill
+                      unoptimized
                       className="object-cover"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;

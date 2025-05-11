@@ -51,6 +51,8 @@ const ProfilePage = ({ loader, setLoader }: Props) => {
     }
   };
 
+  console.log(user?.profilePicture);
+
   return (
     <div className="bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 lg:px-8">
       {/* Main profile content */}
@@ -90,9 +92,10 @@ const ProfilePage = ({ loader, setLoader }: Props) => {
                           <HashLoader color="white" size={20} />
                         ) : (
                           <Image
-                            src={user!.profilePicture!}
+                            src={user.profilePicture}
                             alt="Profile Avatar"
                             fill
+                            unoptimized
                             className="object-cover"
                           />
                         )}
