@@ -14,7 +14,7 @@ type Props = {
   loader?: boolean; // ✅ optional
   setLoader: React.Dispatch<SetStateAction<boolean>>; // ✅ optional
   isSame: boolean;
-  user: IUser
+  user: IUser;
 };
 
 const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
@@ -53,6 +53,8 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
     }
   };
 
+  console.log(user);
+
   return (
     <div className="bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 lg:px-8">
       {/* Main profile content */}
@@ -72,6 +74,26 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
                   priority
                   className="opacity-50"
                 />
+
+                {/* Edit Icon */}
+                {isSame && (
+                  <>
+                    <button
+                      onClick={handleEditClick}
+                      aria-label="Edit profile picture"
+                      className="absolute top-0 right-0 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md opacity-0 group-hover:opacity-100"
+                    >
+                      <FaPencilAlt size={13} />
+                    </button>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </>
+                )}
               </div>
 
               {/* Profile Avatar */}
@@ -235,16 +257,19 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
               <h1 className="text-2xl sm:text-3xl font-bold mb-1">
                 {user?.fullName}
               </h1>
-              <p className="text-gray-600 text-sm sm:text-base">
-                {user?.story}
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed break-words">
+                {user?.bio}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
                 {isSame ? (
                   <>
                     <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
-                      Edit Profile
+                      <Link href={`/profile/edit`}>Edit Profile</Link>
                     </button>
-                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                    <button onClick={()=>{
+                      navigator.clipboard.writeText(`${window.location.host}/profile/${user.username}`);
+                      toast.success("Link Copied");
+                    }} className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
                       Share Profile
                     </button>
                   </>
@@ -277,13 +302,13 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
             </div>
 
             {/* Story Section */}
-            {user?.bio && (
+            {user?.story && (
               <div className="mb-6 sm:mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold mb-4">
                   Story of the Artist
                 </h2>
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
-                  {user?.bio}
+                <p className="text-gray-700 text-sm sm:text-base leading-relaxed break-words">
+                  {user?.story}
                 </p>
               </div>
             )}

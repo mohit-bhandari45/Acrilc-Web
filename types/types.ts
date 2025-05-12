@@ -96,6 +96,8 @@ export interface IUser {
     fullName: string;
     profilePicture?: string;
     bio?: string;
+    email?: string;
+    location?: string;
     story?: string;
     portfolioURL: string
     totalFollowers?: string[];
@@ -104,4 +106,5 @@ export interface IUser {
     preferences?: string[];
     services?: string[];
     posts: number
+    socialLinks: Map<string, string>;
 }
