@@ -39,6 +39,7 @@ export default function ProfileEditPage() {
     location: "",
   });
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
+  console.log(token);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

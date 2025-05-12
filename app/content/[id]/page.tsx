@@ -50,7 +50,7 @@ const Post = () => {
     };
 
     getData();
-  }, [id]);
+  }, [id, router, user?.username]);
 
   if (!user) {
     return (
