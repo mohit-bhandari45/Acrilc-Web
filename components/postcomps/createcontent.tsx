@@ -135,7 +135,7 @@ const CreateContent = ({
       //   });
       //   formData.append("media", f);
       // } else {
-        formData.append("media", image);
+      formData.append("media", image);
       // }
     });
 
@@ -286,12 +286,18 @@ const CreateContent = ({
             Title
           </label>
           <input
+            placeholder="Enter Your Title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <div className="text-right text-xs text-gray-500">0/100</div>
+          <div className="text-right text-xs text-gray-500">
+            <span className={`${title.length > 100 && "text-red-500"}`}>
+              {title.length}
+            </span>
+            /100
+          </div>
         </div>
 
         {/* Story of the Art */}
@@ -301,12 +307,18 @@ const CreateContent = ({
               Story of the Art
             </label>
             <textarea
+              placeholder="Enter Your Story"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <div className="text-right text-xs text-gray-500">0/100</div>
+            <div className="text-right text-xs text-gray-500">
+              <span className={`${description.length > 200 && "text-red-500"}`}>
+                {description.length}
+              </span>
+              /200
+            </div>
           </div>
         ) : (
           <div className="mb-6">
@@ -403,6 +415,16 @@ const CreateContent = ({
               }
             }} // or any custom cancel logic
             className="w-full mb-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+          >
+            Cancel
+          </button>
+        )}
+        {isCreate && (
+          <button
+            onClick={() => {
+              router.push("/profile")
+            }} // or any custom cancel logic
+            className="w-full mb-3 py-2 bg-gray-200 cursor-pointer text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
           >
             Cancel
           </button>

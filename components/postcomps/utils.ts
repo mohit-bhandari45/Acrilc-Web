@@ -34,7 +34,7 @@ function checkContent(type: string, title: string, description: string, size: st
     }
 
     if (type === "post") {
-        if (description.trim().length > 100) {
+        if (description.trim().length > 200) {
             robject.status = false;
             robject.msg = "Story cannot be more than 100 characters.";
             return robject;
