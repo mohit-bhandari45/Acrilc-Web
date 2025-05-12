@@ -1,13 +1,16 @@
 import api, { GET_STORYBOARD } from "@/apis/api";
-import { useAppSelector } from "@/store/hooks";
-import { IStoryBoard } from "@/types/types";
+import { IStoryBoard, IUser } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 
-const Storyboard = () => {
-  const user = useAppSelector((state) => state.user.user)!;
+type StoryboardProps = {
+  isSame: boolean;
+  user: IUser;
+};
+
+const Storyboard = ({ isSame, user }: StoryboardProps) => {
   const [storyboard, setStoryboard] = useState<IStoryBoard[] | null>(null);
 
   useEffect(() => {
@@ -84,29 +87,57 @@ const Storyboard = () => {
             </div>
           );
         })}
-
-      {/* Create Card */}
-      <Link href={{ pathname: "/content/create", query: { type: "storyboard" } }}>
-        <div className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
+      {storyboard.length === 0 && (
+        <div className="flex flex-col items-center justify-center h-64 w-full bg-muted/50 text-muted-foreground rounded-xl border border-dashed p-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 mb-2"
+            className="w-12 h-12 mb-4 text-muted-foreground"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            strokeWidth={2}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 10l7-7m0 0l7 7m-7-7v18"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span className="font-medium text-sm text-center">
-            Create Storyboard
-          </span>
+          <p className="text-lg font-medium">No Storyboards Yet!</p>
+          {isSame && (
+            <p className="text-sm text-muted-foreground">
+              Start by creating your first storyboard to get going.
+            </p>
+          )}
         </div>
-      </Link>
+      )}
+
+      {/* Create Card */}
+      {isSame && (
+        <Link
+          href={{ pathname: "/content/create", query: { type: "storyboard" } }}
+        >
+          <div className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8 mb-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 10l7-7m0 0l7 7m-7-7v18"
+              />
+            </svg>
+            <span className="font-medium text-sm text-center">
+              Create Storyboard
+            </span>
+          </div>
+        </Link>
+      )}
     </div>
   );
 };

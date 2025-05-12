@@ -142,7 +142,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center space-x-2 sm:space-x-3">
               {pathname !== "/profile" && (
                 <Link
-                  href="/profile"
+                  href={`/profile/${user.username}`}
                   className="hidden sm:inline-block bg-[#FAA21B] hover:bg-[#fa921b] text-white font-medium text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2"
                 >
                   Profile
@@ -163,7 +163,7 @@ const Navbar: React.FC = () => {
               </button>
 
               {/* Profile Avatar */}
-              <Link href="/profile" className="flex items-center">
+              <Link href={`/profile/${user.username}`} className="flex items-center">
                 <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full overflow-hidden bg-black relative">
                   {!user.profilePicture ? (
                     <Image

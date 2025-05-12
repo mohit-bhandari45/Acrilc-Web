@@ -32,6 +32,7 @@ export default function UsernameChooser() {
 
       if (response.status === 200) {
         router.push("/auth/forte");
+        localStorage.setItem("username", response.data.data);
 
         toast.success("UserName Added");
       }

@@ -1,6 +1,6 @@
 import api, { UPLOAD_PROFILE_PIC } from "@/apis/api";
 import { setUser } from "@/store/features/userSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import React, { SetStateAction, useRef } from "react";
@@ -8,15 +8,17 @@ import { FaPencilAlt } from "react-icons/fa";
 import { HashLoader } from "react-spinners";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
+import { IUser } from "@/types/types";
 
 type Props = {
   loader?: boolean; // ✅ optional
   setLoader: React.Dispatch<SetStateAction<boolean>>; // ✅ optional
+  isSame: boolean;
+  user: IUser
 };
 
-const ProfilePage = ({ loader, setLoader }: Props) => {
+const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
 
   /* Changing Images */
@@ -50,8 +52,6 @@ const ProfilePage = ({ loader, setLoader }: Props) => {
       }
     }
   };
-
-  console.log(user?.profilePicture);
 
   return (
     <div className="bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 lg:px-8">
@@ -102,20 +102,24 @@ const ProfilePage = ({ loader, setLoader }: Props) => {
                       </>
                     )}
                   </div>
-                  <button
-                    onClick={handleEditClick}
-                    aria-label="Edit profile picture"
-                    className="absolute top-0 right-0 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md opacity-0 group-hover:opacity-100"
-                  >
-                    <FaPencilAlt size={13} />
-                  </button>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
+                  {isSame && (
+                    <>
+                      <button
+                        onClick={handleEditClick}
+                        aria-label="Edit profile picture"
+                        className="absolute top-0 right-0 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md opacity-0 group-hover:opacity-100"
+                      >
+                        <FaPencilAlt size={13} />
+                      </button>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -235,12 +239,25 @@ const ProfilePage = ({ loader, setLoader }: Props) => {
                 {user?.story}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
-                <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
-                  Edit Profile
-                </button>
-                <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
-                  Share Profile
-                </button>
+                {isSame ? (
+                  <>
+                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                      Edit Profile
+                    </button>
+                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                      Share Profile
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                      Support
+                    </button>
+                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                      Message
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 

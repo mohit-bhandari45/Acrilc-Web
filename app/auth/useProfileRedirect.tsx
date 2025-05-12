@@ -38,7 +38,7 @@ const useProfileRedirect = () => {
           } else if (!user.profilePicture) {
             router.push("/auth/profile-pic");
           } else {
-            router.push(`/profile`);
+            router.push(`/profile/${user.username}`);
           }
         }
 
@@ -48,7 +48,7 @@ const useProfileRedirect = () => {
           } else if (!user.profilePicture) {
             router.push(`/auth/profile-pic`);
           } else {
-            router.push(`/profile`);
+            router.push(`/profile/${user.username}`);
           }
         } else {
           setLoader(false);
@@ -58,14 +58,14 @@ const useProfileRedirect = () => {
           if (!user.profilePicture) {
             router.push(`/auth/profile-pic`);
           } else {
-            router.push("/profile");
+            router.push(`/profile/${user.username}`);
           }
         } else {
           setLoader(false);
         }
 
         if (pathName === "/auth/profile-pic" && user.profilePicture) {
-          router.push(`/profile`);
+          router.push(`/profile/${user.username}`);
         } else {
           setLoader(false);
         }

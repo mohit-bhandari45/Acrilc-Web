@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import MarketPlace from "./marketplace";
 import Showcase from "./showcase";
 import Storyboard from "./storyboard";
+import { IUser } from "@/types/types";
 
 const tabs = [
   { label: "Showcase", value: "showcase" },
@@ -13,7 +14,12 @@ const tabs = [
   { label: "Marketplace", value: "marketplace" },
 ];
 
-const GallerySection = () => {
+type GallerySectionProps = {
+  isSame: boolean;
+  user: IUser;
+};
+
+const GallerySection = ({ isSame, user }: GallerySectionProps) => {
   const [activeTab, setActiveTab] = useState("showcase");
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
@@ -71,10 +77,10 @@ const GallerySection = () => {
 
         {/* Tab Content */}
         <TabsContent value="showcase">
-          <Showcase />
+          <Showcase user={user} isSame={isSame}/>
         </TabsContent>
         <TabsContent value="storyboard">
-          <Storyboard />
+          <Storyboard user={user} isSame={isSame}/>
         </TabsContent>
         <TabsContent value="marketplace">
           <MarketPlace />
