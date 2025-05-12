@@ -1,6 +1,6 @@
 "use client";
 
-import { IPost } from "@/types/types";
+import { IPost, IUser } from "@/types/types";
 import {
   ChevronLeft,
   ChevronRight,
@@ -19,7 +19,13 @@ import api, { DELETE_POST } from "@/apis/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-const PostDescription = ({ post }: { post: IPost | null }) => {
+const PostDescription = ({
+  post,
+  user,
+}: {
+  post: IPost | null;
+  user: IUser;
+}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [edit, setEdit] = useState<boolean>(false);
@@ -55,8 +61,8 @@ const PostDescription = ({ post }: { post: IPost | null }) => {
   const handlerDelete = async () => {
     const res = await api.delete(`${DELETE_POST}/${post?._id}`);
 
-    if(res.status===200){
-      router.push("/profile");
+    if (res.status === 200) {
+      router.push(`/profile/${user.username}`);
       toast.success("Post Deleted Successfully");
     }
   };
@@ -76,31 +82,33 @@ const PostDescription = ({ post }: { post: IPost | null }) => {
           {/* Image Carousel with Dropdown */}
           <div className="relative rounded-lg overflow-hidden bg-stone-300 mb-6">
             {/* Dropdown menu (top right) */}
-            <div className="absolute top-3 right-3 z-20">
-              <button
-                onClick={toggleMenu}
-                className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition cursor-pointer"
-              >
-                <MoreVertical size={20} className="text-white" />
-              </button>
+            {user._id === post.author && (
+              <div className="absolute top-3 right-3 z-20">
+                <button
+                  onClick={toggleMenu}
+                  className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition cursor-pointer"
+                >
+                  <MoreVertical size={20} className="text-white" />
+                </button>
 
-              {menuOpen && (
-                <div className="absolute cursor-pointer transition duration-500 ease-in-out right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 text-sm z-30">
-                  <button
-                    className="w-full flex cursor-pointer items-center gap-2 px-4 py-2 hover:bg-gray-100"
-                    onClick={() => setEdit(true)}
-                  >
-                    <Edit2 size={16} /> Edit
-                  </button>
-                  <button
-                    className="w-full flex cursor-pointer items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100"
-                    onClick={handlerDelete}
-                  >
-                    <Trash2 size={16} /> Delete
-                  </button>
-                </div>
-              )}
-            </div>
+                {menuOpen && (
+                  <div className="absolute cursor-pointer transition duration-500 ease-in-out right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 text-sm z-30">
+                    <button
+                      className="w-full flex cursor-pointer items-center gap-2 px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setEdit(true)}
+                    >
+                      <Edit2 size={16} /> Edit
+                    </button>
+                    <button
+                      className="w-full flex cursor-pointer items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100"
+                      onClick={handlerDelete}
+                    >
+                      <Trash2 size={16} /> Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="aspect-[3/2] w-full relative">
               {post.media.length && (
@@ -175,9 +183,11 @@ const PostDescription = ({ post }: { post: IPost | null }) => {
             </div>
 
             {/* Marketplace button */}
-            <button className="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-md mt-4">
-              Move to Marketplace
-            </button>
+            {user._id === post.author && (
+              <button className="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-md mt-4">
+                Move to Marketplace
+              </button>
+            )}
           </div>
         </div>
       ) : (

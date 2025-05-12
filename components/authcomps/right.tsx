@@ -106,7 +106,8 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
           } else if (!d.profilePicture) {
             router.push("/auth/profile-pic");
           } else {
-            router.push("/profile");
+            const username = res.data.data.username;
+            router.push(`/profile/${username}`);
           }
         } else {
           router.push("/auth/username");

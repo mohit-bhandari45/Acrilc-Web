@@ -40,7 +40,9 @@ export default function ProfilePicPage() {
 
       if (res.status === 200) {
         toast.success("Profile Pic Added");
-        router.push("/profile");
+
+        const username = localStorage.getItem("username");
+        router.push(`/profile/${username}`);
       } else {
         toast.error("Try Again");
       }
@@ -101,7 +103,8 @@ export default function ProfilePicPage() {
           <div className="flex justify-center items-center mt-5 gap-5">
             <button
               onClick={() => {
-                router.push("/profile");
+                const username = localStorage.getItem("username");
+                router.push(`/profile/${username}`);
               }}
               className="text-gray-600 hover:underline text-base cursor-pointer"
             >

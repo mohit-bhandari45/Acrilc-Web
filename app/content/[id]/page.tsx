@@ -39,9 +39,14 @@ const Post = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const response = await api.get(`${GET_POST}/${id}`);
-
+      try {
+        const response = await api.get(`${GET_POST}/${id}`);
       setPost(response.data.data);
+      } catch (error) {
+        if(error){
+          router.push(`/profile/${user?.username}`);
+        }
+      }
     };
 
     getData();
@@ -57,7 +62,7 @@ const Post = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <PostDescription post={post} />
+      <PostDescription post={post} user={user} />
     </div>
   );
 };
