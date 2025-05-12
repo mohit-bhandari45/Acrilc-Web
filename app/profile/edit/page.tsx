@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -76,14 +76,16 @@ export default function ProfileEditPage() {
         };
       });
 
-      const linksArray = Object.entries(user.socialLinks).map(
-        ([platform, url]) => ({
-          platform,
-          url,
-        })
-      );
+      if (user.socialLinks) {
+        const linksArray = Object.entries(user.socialLinks).map(
+          ([platform, url]) => ({
+            platform,
+            url,
+          })
+        );
 
-      setSocialLinks(linksArray);
+        setSocialLinks(linksArray);
+      }
     }
   }, [user]);
 
