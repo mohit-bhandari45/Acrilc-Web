@@ -28,7 +28,7 @@ const HomeClient = () => {
 
   useEffect(() => {
     if (token && !isLoading) {
-      router.push("/profile");
+      router.push("/auth/login");
     }
   }, [token, router, isLoading]);
 

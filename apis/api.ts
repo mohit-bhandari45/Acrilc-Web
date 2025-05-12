@@ -33,10 +33,11 @@ const ADD_PROFILE_PIC_URL: string = `${BASE_URL}/api/user/profile-pic`;
 export { SIGNUP_URL, LOGIN_URL, ADD_USERNAME_URL, FORTE_URL, ADD_PROFILE_PIC_URL };
 
 // api apis
-const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`
-const GET_USER_PROFILE = `${BASE_URL}/public`
+const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`;
+const UPDATE_PROFILE = `${BASE_URL}/api/user`;
+const GET_USER_PROFILE = `${BASE_URL}/public`;
 const UPLOAD_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
-export { GET_OWN_PROFILE, GET_USER_PROFILE, UPLOAD_PROFILE_PIC };
+export { GET_OWN_PROFILE, UPDATE_PROFILE, GET_USER_PROFILE, UPLOAD_PROFILE_PIC };
 
 /* Data(Posts, Storyboard, etc) */
 const GET_POSTS = `${BASE_URL}/api/posts/user`;
@@ -53,7 +54,7 @@ const ADD_PORTFOLIO = `${BASE_URL}/api/portfolio/add`;
 const CHECK_PORTFOLIO = `${BASE_URL}/api/portfolio/check`;
 const DELETE_PORTFOLIO = `${BASE_URL}/api/portfolio/delete`;
 const GET_PORTFOLIO = `${BASE_URL}/public/portfolio`;
-export { ADD_PORTFOLIO, GET_PORTFOLIO, CHECK_PORTFOLIO,DELETE_PORTFOLIO };
+export { ADD_PORTFOLIO, GET_PORTFOLIO, CHECK_PORTFOLIO, DELETE_PORTFOLIO };
 
 
 export { GET_POSTS, CREATE_POST, CREATE_STORYBOARD, GET_STORYBOARD, GET_POST, UPDATE_POST, DELETE_POST };

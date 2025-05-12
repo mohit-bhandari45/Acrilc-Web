@@ -422,7 +422,7 @@ const CreateContent = ({
         {isCreate && (
           <button
             onClick={() => {
-              router.push("/profile")
+              router.push(`/profile/${user.username}`)
             }} // or any custom cancel logic
             className="w-full mb-3 py-2 bg-gray-200 cursor-pointer text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
           >
