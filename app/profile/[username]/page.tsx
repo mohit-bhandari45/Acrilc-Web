@@ -1,6 +1,5 @@
 "use client";
 
-import ArtworkCarousel from "@/components/profilecomps/collection";
 import GallerySection from "@/components/profilecomps/gallery";
 import Navbar from "@/components/profilecomps/navbar";
 import ProfilePage from "@/components/profilecomps/profile";
@@ -74,7 +73,7 @@ const Profile = () => {
         isSame={isSame}
         user={isSame ? currentUser : user}
       />
-      <ArtworkCarousel />
+      {/* <ArtworkCarousel /> */}
 
       {/* Main Three Sections */}
       <GallerySection user={isSame ? currentUser : user} isSame={isSame}/>
