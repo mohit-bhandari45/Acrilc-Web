@@ -3,12 +3,6 @@ import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
 import { IUser } from "@/types/types";
 
-interface ICardData {
-  imageURL: string;
-  name: string;
-  bio: string;
-}
-
 const IndividualCards = ({
   image,
   name,
