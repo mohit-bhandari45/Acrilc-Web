@@ -115,12 +115,12 @@ export default function ProfileEditPage() {
   };
 
   const handleSubmit = async () => {
-    if (formData.bio.length > 50) {
-      toast.error("Bio cannot exceed 50 characters");
+    if (formData.bio.length > 100) {
+      toast.error("Bio cannot exceed 100 characters");
       return;
     }
-    if (formData.story.length > 150) {
-      toast.error("Storyboard cannot exceed 150 characters");
+    if (formData.story.length > 500) {
+      toast.error("Storyboard cannot exceed 500 characters");
       return;
     }
 
@@ -284,11 +284,11 @@ export default function ProfileEditPage() {
                     </p>
                     <span
                       className={`${
-                        formData.bio.length > 50 ? "text-red-500" : "text-black"
+                        formData.bio.length > 100 ? "text-red-500" : "text-black"
                       }`}
                     >
                       {formData.bio.length}
-                      <span className="text-black">/50</span>
+                      <span className="text-black">/100</span>
                     </span>
                   </div>
                 </div>
@@ -310,13 +310,13 @@ export default function ProfileEditPage() {
                     <p>Share more about yourself and your work.</p>
                     <span
                       className={`${
-                        formData.story.length > 150
+                        formData.story.length > 500
                           ? "text-red-500"
                           : "text-black"
                       }`}
                     >
                       {formData.story.length}
-                      <span className="text-black">/150</span>
+                      <span className="text-black">/500</span>
                     </span>
                   </div>
                 </div>

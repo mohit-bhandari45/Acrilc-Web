@@ -15,12 +15,16 @@ const Footer = () => {
             Contact
           </div>
         </Link>
-        <div className="hover:text-gray-600 cursor-pointer transition-colors">
-          Privacy
-        </div>
-        <div className="hover:text-gray-600 cursor-pointer transition-colors">
-          Terms
-        </div>
+        <Link href={"/privacy"}>
+          <div className="hover:text-gray-600 cursor-pointer transition-colors">
+            Privacy
+          </div>
+        </Link>
+        <Link href={"/terms"}>
+          <div className="hover:text-gray-600 cursor-pointer transition-colors">
+            Terms
+          </div>
+        </Link>
       </div>
       <div className="text-sm sm:text-base text-gray-600">
         © 2025 Acrilc. All rights reserved.

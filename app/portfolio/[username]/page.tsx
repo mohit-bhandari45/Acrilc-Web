@@ -11,11 +11,11 @@ import Footer from "@/components/profilecomps/footer";
 import Navbar from "@/components/profilecomps/navbar";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useUserByUsername from "@/hooks/useUserByUsername";
+import { setUser } from "@/store/features/userSlice";
+import { useAppDispatch } from "@/store/hooks";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
-import { setUser } from "@/store/features/userSlice";
-import { useAppDispatch } from "@/store/hooks";
 
 interface IParams {
   username: string;
@@ -133,11 +133,11 @@ const Portfolio = () => {
               Portfolio
             </div>
             <Hero user={user} isSame={isSame} />
-            <PersonalPort />
+            {/* <PersonalPort /> */}
             <ForteSection user={user} />
             <StorySection user={user} />
             <FeaturedWorks />
-            <PartnershipsSection partnerships={partnerships} />
+            {/* <PartnershipsSection partnerships={partnerships} /> */}
             <FooterActions user={user} isSame={isSame} />
 
             <Footer />

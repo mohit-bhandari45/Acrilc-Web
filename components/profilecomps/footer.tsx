@@ -6,11 +6,11 @@ import {
   ArrowRight,
   Facebook,
   Instagram,
-  Linkedin,
-  Twitter
+  Linkedin
 } from 'lucide-react';
 import Link from 'next/link';
 import { FC } from 'react';
+import { FaPinterest } from 'react-icons/fa';
 
 const Footer: FC = () => {
   return (
@@ -22,7 +22,6 @@ const Footer: FC = () => {
             <h3 className="text-xl font-semibold">Exclusive</h3>
             <div className="space-y-2">
               <p>Subscribe</p>
-              <p className="text-sm text-gray-300">Get 10% off your first order</p>
               
               <div className="flex">
                 <Input 
@@ -45,12 +44,12 @@ const Footer: FC = () => {
             <h3 className="text-xl font-semibold">Support</h3>
             <div className="space-y-2 text-sm text-gray-300">
               <p>
-                Prem Nagar,<br />
                 Dehradun,<br />
-                Uttarakhand 248007
+                Uttarakhand
               </p>
               <p>connectacrilc@gmail.com</p>
-              <p>+1800-88888-9999</p>
+              <p>+918910879169</p>
+              <p>+918509517177</p>
             </div>
           </div>
 
@@ -59,10 +58,8 @@ const Footer: FC = () => {
             <h3 className="text-xl font-semibold">Account</h3>
             <div className="space-y-2">
               <Link href="/account" className="block hover:text-gray-300">My Account</Link>
-              <Link href="/login" className="block hover:text-gray-300">Login / Register</Link>
-              <Link href="/cart" className="block hover:text-gray-300">Cart</Link>
-              <Link href="/wishlist" className="block hover:text-gray-300">Wishlist</Link>
-              <Link href="/shop" className="block hover:text-gray-300">Shop</Link>
+              <Link href="/cart" className="block hover:text-gray-300">Marketplace</Link>
+              <Link href="/explore" className="block hover:text-gray-300">Explore</Link>
             </div>
           </div>
 
@@ -70,7 +67,7 @@ const Footer: FC = () => {
           <div className="space-y-6">
             <h3 className="text-xl font-semibold">Quick Link</h3>
             <div className="space-y-2">
-              <Link href="/privacy-policy" className="block hover:text-gray-300">Privacy Policy</Link>
+              <Link href="/privacy" className="block hover:text-gray-300">Privacy Policy</Link>
               <Link href="/terms" className="block hover:text-gray-300">Terms Of Use</Link>
               <Link href="/faq" className="block hover:text-gray-300">FAQ</Link>
               <Link href="/contact" className="block hover:text-gray-300">Contact</Link>
@@ -130,16 +127,16 @@ const Footer: FC = () => {
         
         {/* Social Media Icons */}
         <div className="mt-8 pt-8 border-t border-gray-700 flex justify-center md:justify-start gap-6">
-          <Link href="https://facebook.com" className="hover:text-gray-300">
+          <Link href="https://facebook.com" target='_blank' className="hover:text-gray-300">
             <Facebook className="h-5 w-5" />
           </Link>
-          <Link href="https://twitter.com" className="hover:text-gray-300">
-            <Twitter className="h-5 w-5" />
+          <Link href="https://pin.it/2LBlIjfr6" target='_blank' className="hover:text-gray-300">
+            <FaPinterest className="h-5 w-5" />
           </Link>
-          <Link href="https://instagram.com" className="hover:text-gray-300">
+          <Link href=" https://www.instagram.com/theacrilc?igsh=NjRndzAydDdqcnF0" target='_blank' className="hover:text-gray-300">
             <Instagram className="h-5 w-5" />
           </Link>
-          <Link href="https://linkedin.com" className="hover:text-gray-300">
+          <Link href="https://www.linkedin.com/company/acrilc/" target='_blank' className="hover:text-gray-300">
             <Linkedin className="h-5 w-5" />
           </Link>
         </div>
