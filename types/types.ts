@@ -95,6 +95,7 @@ export interface IUser {
     username?: string;
     fullName: string;
     profilePicture?: string;
+    bannerPicture?: string;
     bio?: string;
     email?: string;
     location?: string;

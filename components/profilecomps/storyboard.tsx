@@ -33,36 +33,42 @@ const Storyboard = ({ isSame, user }: StoryboardProps) => {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="w-full">
       {/* Stories */}
       {storyboard &&
         storyboard.map((story: IStoryBoard, idx) => {
           return (
             <div
               key={idx}
-              className="lg:col-span-3 md:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100"
+              className="mb-8 bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100"
             >
               <div className="flex flex-col space-y-6">
-                {/* Image Gallery */}
-                <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                  {story.media &&
-                    story.media.map((image, index) => (
-                      <Image
+                {/* Image Gallery - Made responsive with grid */}
+                {story.media && story.media.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {story.media.map((image, index) => (
+                      <div
                         key={index}
-                        src={image.url}
-                        alt={`${story.title} - image ${index + 1}`}
-                        width={250}
-                        height={10}
-                      />
+                        className="w-full h-auto aspect-square relative overflow-hidden rounded-lg"
+                      >
+                        <Image
+                          src={image.url}
+                          alt={`${story.title} - image ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        />
+                      </div>
                     ))}
-                </div>
+                  </div>
+                )}
 
                 {/* Content */}
-                <div className="space-y-4">
+                <div className="space-y-4 break-words">
                   <h2 className="text-xl font-bold text-gray-800">
                     {story.title}
                   </h2>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 break-words">
                     Posted on: {new Date(story.createdAt).toLocaleString()}
                   </p>
 
@@ -70,15 +76,15 @@ const Storyboard = ({ isSame, user }: StoryboardProps) => {
                     {story.description}
                   </div>
 
-                  {/* Interaction Buttons - Styled like in the image */}
-                  <div className="flex justify-center items-center space-x-6 pt-6 mt-6">
-                    <button className="px-6 py-2 text-sm text-gray-600 hover:text-gray-900 bg-white rounded-full border border-gray-200 hover:border-gray-300 transition">
+                  {/* Interaction Buttons - Made responsive */}
+                  <div className="flex flex-wrap justify-center sm:justify-start items-center gap-4 pt-6 mt-6">
+                    <button className="px-4 sm:px-6 py-2 text-sm text-gray-600 hover:text-gray-900 bg-white rounded-full border border-gray-200 hover:border-gray-300 transition">
                       Applaud
                     </button>
-                    <button className="px-6 py-2 text-sm text-gray-600 hover:text-gray-900 bg-white rounded-full border border-gray-200 hover:border-gray-300 transition">
+                    <button className="px-4 sm:px-6 py-2 text-sm text-gray-600 hover:text-gray-900 bg-white rounded-full border border-gray-200 hover:border-gray-300 transition">
                       Comment
                     </button>
-                    <button className="px-6 py-2 text-sm text-gray-600 hover:text-gray-900 bg-white rounded-full border border-gray-200 hover:border-gray-300 transition">
+                    <button className="px-4 sm:px-6 py-2 text-sm text-gray-600 hover:text-gray-900 bg-white rounded-full border border-gray-200 hover:border-gray-300 transition">
                       Appreciate
                     </button>
                   </div>
@@ -87,57 +93,67 @@ const Storyboard = ({ isSame, user }: StoryboardProps) => {
             </div>
           );
         })}
-      {storyboard.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-64 w-full bg-muted/50 text-muted-foreground rounded-xl border border-dashed p-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-12 h-12 mb-4 text-muted-foreground"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <p className="text-lg font-medium">No Storyboards Yet!</p>
-          {isSame && (
-            <p className="text-sm text-muted-foreground">
-              Start by creating your first storyboard to get going.
-            </p>
-          )}
-        </div>
-      )}
 
-      {/* Create Card */}
-      {isSame && (
-        <Link
-          href={{ pathname: "/content/create", query: { type: "storyboard" } }}
-        >
-          <div className="flex flex-col mt-6 items-center justify-center w-72 sm:w-64 aspect-[4/3] bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {/* Empty state - Full width on mobile */}
+        {storyboard.length === 0 && (
+          <div className="col-span-1 sm:col-span-2 md:col-span-3 flex flex-col items-center justify-center h-64 bg-muted/50 text-muted-foreground rounded-xl border border-dashed p-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 mb-2"
+              className="w-12 h-12 mb-4 text-muted-foreground"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              strokeWidth={2}
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 10l7-7m0 0l7 7m-7-7v18"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span className="font-medium text-sm text-center">
-              Create Storyboard
-            </span>
+            <p className="text-lg font-medium">No Storyboards Yet!</p>
+            {isSame && (
+              <p className="text-center text-sm text-muted-foreground">
+                Start by creating your first storyboard to get going.
+              </p>
+            )}
           </div>
-        </Link>
-      )}
+        )}
+
+        {/* Create Card - Respects the grid */}
+        {isSame && (
+          <div className="col-span-1">
+            <Link
+              href={{
+                pathname: "/content/create",
+                query: { type: "storyboard" },
+              }}
+              className="block w-full"
+            >
+              <div className="flex flex-col items-center justify-center h-48 sm:h-64 bg-gray-200 rounded-xl cursor-pointer hover:bg-gray-300 transition">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 mb-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                <span className="font-medium text-sm text-center px-4">
+                  Create Storyboard
+                </span>
+              </div>
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

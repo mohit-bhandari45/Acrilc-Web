@@ -22,6 +22,7 @@ const useCurrentUser = ({ token }: { token: string | null }) => {
         const response = await api.get(GET_OWN_PROFILE);
 
         if (response.status === 200) {
+          console.log(response.data.data);
           setCurrentUser(response.data.data);
         }
       } catch (error: unknown) {

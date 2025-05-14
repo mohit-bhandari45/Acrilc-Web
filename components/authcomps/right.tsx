@@ -186,22 +186,33 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
         {/* Submit Button */}
         <div className="w-full mt-8">
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full h-14 bg-[#834C3D] cursor-pointer hover:bg-[#6e3f32] rounded-full text-lg font-bold"
-          >
-            {loading ? (
-              <div className="flex items-center gap-2">
-                <span>
-                  {method === "Login" ? "Logging in..." : "Signing Up..."}
-                </span>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              </div>
-            ) : (
-              method
-            )}
-          </Button>
+          <div className="relative group w-full">
+  <Button
+    type="submit"
+    disabled={loading}
+    className="w-full h-14 bg-[#834C3D] cursor-pointer hover:bg-[#6e3f32] rounded-full text-lg font-bold relative overflow-hidden"
+  >
+    {loading ? (
+      <div className="flex items-center gap-2">
+        <span>
+          {method === "Login" ? "Logging in..." : "Signing Up..."}
+        </span>
+        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+      </div>
+    ) : (
+      method
+    )}
+  </Button>
+
+  {/* Artistic Hover Text */}
+  <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+    <div className="bg-[#fff5e6] text-[#834C3D] text-sm px-4 py-1 rounded-full shadow-md font-medium flex items-center gap-2 animate-fade-in-up">
+      <span>✨ Create Magic...</span>
+      <span role="img" aria-label="palette">🎨</span>
+    </div>
+  </div>
+</div>
+
         </div>
 
         {/* Auth Toggle */}

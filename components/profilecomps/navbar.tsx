@@ -60,9 +60,9 @@ const Navbar: React.FC = () => {
       <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left section: Menu button and logo */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4 relative">
             <button
-              className="rounded-md text-black p-2 hover:bg-gray-100 focus:outline-none"
+              className="rounded-md text-black hover:bg-gray-100 focus:outline-none"
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >
@@ -82,11 +82,22 @@ const Navbar: React.FC = () => {
               </svg>
             </button>
 
-            <Link href="/" className="flex items-center">
-              <span className="text-lg sm:text-xl font-bold text-black">
-                acrilc
-              </span>
-            </Link>
+            <div className="logo flex justify-center items-center cursor-pointer relative right-[15]">
+              <Image
+                width={50}
+                height={50}
+                src="/assets/image.png"
+                alt="MainLogo"
+                className="md:w-[60px] md:h-[60px]"
+              />
+              <div className="relative left-[-13] text-black">
+                <span className="text-4xl font-bold">c</span>
+                <span className="text-4xl font-bold">r</span>
+                <span className="text-4xl font-bold">i</span>
+                <span className="text-4xl font-bold">l</span>
+                <span className="text-4xl font-bold">c</span>
+              </div>
+            </div>
           </div>
 
           {/* Center section: Search */}
@@ -163,7 +174,10 @@ const Navbar: React.FC = () => {
               </button>
 
               {/* Profile Avatar */}
-              <Link href={`/profile/${user.username}`} className="flex items-center">
+              <Link
+                href={`/profile/${user.username}`}
+                className="flex items-center"
+              >
                 <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full overflow-hidden bg-black relative">
                   {!user.profilePicture ? (
                     <Image
@@ -302,7 +316,7 @@ const Navbar: React.FC = () => {
                 </h3>
                 <div className="space-y-3">
                   <Link
-                    href="/profile"
+                    href={`/profile/${user.username}`}
                     className="flex items-center space-x-3 text-gray-800 hover:text-black"
                   >
                     <svg

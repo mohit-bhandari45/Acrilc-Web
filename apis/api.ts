@@ -2,8 +2,8 @@ import axios from "axios";
 
 // const BASE_URL: string = "https://joyous-reeta-mohit123-198cb6c8.koyeb.app"
 // const BASE_URL: string = "https://acrilc-backend-production.up.railway.app"
-// const BASE_URL: string = "http://localhost:8000"
-const BASE_URL: string = "https://api.acrilc.com"
+const BASE_URL: string = "http://localhost:8000"
+// const BASE_URL: string = "https://api.acrilc.com"
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -24,6 +24,10 @@ api.interceptors.request.use(
     }
 )
 
+// public apis
+const GET_FEATURED_ARTISTS = `${BASE_URL}/public`;
+export { GET_FEATURED_ARTISTS };
+
 // auth apis
 const SIGNUP_URL: string = `${BASE_URL}/auth/signup`;
 const LOGIN_URL: string = `${BASE_URL}/auth/login`;
@@ -37,7 +41,8 @@ const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`;
 const UPDATE_PROFILE = `${BASE_URL}/api/user`;
 const GET_USER_PROFILE = `${BASE_URL}/public`;
 const UPLOAD_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
-export { GET_OWN_PROFILE, UPDATE_PROFILE, GET_USER_PROFILE, UPLOAD_PROFILE_PIC };
+const UPLOAD_Banner_PIC = `${BASE_URL}/api/user/banner-pic`
+export { GET_OWN_PROFILE, UPDATE_PROFILE, GET_USER_PROFILE, UPLOAD_PROFILE_PIC, UPLOAD_Banner_PIC };
 
 /* Data(Posts, Storyboard, etc) */
 const GET_POSTS = `${BASE_URL}/api/posts/user`;

@@ -197,7 +197,7 @@ const CreateContent = ({
         if (type === "post") {
           router.push(`/content/${id}`);
         } else {
-          router.push(`/profile`);
+          router.push(`/profile/${user.username}`);
         }
         toast.success(message);
       }
@@ -314,10 +314,10 @@ const CreateContent = ({
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <div className="text-right text-xs text-gray-500">
-              <span className={`${description.length > 200 && "text-red-500"}`}>
+              <span className={`${description.length > 1000 && "text-red-500"}`}>
                 {description.length}
               </span>
-              /200
+              /1000
             </div>
           </div>
         ) : (
@@ -331,7 +331,14 @@ const CreateContent = ({
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <div className="text-right text-xs text-gray-500">0/1000</div>
+            <div className={`text-right text-xs text-gray-500`}>
+              <span
+                className={`${description.length > 5000 && "text-red-500"}`}
+              >
+                {description.length}
+              </span>
+              /5000
+            </div>
           </div>
         )}
 
@@ -422,7 +429,7 @@ const CreateContent = ({
         {isCreate && (
           <button
             onClick={() => {
-              router.push(`/profile/${user.username}`)
+              router.push(`/profile/${user.username}`);
             }} // or any custom cancel logic
             className="w-full mb-3 py-2 bg-gray-200 cursor-pointer text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
           >

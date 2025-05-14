@@ -9,10 +9,13 @@ import Title from "./title";
 import FeatCarousel from "./carousel";
 import SubFooter from "./subfooter";
 import Footer from "./footer";
+import api, { GET_FEATURED_ARTISTS } from "@/apis/api";
+import { IUser } from "@/types/types";
 
 const HomeClient = () => {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [users, setUsers] = useState<IUser[] | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -32,14 +35,20 @@ const HomeClient = () => {
     }
   }, [token, router, isLoading]);
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex items-center justify-center min-h-screen">
-  //       <div className="animate-spin rounded-full h-40 w-40 border-t-2 border-b-2 border-primary"></div>
-  //     </div>
-  //   );
-  // }
-  if (isLoading) {
+  useEffect(() => {
+    const getFeaturedArtists = async () => {
+      try {
+        const res = await api.get(GET_FEATURED_ARTISTS);
+
+        setUsers(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getFeaturedArtists();
+  }, []);
+
+  if (isLoading || !users) {
     return (
       <div className="h-screen w-full flex justify-center items-center">
         <HashLoader color="#FAA21B" size={200} />
@@ -56,7 +65,7 @@ const HomeClient = () => {
           <div className="">
             <Title title={"Featured Artists"} />
             <div className="w-full overflow-hidden">
-              <FeatCarousel />
+              <FeatCarousel users={users} />
             </div>
           </div>
           <div className="my-8 sm:my-12 md:my-16">

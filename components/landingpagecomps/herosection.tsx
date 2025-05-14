@@ -28,6 +28,7 @@ function FadingHeroImages() {
 
   return (
     <div className="heroimage absolute w-full h-full flex justify-center items-center overflow-hidden">
+      <div className="absolute bg-black z-10 w-[85%] h-[80%] opacity-70 rounded-2xl"></div>
       <div className="absolute inset-0 z-0" /> {/* Overlay for text readability */}
       {images.map((src, idx) => (
         <Image

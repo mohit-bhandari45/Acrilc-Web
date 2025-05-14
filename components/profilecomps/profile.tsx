@@ -1,14 +1,15 @@
-import api, { UPLOAD_PROFILE_PIC } from "@/apis/api";
+import api, { UPLOAD_Banner_PIC, UPLOAD_PROFILE_PIC } from "@/apis/api";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch } from "@/store/hooks";
 import Image from "next/image";
 import Link from "next/link";
-import React, { SetStateAction, useRef } from "react";
+import React, { SetStateAction, useRef, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { HashLoader } from "react-spinners";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { IUser } from "@/types/types";
+import { useRouter } from "next/navigation";
 
 type Props = {
   loader?: boolean; // ✅ optional
@@ -18,17 +19,26 @@ type Props = {
 };
 
 const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const profileInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [bploader, setBpLoader] = useState(false);
 
   /* Changing Images */
-  const handleEditClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  const handlerProfileEditClick = () => {
+    if (profileInputRef.current) {
+      profileInputRef.current.click();
     }
   };
 
-  const handleFileChange = async (
+  const handleBannerEditClick = () => {
+    if (bannerInputRef.current) {
+      bannerInputRef.current.click();
+    }
+  };
+
+  const handleProfileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const profilePic = event.target.files?.[0];
@@ -53,7 +63,32 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
     }
   };
 
-  console.log(user);
+  const handleBannerChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const bannerPic = event.target.files?.[0];
+    setBpLoader(true);
+
+    if (bannerPic) {
+      const formData = new FormData();
+      formData.append("bannerPic", bannerPic);
+
+      try {
+        const response = await api.put(UPLOAD_Banner_PIC, formData);
+
+        if (response.status === 200) {
+          dispatch(setUser(response.data.data));
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong. Please Try again!");
+      } finally {
+        window.location.reload();
+      }
+    }
+  };
+
+  // console.log(user)
 
   return (
     <div className="bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 lg:px-8">
@@ -66,30 +101,45 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
             <div className="relative rounded-t-lg overflow-hidden bg-gray-100">
               {/* Cover Image */}
               <div className="relative h-56 sm:h-72 lg:h-80 w-full bg-black">
-                <Image
-                  src="/assets/homepageassets/cardimage1.png"
-                  alt="Profile Cover"
-                  layout="fill"
-                  objectFit="cover"
-                  priority
-                  className="opacity-50"
-                />
+                {!user?.profilePicture ? (
+                  <Image
+                    src="/assets/empty.png"
+                    alt="Profile Avatar"
+                    width={100}
+                    height={100}
+                    className="object-cover"
+                  />
+                ) : (
+                  <>
+                    {bploader ? (
+                      <HashLoader color="white" size={20} className="relative left-[50%] top-[50%]" />
+                    ) : (
+                      <Image
+                        src={user.bannerPicture!}
+                        alt="Profile Avatar"
+                        fill
+                        unoptimized
+                        className="object-cover"
+                      />
+                    )}
+                  </>
+                )}
 
                 {/* Edit Icon */}
                 {isSame && (
                   <>
                     <button
-                      onClick={handleEditClick}
+                      onClick={handleBannerEditClick}
                       aria-label="Edit profile picture"
-                      className="absolute top-0 right-0 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md opacity-0 group-hover:opacity-100"
+                      className="absolute top-1 right-1 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md"
                     >
                       <FaPencilAlt size={13} />
                     </button>
                     <input
                       type="file"
                       accept="image/*"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
+                      ref={bannerInputRef}
+                      onChange={handleBannerChange}
                       className="hidden"
                     />
                   </>
@@ -127,17 +177,17 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
                   {isSame && (
                     <>
                       <button
-                        onClick={handleEditClick}
+                        onClick={handlerProfileEditClick}
                         aria-label="Edit profile picture"
-                        className="absolute top-0 right-0 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md opacity-0 group-hover:opacity-100"
+                        className="absolute top-[-3] right-[-4] z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md"
                       >
                         <FaPencilAlt size={13} />
                       </button>
                       <input
                         type="file"
                         accept="image/*"
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
+                        ref={profileInputRef}
+                        onChange={handleProfileChange}
                         className="hidden"
                       />
                     </>
@@ -263,13 +313,23 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
                 {isSame ? (
                   <>
-                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
-                      <Link href={`/profile/edit`}>Edit Profile</Link>
+                    <button
+                      onClick={() => {
+                        router.push(`/profile/edit`);
+                      }}
+                      className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg"
+                    >
+                      Edit Profile
                     </button>
-                    <button onClick={()=>{
-                      navigator.clipboard.writeText(`${window.location.host}/profile/${user.username}`);
-                      toast.success("Link Copied");
-                    }} className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `${window.location.host}/profile/${user.username}`
+                        );
+                        toast.success("Link Copied");
+                      }}
+                      className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg"
+                    >
                       Share Profile
                     </button>
                   </>

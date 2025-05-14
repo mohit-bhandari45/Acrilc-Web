@@ -34,9 +34,9 @@ function checkContent(type: string, title: string, description: string, size: st
     }
 
     if (type === "post") {
-        if (description.trim().length > 200) {
+        if (description.trim().length > 1000) {
             robject.status = false;
-            robject.msg = "Story cannot be more than 100 characters.";
+            robject.msg = "Story cannot be more than 1000 characters.";
             return robject;
         }
 
@@ -59,9 +59,9 @@ function checkContent(type: string, title: string, description: string, size: st
         }
     }
 
-    if (type === "storyboard" && description.trim().length > 1000) {
+    if (type === "storyboard" && description.trim().length > 5000) {
         robject.status = false;
-        robject.msg = "Description cannot be more than 1000 characters.";
+        robject.msg = "Description cannot be more than 5000 characters.";
         return robject;
     }
 

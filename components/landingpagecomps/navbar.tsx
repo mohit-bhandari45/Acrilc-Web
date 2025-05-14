@@ -14,29 +14,49 @@ const Navbar = () => {
     <div className="font-epilogue border border-b-2">
       <div className="flex justify-between items-center px-4 md:px-10 py-3 h-16 md:h-[10vh]">
         {/* Logo Section */}
-        <div className="logo flex justify-center items-center">
+        <div className="logo flex justify-center items-center cursor-pointer">
           <Image
             width={50}
             height={50}
-            src="/assets/homepageassets/mainlogo.png"
+            src="/assets/image.png"
             alt="MainLogo"
             className="md:w-[60px] md:h-[60px]"
           />
-          <Image
-            className="relative right-8 top-1.5 md:right-10 md:w-[70px] md:h-[60px]"
-            width={60}
-            height={50}
-            src="/assets/homepageassets/logorest.png"
-            alt="RestLogo"
-          />
+          <div className="relative left-[-13]">
+            <span className="text-4xl font-bold">c</span>
+            <span className="text-4xl font-bold">r</span>
+            <span className="text-4xl font-bold">i</span>
+            <span className="text-4xl font-bold">l</span>
+            <span className="text-4xl font-bold">c</span>
+          </div>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex justify-center items-center gap-10 font-semibold">
-          <div className="cursor-pointer hover:text-gray-600">Explore</div>
-          <div className="cursor-pointer hover:text-gray-600">Create</div>
-          <div className="cursor-pointer hover:text-gray-600">Sell</div>
-          <div className="cursor-pointer hover:text-gray-600">Discover</div>
+        <div className="hidden md:flex justify-center items-center gap-10 font-semibold relative">
+          <div className="relative group cursor-pointer">
+            Explore
+            <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+              Find Out Artists
+            </span>
+          </div>
+          <div className="relative group cursor-pointer">
+            Create
+            <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+              Create Your Content
+            </span>
+          </div>
+          <div className="relative group cursor-pointer">
+            Sell
+            <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+              Sell Your Art
+            </span>
+          </div>
+          <div className="relative group cursor-pointer">
+            Discover
+            <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+              Discover new Art
+            </span>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -79,10 +99,18 @@ const Navbar = () => {
         }`}
       >
         <div className="flex flex-col py-4 px-6 font-semibold">
-          <div className="py-3 cursor-pointer hover:text-gray-600 border-b">Explore</div>
-          <div className="py-3 cursor-pointer hover:text-gray-600 border-b">Create</div>
-          <div className="py-3 cursor-pointer hover:text-gray-600 border-b">Sell</div>
-          <div className="py-3 cursor-pointer hover:text-gray-600">Discover</div>
+          <div className="py-3 cursor-pointer hover:text-gray-600 border-b">
+            Explore
+          </div>
+          <div className="py-3 cursor-pointer hover:text-gray-600 border-b">
+            Create
+          </div>
+          <div className="py-3 cursor-pointer hover:text-gray-600 border-b">
+            Sell
+          </div>
+          <div className="py-3 cursor-pointer hover:text-gray-600">
+            Discover
+          </div>
         </div>
       </div>
 

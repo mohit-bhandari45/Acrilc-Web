@@ -1,55 +1,13 @@
 import React from "react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
+import { IUser } from "@/types/types";
 
 interface ICardData {
   imageURL: string;
   name: string;
   bio: string;
 }
-
-const cardData: ICardData[] = [
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Lucas Harrison",
-    bio: "Contemporary painter known for vibrant abstracts",
-  },
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Sophie Moreau",
-    bio: "Sculptor specializing in ceramic figures",
-  },
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Ethan Taylor",
-    bio: "Landscape artist with a focus on light and color",
-  },
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Ethan Taylor",
-    bio: "Landscape artist with a focus on light and color",
-  },
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Ethan Taylor",
-    bio: "Landscape artist with a focus on light and color",
-  },
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Ethan Taylor",
-    bio: "Landscape artist with a focus on light and color",
-  },
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Ethan Taylor",
-    bio: "Landscape artist with a focus on light and color",
-  },
-  {
-    imageURL: "/assets/homepageassets/cardimage1.png",
-    name: "Ethan Taylor",
-    bio: "Landscape artist with a focus on light and color",
-  },
-];
 
 const IndividualCards = ({
   image,
@@ -60,9 +18,10 @@ const IndividualCards = ({
   name: string;
   bio: string;
 }) => {
+  console.log(image, name, bio);
   return (
     <div className="flex flex-col">
-      <div className="relative w-full aspect-square overflow-hidden">
+      <div className="relative w-full aspect-square overflow-hidden rounded-4xl">
         <Image
           src={image}
           alt={`${name}'s artwork`}
@@ -79,18 +38,26 @@ const IndividualCards = ({
   );
 };
 
-const FeatCarousel = () => {
+const FeatCarousel = ({ users }: { users: IUser[] | null }) => {
+  if (!users) {
+    return null;
+  }
+  
   return (
     <div className="w-full py-2">
       <Carousel className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40">
         <CarouselContent className="-ml-2 md:-ml-4">
-          {cardData.map((d, idx) => {
+          {users.map((d, idx) => {
             return (
-              <CarouselItem 
-                key={idx} 
+              <CarouselItem
+                key={idx}
                 className="pl-2 md:pl-4 cursor-pointer basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
-                <IndividualCards image={d.imageURL} name={d.name} bio={d.bio} />
+                <IndividualCards
+                  image={d.profilePicture!}
+                  name={d.fullName}
+                  bio={d.bio!}
+                />
               </CarouselItem>
             );
           })}
