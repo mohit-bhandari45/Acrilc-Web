@@ -2,6 +2,7 @@ import React from "react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
 import { IUser } from "@/types/types";
+import { HashLoader } from "react-spinners";
 
 const IndividualCards = ({
   image,
@@ -34,9 +35,13 @@ const IndividualCards = ({
 
 const FeatCarousel = ({ users }: { users: IUser[] | null }) => {
   if (!users) {
-    return null;
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <HashLoader color="#FAA21B" size={10} />
+      </div>
+    );
   }
-  
+
   return (
     <div className="w-full py-2">
       <Carousel className="px-4 sm:px-8 md:px-16 lg:px-24 xl:px-40">
@@ -48,9 +53,9 @@ const FeatCarousel = ({ users }: { users: IUser[] | null }) => {
                 className="pl-2 md:pl-4 cursor-pointer basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
                 <IndividualCards
-                  image={d.profilePicture!}
+                  image={d.profilePicture as string}
                   name={d.fullName}
-                  bio={d.bio!}
+                  bio={d.bio as string}
                 />
               </CarouselItem>
             );
