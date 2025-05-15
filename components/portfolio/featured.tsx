@@ -1,86 +1,74 @@
+import api, { GET_POSTS } from "@/apis/api";
+import { IPost, IUser } from "@/types/types";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
-export const FeaturedWorks = () => {
-  const works = [
-    {
-      id: "1",
-      image: "/assets/homepageassets/cardimage1.png",
-      title: "Woman with Cat",
-    },
-    {
-      id: "2",
-      image: "/assets/homepageassets/cardimage1.png",
-      title: "Starry Night",
-    },
-    {
-      id: "3",
-      image: "/assets/homepageassets/cardimage1.png",
-      title: "Room Interior",
-    },
-    {
-      id: "4",
-      image: "/assets/homepageassets/cardimage1.png",
-      title: "Decorated Bottle",
-    },
-    {
-      id: "5",
-      image: "/assets/homepageassets/cardimage1.png",
-      title: "Woman Portrait",
-    },
-    {
-      id: "6",
-      image: "/assets/homepageassets/cardimage1.png",
-      title: "Traditional Art",
-    },
-  ];
+export const FeaturedWorks = ({ user }: { user: IUser }) => {
+  const [posts, setPosts] = useState<IPost[] | null>(null);
 
+  useEffect(() => {
+    const getPosts = async () => {
+      const res = await api.get(`${GET_POSTS}/${user._id}`);
+
+      if (res.status === 200) {
+        setPosts(res.data.data);
+      }
+    };
+
+    getPosts();
+  }, [user._id]);
+
+  if(!posts){
+    return null;
+  }
+  
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:py-12">
-      <h2 className="text-2xl font-bold mb-6 sm:text-3xl lg:text-4xl mx-10 lg:mx-0">Featured Works</h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-6">
-        {/* Large portrait on left for larger screens, full width on mobile */}
-        <div className="sm:row-span-2 mx-10 lg:mx-0">
+    <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:py-12">
+      <h2 className="text-2xl font-bold mb-6 sm:text-3xl lg:text-4xl">
+        Featured Works
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+        {/* 1st item: large portrait */}
+        <div className="row-span-2 col-span-1 sm:col-span-2 lg:col-span-2">
           <Image
-            src={works[0]?.image || "/api/placeholder/400/600"}
-            alt={works[0]?.title || "Featured artwork"}
+            src={posts[0].media[0].url}
+            alt={posts[0].title}
             className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
-            width={400}
+            width={800}
             height={600}
             priority
           />
         </div>
 
-        {/* Right column grid for larger screens, stacked on mobile */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-1 lg:grid-cols-2 mx-10 lg:mx-0">
+        {/* 2nd and 3rd images stacked */}
+        <div className="flex flex-col gap-4">
           <Image
-            src={works[1]?.image || "/api/placeholder/200/200"}
-            alt={works[1]?.title || "Featured artwork"}
+            src={posts[1].media[0].url}
+            alt={posts[1].title}
             className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
-            width={200}
+            width={400}
             height={200}
           />
           <Image
-            src={works[2]?.image || "/api/placeholder/200/200"}
-            alt={works[2]?.title || "Featured artwork"}
+            src={posts[2].media[0].url}
+            alt={posts[2].title}
             className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
-            width={200}
+            width={400}
             height={200}
           />
         </div>
 
-        {/* Additional works */}
-        <div className="grid grid-cols-1 gap-4 sm:col-span-2 lg:grid-cols-3 mx-10 lg:mx-0">
-          {works.slice(3).map((work) => (
-            <Image
-              key={work.id}
-              src={work.image || "/api/placeholder/400/200"}
-              alt={work.title || "Featured artwork"}
-              className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
-              width={400}
-              height={200}
-            />
-          ))}
-        </div>
+        {/* Bottom row: 3 items */}
+        {posts && posts.slice(3).map((post) => (
+          <Image
+            key={post.media[0].url}
+            src={post.media[0].url}
+            alt={post.title}
+            className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+            width={400}
+            height={200}
+          />
+        ))}
       </div>
     </div>
   );

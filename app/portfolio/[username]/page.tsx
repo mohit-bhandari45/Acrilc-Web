@@ -4,8 +4,6 @@ import { FeaturedWorks } from "@/components/portfolio/featured";
 import { FooterActions } from "@/components/portfolio/footeractionc";
 import { ForteSection } from "@/components/portfolio/fortes";
 import Hero from "@/components/portfolio/hero";
-import { PartnershipsSection } from "@/components/portfolio/partners";
-import PersonalPort from "@/components/portfolio/personalportfolio";
 import { StorySection } from "@/components/portfolio/story";
 import Footer from "@/components/profilecomps/footer";
 import Navbar from "@/components/profilecomps/navbar";
@@ -63,43 +61,43 @@ const Portfolio = () => {
     );
   }
 
-  const partnerships = [
-    {
-      id: "1",
-      name: "Amazon",
-      logo: "/api/placeholder/150/150",
-      date: "Jan 1, 2022",
-      rating: 5,
-    },
-    {
-      id: "2",
-      name: "Amazon",
-      logo: "/api/placeholder/150/150",
-      date: "Jan 1, 2022",
-      rating: 5,
-    },
-    {
-      id: "3",
-      name: "Google",
-      logo: "/api/placeholder/150/150",
-      date: "Dec 15, 2021",
-      rating: 4,
-    },
-    {
-      id: "4",
-      name: "Meta",
-      logo: "/api/placeholder/150/150",
-      date: "Nov 30, 2021",
-      rating: 5,
-    },
-    {
-      id: "5",
-      name: "Meta",
-      logo: "/api/placeholder/150/150",
-      date: "Nov 30, 2021",
-      rating: 5,
-    },
-  ];
+  // const partnerships = [
+  //   {
+  //     id: "1",
+  //     name: "Amazon",
+  //     logo: "/api/placeholder/150/150",
+  //     date: "Jan 1, 2022",
+  //     rating: 5,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Amazon",
+  //     logo: "/api/placeholder/150/150",
+  //     date: "Jan 1, 2022",
+  //     rating: 5,
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "Google",
+  //     logo: "/api/placeholder/150/150",
+  //     date: "Dec 15, 2021",
+  //     rating: 4,
+  //   },
+  //   {
+  //     id: "4",
+  //     name: "Meta",
+  //     logo: "/api/placeholder/150/150",
+  //     date: "Nov 30, 2021",
+  //     rating: 5,
+  //   },
+  //   {
+  //     id: "5",
+  //     name: "Meta",
+  //     logo: "/api/placeholder/150/150",
+  //     date: "Nov 30, 2021",
+  //     rating: 5,
+  //   },
+  // ];
 
   if (!token) {
     if (!user) {
@@ -112,11 +110,11 @@ const Portfolio = () => {
           Portfolio
         </div>
         <Hero user={user} isSame={isSame} />
-        <PersonalPort />
+        {/* <PersonalPort /> */}
         <ForteSection user={user} />
         <StorySection user={user} />
-        <FeaturedWorks />
-        <PartnershipsSection partnerships={partnerships} />
+        <FeaturedWorks user={user}/>
+        {/* <PartnershipsSection partnerships={partnerships} /> */}
         <FooterActions user={user} isSame={isSame} />
       </div>
     );
@@ -136,7 +134,7 @@ const Portfolio = () => {
             {/* <PersonalPort /> */}
             <ForteSection user={user} />
             <StorySection user={user} />
-            <FeaturedWorks />
+            <FeaturedWorks user={user}/>
             {/* <PartnershipsSection partnerships={partnerships} /> */}
             <FooterActions user={user} isSame={isSame} />
 

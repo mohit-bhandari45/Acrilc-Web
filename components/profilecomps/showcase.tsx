@@ -107,7 +107,7 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
                     onClick={() =>
                       setMenuOpen(menuOpen === item._id ? null : item._id)
                     }
-                    className="flex items-center justify-center w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full text-gray-600 hover:text-black hover:bg-white/90 transition"
+                    className="flex items-center justify-center w-8 h-8 bg-black/80 backdrop-blur-sm rounded-full text-white hover:text-white hover:bg-black/90 transition cursor-pointer"
                     aria-label="Post options"
                   >
                     <svg 
