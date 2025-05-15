@@ -98,7 +98,7 @@ const CustomPortfolio = () => {
       <PersonalPort />
       <ForteSection user={user} />
       <StorySection user={user} />
-      <FeaturedWorks />
+      <FeaturedWorks user={user}/>
       <PartnershipsSection partnerships={partnerships} />
       <FooterActions user={user} isSame={isSame} />
     </div>
