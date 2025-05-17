@@ -40,9 +40,9 @@ export { SIGNUP_URL, LOGIN_URL, ADD_USERNAME_URL, FORTE_URL, ADD_PROFILE_PIC_URL
 const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`;
 const UPDATE_PROFILE = `${BASE_URL}/api/user`;
 const GET_USER_PROFILE = `${BASE_URL}/public`;
-const UPLOAD_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
-const UPLOAD_Banner_PIC = `${BASE_URL}/api/user/banner-pic`
-export { GET_OWN_PROFILE, UPDATE_PROFILE, GET_USER_PROFILE, UPLOAD_PROFILE_PIC, UPLOAD_Banner_PIC };
+const ADD_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
+const ADD_Banner_PIC = `${BASE_URL}/api/user/banner-pic`
+export { GET_OWN_PROFILE, UPDATE_PROFILE, GET_USER_PROFILE, ADD_PROFILE_PIC, ADD_Banner_PIC };
 
 /* Data(Posts, Storyboard, etc) */
 const GET_POSTS = `${BASE_URL}/api/posts/user`;

@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/navigation";
 import { HashLoader } from "react-spinners";
+import Logo from "../universalcomps/logo";
 
 const Navbar: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -83,20 +84,7 @@ const Navbar: React.FC = () => {
             </button>
 
             <div className="logo flex justify-center items-center cursor-pointer relative right-[15]">
-              <Image
-                width={50}
-                height={50}
-                src="/assets/image.png"
-                alt="MainLogo"
-                className="md:w-[60px] md:h-[60px]"
-              />
-              <div className="relative left-[-13] text-black">
-                <span className="text-4xl font-bold">c</span>
-                <span className="text-4xl font-bold">r</span>
-                <span className="text-4xl font-bold">i</span>
-                <span className="text-4xl font-bold">l</span>
-                <span className="text-4xl font-bold">c</span>
-              </div>
+              <Logo/>
             </div>
           </div>
 

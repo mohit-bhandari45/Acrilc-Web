@@ -1,16 +1,17 @@
-import api, { UPLOAD_Banner_PIC, UPLOAD_PROFILE_PIC } from "@/apis/api";
+import api, { ADD_Banner_PIC, ADD_PROFILE_PIC } from "@/apis/api";
+import UploadService from "@/service/service";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch } from "@/store/hooks";
+import { IUser } from "@/types/types";
+import * as Icons from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { SetStateAction, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { FaPencilAlt } from "react-icons/fa";
 import { HashLoader } from "react-spinners";
 import { Button } from "../ui/button";
-import toast from "react-hot-toast";
-import { IUser } from "@/types/types";
-import { useRouter } from "next/navigation";
-import * as Icons from "lucide-react";
 
 type Props = {
   loader?: boolean; // ✅ optional
@@ -50,11 +51,10 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
     setLoader(true);
 
     if (profilePic) {
-      const formData = new FormData();
-      formData.append("profilePic", profilePic);
-
       try {
-        const response = await api.put(UPLOAD_PROFILE_PIC, formData);
+        const url = await UploadService.uploadToImgBB(profilePic);
+
+        const response = await api.post(ADD_PROFILE_PIC, { imageURL: url });
 
         if (response.status === 200) {
           dispatch(setUser(response.data.data));
@@ -75,11 +75,12 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
     setBpLoader(true);
 
     if (bannerPic) {
-      const formData = new FormData();
-      formData.append("bannerPic", bannerPic);
-
       try {
-        const response = await api.put(UPLOAD_Banner_PIC, formData);
+        const url = await UploadService.uploadToImgBB(bannerPic);
+
+        const response = await api.post(ADD_Banner_PIC, {
+          bannerURL: url,
+        });
 
         if (response.status === 200) {
           dispatch(setUser(response.data.data));
@@ -92,8 +93,6 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
       }
     }
   };
-
-  console.log(user);
 
   return (
     <div className="bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 lg:px-8">

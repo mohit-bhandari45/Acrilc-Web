@@ -1,7 +1,8 @@
 "use client";
 
-import api, { UPLOAD_PROFILE_PIC } from "@/apis/api";
+import api, { ADD_PROFILE_PIC } from "@/apis/api";
 import { Button } from "@/components/ui/button";
+import UploadService from "@/service/service";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -32,11 +33,10 @@ export default function ProfilePicPage() {
     }
     setLoading(true);
 
-    const formData = new FormData();
-    formData.append("profilePic", file);
-
     try {
-      const res = await api.put(UPLOAD_PROFILE_PIC, formData);
+      const url = await UploadService.uploadToImgBB(file);
+
+      const res = await api.post(ADD_PROFILE_PIC, { imageURL: url });
 
       if (res.status === 200) {
         toast.success("Profile Pic Added");

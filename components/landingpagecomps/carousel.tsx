@@ -13,7 +13,6 @@ const IndividualCards = ({
   name: string;
   bio: string;
 }) => {
-  console.log(image, name, bio);
   return (
     <div className="flex flex-col">
       <div className="relative w-full aspect-square overflow-hidden rounded-4xl">

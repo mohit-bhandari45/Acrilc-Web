@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
+import Logo from "../universalcomps/logo";
 
 const Navbar = () => {
   const router = useRouter();
@@ -17,27 +17,17 @@ const Navbar = () => {
       <div className="flex justify-between items-center px-4 md:px-10 py-3 h-16 md:h-[10vh]">
         {/* Logo Section */}
         <div className="logo flex justify-center items-center cursor-pointer">
-          <Image
-            width={50}
-            height={50}
-            src="/assets/image.png"
-            alt="MainLogo"
-            className="md:w-[60px] md:h-[60px]"
-          />
-          <div className="relative left-[-13]">
-            <span className="text-4xl font-bold">c</span>
-            <span className="text-4xl font-bold">r</span>
-            <span className="text-4xl font-bold">i</span>
-            <span className="text-4xl font-bold">l</span>
-            <span className="text-4xl font-bold">c</span>
-          </div>
+          <Logo />
         </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex justify-center items-center gap-10 font-semibold relative">
-          <div onClick={()=>{
-            router.push("/explore")
-          }} className="relative group cursor-pointer">
+          <div
+            onClick={() => {
+              router.push("/explore");
+            }}
+            className="relative group cursor-pointer"
+          >
             Explore
             <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs bg-black text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
               Find Out Artists
