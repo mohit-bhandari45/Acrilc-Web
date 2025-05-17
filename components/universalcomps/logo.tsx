@@ -1,6 +1,6 @@
 "use client";
 
-import Assets from "@/links/links";
+import Assets from "@/assets/assets";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -20,7 +20,7 @@ const Logo = () => {
         src={Assets.getLogoImage()}
         alt="MainLogo"
         className={`md:w-[60px] md:h-[60px] filter ${
-          mode === "dark" && "invert"
+          mode === "white" || null ? "" : "invert"
         }`}
       />
 
