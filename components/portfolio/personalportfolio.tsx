@@ -24,9 +24,8 @@ export default function PersonalPort({
     { id: "6", title: "Still Life", image: "/api/placeholder/400/400", category: "Classic Art" }
   ]
 }: PortfolioProps) {
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [, setExpandedCategories] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(false);
-  console.log(expandedCategories);
 
   const categories = [...new Set(portfolioItems.map(item => item.category))];
   const visibleCategories = showAll ? categories : categories.slice(0, 3);

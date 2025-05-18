@@ -73,7 +73,7 @@ const HeroSection = () => {
         
         <Link href={"/auth/signup"}>
           <Button
-            className="text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full bg-[#FAA21B] hover:bg-[#fa921b] font-semibold cursor-pointer mt-2 sm:mt-4"
+            className="text-white text-sm sm:text-base md:text-lg lg:text-xl px-4 py-3 sm:px-6 sm:py-5 md:px-8 md:py-6 rounded-full bg-[#FAA21B] hover:bg-[#fa921b] font-semibold cursor-pointer mt-2 sm:mt-4"
             aria-label="Discover Art"
           >
             Discover Art

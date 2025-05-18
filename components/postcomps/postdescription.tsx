@@ -75,6 +75,8 @@ const PostDescription = ({
     );
   }
 
+  console.log(post);
+
   return (
     <>
       {!edit ? (
@@ -158,6 +160,16 @@ const PostDescription = ({
             <h1 className="text-3xl font-bold">{post.title}</h1>
             <p className="text-lg text-gray-700">{post.subtitle}</p>
             <p className="text-lg text-gray-700">{post.size}</p>
+            <div className="flex flex-wrap items-center w-full max-w-4xl gap-2">
+              {post.hashTags[0].split(" ").map((tag, index) => (
+                <div
+                  key={index}
+                  className="break-words bg-[#FAA21B] text-white text-sm px-3 py-1 rounded-lg"
+                >
+                  {tag}
+                </div>
+              ))}
+            </div>
 
             <div className="py-2">
               <h2 className="text-xl font-semibold">Story of the Art</h2>

@@ -28,7 +28,7 @@ interface SocialLink {
 
 export default function ProfileEditPage() {
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
+  const [, setToken] = useState<string | null>(null);
   const [loader, setLoader] = useState(false);
   const [user, setUser] = useState<IUser | null>(null);
   const [formData, setFormData] = useState({
@@ -39,7 +39,6 @@ export default function ProfileEditPage() {
     location: "",
   });
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
-  console.log(token);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

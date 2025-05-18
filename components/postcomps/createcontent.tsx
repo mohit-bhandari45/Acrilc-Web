@@ -1,10 +1,22 @@
 "use client";
 
-import api, { CREATE_POST, CREATE_STORYBOARD, UPDATE_POST } from "@/apis/api";
+import api, {
+  CREATE_POST,
+  CREATE_STORYBOARD,
+  GET_KEYWORDS_API,
+  UPDATE_POST,
+} from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
 import { Upload, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import checkContent from "./utils";
 import toast from "react-hot-toast";
 import Image from "next/image";
@@ -42,9 +54,10 @@ const CreateContent = ({
   const [size, setSize] = useState("");
   // const [collection, setCollection] = useState("");
   const [forte, setForte] = useState<string>("");
-  const [keywords, setKeywords] = useState("");
-  /*Content */
+  const [input, setInput] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
 
+  /*Content */
   useEffect(() => {
     if (user?.preferences?.length) {
       setForte(user.preferences[0]);
@@ -114,7 +127,7 @@ const CreateContent = ({
       size,
       // collection,
       forte,
-      keywords,
+      tags,
       images
     );
     if (result.status === false) {
@@ -139,8 +152,6 @@ const CreateContent = ({
       // }
     });
 
-    console.log(formData.get("media"));
-
     if (type === "post") {
       formData.append("size", size);
       // formData.append("collectionId", collection);
@@ -151,7 +162,7 @@ const CreateContent = ({
     }
 
     formData.append("title", title);
-    formData.append("hashTags", keywords); // Or transform if array: keywords.join(',')
+    formData.append("hashTags", tags.join(""));
 
     if (!isCreate) {
       try {
@@ -208,6 +219,25 @@ const CreateContent = ({
     setLoader(false);
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === "," || e.key === "Tab") {
+      e.preventDefault();
+      const value = input.trim().replace(/,$/, "");
+      if (value && !tags.includes(value)) {
+        setTags((prev) => [...prev, value]);
+      }
+      setInput("");
+    }
+  };
+
+  const handleKeywordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
+  const removeTag = (indexToRemove: number) => {
+    setTags((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.target.value);
 
@@ -215,6 +245,26 @@ const CreateContent = ({
     params.set("type", e.target.value);
     router.replace(`/content/create?${params.toString()}`);
   };
+
+  async function handleGenerateClick() {
+    console.log("Generation!");
+
+    try {
+      const response = await api.post(GET_KEYWORDS_API, {
+        title,
+        story: description,
+      });
+      
+      if(response.status===200){
+        let tags = response.data.data;
+        tags = tags.map((tag: string)=> tag.trim().replace(/^[.,\s]+|[.,\s]+$/g, ''));
+
+        setTags(tags);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4 my-13">
@@ -314,7 +364,9 @@ const CreateContent = ({
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <div className="text-right text-xs text-gray-500">
-              <span className={`${description.length > 1000 && "text-red-500"}`}>
+              <span
+                className={`${description.length > 1000 && "text-red-500"}`}
+              >
                 {description.length}
               </span>
               /1000
@@ -404,13 +456,43 @@ const CreateContent = ({
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Key Words
           </label>
-          <input
-            type="text"
-            value={keywords}
-            onChange={(e) => setKeywords(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Separate with commas"
-          />
+
+          <div className="w-full border border-gray-300 rounded-md px-2 py-1 flex flex-wrap items-center gap-2 focus-within:ring-2 focus-within:ring-blue-500 relative">
+            {tags.map((tag, index) => (
+              <div
+                key={index}
+                className="flex items-center bg-[#FAA21B] text-white text-sm px-3 py-1 rounded-lg"
+              >
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => removeTag(index)}
+                  className="ml-2 bg-[#FAA21B] hover:bg-[#faa11bc8] focus:outline-none cursor-pointer"
+                  aria-label={`Remove keyword ${tag}`}
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+
+            <input
+              type="text"
+              value={input}
+              onChange={handleKeywordChange}
+              onKeyDown={handleKeyDown}
+              className="flex-grow px-2 py-1 focus:outline-none"
+              placeholder="Type and press Enter or comma"
+            />
+
+            {/* Generate Button */}
+            <button
+              type="button"
+              onClick={handleGenerateClick} // <-- define this in your component
+              className="ml-auto bg-[#FAA21B] hover:bg-[#faa11bc8] cursor-pointer text-white text-sm px-3 py-1 rounded-md"
+            >
+              Generate
+            </button>
+          </div>
         </div>
 
         {/* Cancel button */}

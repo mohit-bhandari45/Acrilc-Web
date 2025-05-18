@@ -2,8 +2,8 @@ import axios from "axios";
 
 // const BASE_URL: string = "https://joyous-reeta-mohit123-198cb6c8.koyeb.app"
 // const BASE_URL: string = "https://acrilc-backend-production.up.railway.app"
-// const BASE_URL: string = "http://localhost:8000"
-const BASE_URL: string = "https://api.acrilc.com"
+const BASE_URL: string = "http://localhost:8000"
+// const BASE_URL: string = "https://api.acrilc.com"
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -31,10 +31,11 @@ export { GET_FEATURED_ARTISTS };
 // auth apis
 const SIGNUP_URL: string = `${BASE_URL}/auth/signup`;
 const LOGIN_URL: string = `${BASE_URL}/auth/login`;
+const FORGET_PASSWORD_URL = `${BASE_URL}/api/user/change-password`
 const ADD_USERNAME_URL: string = `${BASE_URL}/api/user/username`;
 const FORTE_URL: string = `${BASE_URL}/api/user/preferences`;
 const ADD_PROFILE_PIC_URL: string = `${BASE_URL}/api/user/profile-pic`;
-export { SIGNUP_URL, LOGIN_URL, ADD_USERNAME_URL, FORTE_URL, ADD_PROFILE_PIC_URL };
+export { SIGNUP_URL, LOGIN_URL, FORGET_PASSWORD_URL, ADD_USERNAME_URL, FORTE_URL, ADD_PROFILE_PIC_URL };
 
 // api apis
 const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`;
@@ -61,6 +62,10 @@ const DELETE_PORTFOLIO = `${BASE_URL}/api/portfolio/delete`;
 const GET_PORTFOLIO = `${BASE_URL}/public/portfolio`;
 export { ADD_PORTFOLIO, GET_PORTFOLIO, CHECK_PORTFOLIO, DELETE_PORTFOLIO };
 
+
+/* Utils Apis */
+const GET_KEYWORDS_API = `${BASE_URL}/api/utils/get-keywords`;
+export { GET_KEYWORDS_API };
 
 export { GET_POSTS, CREATE_POST, CREATE_STORYBOARD, GET_STORYBOARD, GET_POST, UPDATE_POST, DELETE_POST };
 export default api;
