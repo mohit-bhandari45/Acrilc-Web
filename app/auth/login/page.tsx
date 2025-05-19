@@ -7,7 +7,7 @@ import { HashLoader } from "react-spinners";
 import useProfileRedirect from "../useProfileRedirect";
 
 const Login = () => {
-  const { loader } = useProfileRedirect();
+  const { loader, setLoader } = useProfileRedirect();
 
   if (loader) {
     return (
@@ -21,7 +21,7 @@ const Login = () => {
     return (
       <div className="flex flex-col lg:flex-row w-full min-h-screen font-[Helvetica] justify-center items-center">
         <Left />
-        <Right labels={loginLabels} method="Login" />
+        <Right labels={loginLabels} method="Login" setLoader={setLoader} />
       </div>
     );
   }

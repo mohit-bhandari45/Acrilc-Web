@@ -10,11 +10,6 @@ const Footer = () => {
             About
           </div>
         </Link>
-        <Link href={"/contact"}>
-          <div className="hover:text-gray-600 cursor-pointer transition-colors">
-            Contact
-          </div>
-        </Link>
         <Link href={"/privacy"}>
           <div className="hover:text-gray-600 cursor-pointer transition-colors">
             Privacy

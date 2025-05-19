@@ -87,7 +87,7 @@ const useProfileRedirect = () => {
     getUser();
   }, [pathName, router, setLoader]);
 
-  return { loader };
+  return { loader, setLoader };
 };
 
 export default useProfileRedirect;

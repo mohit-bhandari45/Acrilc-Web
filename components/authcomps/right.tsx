@@ -6,7 +6,7 @@ import { validateForm } from "@/utils/auth";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Button } from "../ui/button";
@@ -63,7 +63,13 @@ const InputComp = ({
   );
 };
 
-const Right = ({ labels, method }: { labels: string[]; method: string }) => {
+interface RightProps {
+  labels: string[];
+  method: string;
+  setLoader: React.Dispatch<SetStateAction<boolean>>;
+}
+
+const Right = ({ labels, method, setLoader }: RightProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [user, setUser] = useState<ISignupDetails>({
     name: "",
@@ -96,6 +102,7 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
 
       if (res.status === (method === "Login" ? 200 : 201)) {
         localStorage.setItem("token", res.data.token);
+        setLoader(true);
 
         if (method === "Login") {
           const d = res.data.data;
@@ -142,114 +149,128 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
     console.log("Forgot");
   }
 
-  console.log(method);
-
   return (
-    <div className="w-full lg:w-[55%] h-full flex justify-center items-center flex-col p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md h-full flex flex-col justify-center items-center"
-      >
-        {/* Header */}
-        <AuthHead />
+    <>
+      {/* <div className="absolute top-0 right-0 w-40 md:w-52 lg:w-96 z-10">
+        <img
+          src="https://i.ibb.co/2341zDqZ/image-removebg-preview-20-4.png"
+          alt="Top Right Decoration"
+          className="object-contain text-black filter invert"
+        />
+      </div>
+      <div className="absolute bottom-0 left-0 w-28 md:w-36 lg:w-40 z-10">
+        <img
+          src="https://i.ibb.co/2341zDqZ/image-removebg-preview-20-4.png"
+          alt="Bottom Left Decoration"
+          className="object-contain text-black filter invert"
+        />
+      </div> */}
+      <div className="relative w-full lg:w-[55%] h-full flex justify-center items-center flex-col p-4 overflow-hidden">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md h-full flex flex-col justify-center items-center"
+        >
+          {/* Header */}
+          <AuthHead />
 
-        {/* Inputs */}
-        <div className="w-full space-y-6">
-          {labels.map((label) => {
-            const fieldName = label.toLowerCase() as keyof ISignupDetails;
-            return (
-              <div key={label} className="relative w-full">
-                <InputComp
-                  label={label}
-                  height="h-[60%]"
-                  width="w-full"
-                  user={user}
-                  setUser={setUser}
-                  type={
-                    fieldName === "password" && !visible ? "password" : "text"
-                  }
-                />
+          {/* Inputs */}
+          <div className="w-full space-y-6">
+            {labels.map((label) => {
+              const fieldName = label.toLowerCase() as keyof ISignupDetails;
+              return (
+                <div key={label} className="relative w-full">
+                  <InputComp
+                    label={label}
+                    height="h-[60%]"
+                    width="w-full"
+                    user={user}
+                    setUser={setUser}
+                    type={
+                      fieldName === "password" && !visible ? "password" : "text"
+                    }
+                  />
 
-                {/* Eye Icon Toggle for Password Field */}
-                {fieldName === "password" && (
-                  <div
-                    className="absolute right-8 top-14 transform -translate-y-1/2 cursor-pointer text-gray-600"
-                    onClick={() => setVisible(!visible)}
-                  >
-                    {visible ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
-                  </div>
-                )}
+                  {/* Eye Icon Toggle for Password Field */}
+                  {fieldName === "password" && (
+                    <div
+                      className="absolute right-8 top-14 transform -translate-y-1/2 cursor-pointer text-gray-600"
+                      onClick={() => setVisible(!visible)}
+                    >
+                      {visible ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                    </div>
+                  )}
 
-                {errors[fieldName] && (
-                  <p className="mt-1 text-sm text-red-600 px-3">
-                    {errors[fieldName]}
-                  </p>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Submit Button */}
-        <div className="w-full mt-8">
-          <div className="relative group w-full">
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-14 bg-[#834C3D] cursor-pointer hover:bg-[#6e3f32] rounded-full text-lg font-bold relative overflow-hidden"
-            >
-              {loading ? (
-                <div className="flex items-center gap-2">
-                  <span>
-                    {method === "Login" ? "Logging in..." : "Signing Up..."}
-                  </span>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  {errors[fieldName] && (
+                    <p className="mt-1 text-sm text-red-600 px-3">
+                      {errors[fieldName]}
+                    </p>
+                  )}
                 </div>
-              ) : (
-                method
-              )}
-            </Button>
+              );
+            })}
+          </div>
 
-            {/* Artistic Hover Text */}
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-              <div className="bg-[#fff5e6] text-[#834C3D] text-sm px-4 py-1 rounded-full shadow-md font-medium flex items-center gap-2 animate-fade-in-up">
-                <span>✨ Create Magic...</span>
-                <span role="img" aria-label="palette">
-                  🎨
-                </span>
+          {/* Submit Button */}
+          <div className="w-full mt-8">
+            <div className="relative group w-full">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-14 bg-[#834C3D] cursor-pointer hover:bg-[#6e3f32] rounded-full text-lg font-bold relative overflow-hidden"
+              >
+                {loading ? (
+                  <div className="flex items-center gap-2">
+                    <span>
+                      {method === "Login" ? "Logging in..." : "Signing Up..."}
+                    </span>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  </div>
+                ) : (
+                  method
+                )}
+              </Button>
+
+              {/* Artistic Hover Text */}
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                <div className="bg-[#fff5e6] text-[#834C3D] text-sm px-4 py-1 rounded-full shadow-md font-medium flex items-center gap-2 animate-fade-in-up">
+                  <span>✨ Create Magic...</span>
+                  <span role="img" aria-label="palette">
+                    🎨
+                  </span>
+                </div>
               </div>
             </div>
+            {method === "Login" && (
+              <div
+                onClick={forgotPasswordHandler}
+                className="relative right-0 group text-right pr-3 pt-1 hover:underline cursor-pointer text-sm"
+              >
+                Forget Password?
+              </div>
+            )}
           </div>
-          {method === "Login" && (
-            <div
-              onClick={forgotPasswordHandler}
-              className="relative right-0 group text-right pr-3 pt-1 hover:underline cursor-pointer text-sm"
-            >
-              Forget Password?
-            </div>
-          )}
-        </div>
 
-        {/* Auth Toggle */}
-        <div className="mt-6 text-center">
-          {method === "Login" ? (
-            <p>
-              Don&apos;t have an account?{" "}
-              <Link href="/auth/signup" className="hover:underline">
-                Sign up
-              </Link>
-            </p>
-          ) : (
-            <p>
-              Already have an account?{" "}
-              <Link href="/auth/login" className="hover:underline">
-                Log in
-              </Link>
-            </p>
-          )}
-        </div>
-      </form>
-    </div>
+          {/* Auth Toggle */}
+          <div className="mt-6 text-center">
+            {method === "Login" ? (
+              <p>
+                Don&apos;t have an account?{" "}
+                <Link href="/auth/signup" className="hover:underline">
+                  Sign up
+                </Link>
+              </p>
+            ) : (
+              <p>
+                Already have an account?{" "}
+                <Link href="/auth/login" className="hover:underline">
+                  Log in
+                </Link>
+              </p>
+            )}
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

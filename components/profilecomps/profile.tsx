@@ -232,40 +232,44 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
                   </span>
                 </div>
               </div>
-              <div className="border-2 border-black opacity-40"></div>
               {/* Social Links */}
               {user.socialLinks && (
-                <div className="mt-2">
-                  <h3 className="text-base sm:text-lg mb-3 ml-4 font-bold">
-                    Social URLs
-                  </h3>
-                  <div className="flex flex-wrap gap-4 sm:gap-6 justify-center items-center">
-                    {Object.entries(user.socialLinks).map(([platform, url]) => {
-                      const iconName = capitalizeFirstLetter(platform); // e.g., "github" => "Github"
-                      const IconComponent = Icons[
-                        iconName as keyof typeof Icons
-                      ] as React.FC<{ className?: string }>;
+                <>
+                  <div className="border-2 border-black opacity-40"></div>
+                  <div className="mt-2">
+                    <h3 className="text-base sm:text-lg mb-3 ml-4 font-bold">
+                      Social URLs
+                    </h3>
+                    <div className="flex flex-wrap gap-4 sm:gap-6 justify-center items-center">
+                      {Object.entries(user.socialLinks).map(
+                        ([platform, url]) => {
+                          const iconName = capitalizeFirstLetter(platform); // e.g., "github" => "Github"
+                          const IconComponent = Icons[
+                            iconName as keyof typeof Icons
+                          ] as React.FC<{ className?: string }>;
 
-                      return (
-                        <a
-                          key={platform}
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-gray-600 hover:text-black transition"
-                        >
-                          {IconComponent ? (
-                            <IconComponent className="w-6 h-6" />
-                          ) : (
-                            <span className="capitalize underline">
-                              {platform}
-                            </span>
-                          )}
-                        </a>
-                      );
-                    })}
+                          return (
+                            <a
+                              key={platform}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-gray-600 hover:text-black transition"
+                            >
+                              {IconComponent ? (
+                                <IconComponent className="w-6 h-6" />
+                              ) : (
+                                <span className="capitalize underline">
+                                  {platform}
+                                </span>
+                              )}
+                            </a>
+                          );
+                        }
+                      )}
+                    </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
           </div>

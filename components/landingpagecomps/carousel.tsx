@@ -1,8 +1,11 @@
-import React from "react";
+"use client"
+
+import React, { useEffect, useState } from "react";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import Image from "next/image";
 import { IUser } from "@/types/types";
 import { HashLoader } from "react-spinners";
+import api, { GET_FEATURED_ARTISTS } from "@/apis/api";
 
 const IndividualCards = ({
   image,
@@ -32,7 +35,22 @@ const IndividualCards = ({
   );
 };
 
-const FeatCarousel = ({ users }: { users: IUser[] | null }) => {
+const FeatCarousel = () => {
+  const [users, setUsers] = useState<IUser[] | null>(null);
+
+  useEffect(() => {
+    const getFeaturedArtists = async () => {
+      try {
+        const res = await api.get(GET_FEATURED_ARTISTS);
+
+        setUsers(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getFeaturedArtists();
+  }, []);
+
   if (!users) {
     return (
       <div className="h-screen w-full flex justify-center items-center">
