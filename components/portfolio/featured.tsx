@@ -18,10 +18,10 @@ export const FeaturedWorks = ({ user }: { user: IUser }) => {
     getPosts();
   }, [user._id]);
 
-  if(!posts){
+  if (!posts) {
     return null;
   }
-  
+
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:py-12">
       <h2 className="text-2xl font-bold mb-6 sm:text-3xl lg:text-4xl">
@@ -42,33 +42,40 @@ export const FeaturedWorks = ({ user }: { user: IUser }) => {
 
         {/* 2nd and 3rd images stacked */}
         <div className="flex flex-col gap-4">
-          <Image
-            src={posts[1].media[0].url}
-            alt={posts[1].title}
-            className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
-            width={400}
-            height={200}
-          />
-          <Image
-            src={posts[2].media[0].url}
-            alt={posts[2].title}
-            className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
-            width={400}
-            height={200}
-          />
+          {posts[1] && (
+            <Image
+              src={posts[1].media[0].url}
+              alt={posts[1].title}
+              className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+              width={400}
+              height={200}
+            />
+          )}
+          {posts[2] && (
+            <Image
+              src={posts[2].media[0].url}
+              alt={posts[2].title}
+              className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+              width={400}
+              height={200}
+            />
+          )}
         </div>
 
         {/* Bottom row: 3 items */}
-        {posts && posts.slice(3).map((post) => (
-          <Image
-            key={post.media[0].url}
-            src={post.media[0].url}
-            alt={post.title}
-            className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
-            width={400}
-            height={200}
-          />
-        ))}
+        {posts &&
+          posts
+            .slice(3)
+            .map((post) => (
+              <Image
+                key={post.media[0].url}
+                src={post.media[0].url}
+                alt={post.title}
+                className="w-full h-full object-cover rounded-xl transition-all hover:scale-[1.02]"
+                width={400}
+                height={200}
+              />
+            ))}
       </div>
     </div>
   );

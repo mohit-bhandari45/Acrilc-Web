@@ -142,6 +142,8 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
     console.log("Forgot");
   }
 
+  console.log(method);
+
   return (
     <div className="w-full lg:w-[55%] h-full flex justify-center items-center flex-col p-4">
       <form
@@ -218,9 +220,14 @@ const Right = ({ labels, method }: { labels: string[]; method: string }) => {
               </div>
             </div>
           </div>
-          <div onClick={forgotPasswordHandler} className="relative right-0 group text-right pr-3 pt-1 hover:underline cursor-pointer text-sm">
-            Forget Password?
-          </div>
+          {method === "Login" && (
+            <div
+              onClick={forgotPasswordHandler}
+              className="relative right-0 group text-right pr-3 pt-1 hover:underline cursor-pointer text-sm"
+            >
+              Forget Password?
+            </div>
+          )}
         </div>
 
         {/* Auth Toggle */}

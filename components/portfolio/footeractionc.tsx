@@ -175,7 +175,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
                   className="underline"
                   rel="noopener noreferrer"
                 >
-                  Link
+                  Link{user.portfolioURL}
                 </a>
               </h2>
               <button
