@@ -12,7 +12,7 @@ import { HashLoader } from "react-spinners";
 import { AxiosError } from "axios";
 
 export default function UsernameChooser() {
-  const { loader } = useProfileRedirect();
+  const { loader, setLoader } = useProfileRedirect();
 
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
@@ -31,10 +31,10 @@ export default function UsernameChooser() {
       const response = await api.post(ADD_USERNAME_URL, { username: username });
 
       if (response.status === 200) {
-        router.push("/auth/forte");
-        localStorage.setItem("username", response.data.data);
-
         toast.success("UserName Added");
+        setLoader(true);
+        localStorage.setItem("username", response.data.data);
+        router.push("/auth/forte");
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

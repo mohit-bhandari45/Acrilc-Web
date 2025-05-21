@@ -36,7 +36,7 @@ const PREFERENCE_ENUM = [
 ];
 
 export default function FortePage() {
-  const { loader } = useProfileRedirect();
+  const { loader, setLoader } = useProfileRedirect();
 
   const [selected, setSelected] = useState<string[]>([]);
   const router = useRouter();
@@ -57,8 +57,9 @@ export default function FortePage() {
       const res = await api.post(FORTE_URL, { preferences: selected });
 
       if (res.status === 200) {
-        router.push("/auth/profile-pic");
         toast.success("Forte Added");
+        setLoader(true);
+        router.push("/auth/profile-pic");
       }
     } catch (error) {
       console.log(error);
@@ -82,7 +83,7 @@ export default function FortePage() {
         {/* Header */}
         <div>
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-8 text-center">
-            Select Your Fortes (max 5)
+            Select Your Fortes (max 4)
           </h1>
 
           {/* Forte Selection Grid */}
@@ -90,7 +91,7 @@ export default function FortePage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
               {PREFERENCE_ENUM.map((forte) => {
                 const isSelected = selected.includes(forte);
-                const isDisabled = selected.length >= 5 && !isSelected;
+                const isDisabled = selected.length >= 4 && !isSelected;
                 return (
                   <button
                     key={forte}
@@ -111,9 +112,9 @@ export default function FortePage() {
             </div>
             {/* Helper Text */}
             <p className="text-xs text-gray-500 mt-4 text-center">
-              {selected.length === 5
+              {selected.length === 4
                 ? "You've selected the maximum number of fortes."
-                : `${5 - selected.length} selections remaining`}
+                : `${4 - selected.length} selections remaining`}
             </p>
           </div>
         </div>

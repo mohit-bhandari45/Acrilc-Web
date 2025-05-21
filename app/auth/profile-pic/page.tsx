@@ -11,7 +11,7 @@ import { HashLoader } from "react-spinners";
 import useProfileRedirect from "../useProfileRedirect";
 
 export default function ProfilePicPage() {
-  const { loader } = useProfileRedirect();
+  const { loader, setLoader } = useProfileRedirect();
 
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -35,11 +35,11 @@ export default function ProfilePicPage() {
 
     try {
       const url = await UploadService.uploadToImgBB(file);
-
       const res = await api.post(ADD_PROFILE_PIC, { imageURL: url });
 
       if (res.status === 200) {
         toast.success("Profile Pic Added");
+        setLoader(true);
 
         const username = localStorage.getItem("username");
         router.push(`/profile/${username}`);

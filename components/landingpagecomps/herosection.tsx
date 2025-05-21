@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { HeroSectionImages } from "@/assets/assets";
 
 const images: string[] = [
   "/assets/homepageassets/heroimage1.png",
@@ -26,14 +27,15 @@ function FadingHeroImages() {
     return () => clearInterval(interval);
   }, []);
 
+  console.log(HeroSectionImages)
+
   return (
     <div className="absolute inset-0 w-full h-full flex justify-center items-center overflow-hidden">
       {/* Overlay for contrast */}
-      <div className="absolute bg-black z-10 w-[90%] h-[80%] sm:w-[90%] lg:w-[85%] opacity-70 rounded-2xl"></div>
       
       {/* Images */}
-      {images.map((src, idx) => (
-        <div 
+      {HeroSectionImages && HeroSectionImages.map((src, idx) => (
+        <div
           key={idx}
           className={`absolute w-[90%] h-[80%] sm:w-[90%] lg:w-[85%] max-w-screen-xl max-h-[800px] transition-opacity duration-700 rounded-2xl overflow-hidden z-0 ${
             idx === index ? "opacity-100" : "opacity-0"
@@ -47,6 +49,7 @@ function FadingHeroImages() {
             className="object-cover rounded-2xl"
             priority={idx === 0}
             aria-hidden={idx !== index}
+            unoptimized
           />
         </div>
       ))}

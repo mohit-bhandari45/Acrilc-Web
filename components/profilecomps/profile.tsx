@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { FaPencilAlt } from "react-icons/fa";
 import { HashLoader } from "react-spinners";
 import { Button } from "../ui/button";
+import { defaultImages } from "@/assets/assets";
 
 type Props = {
   loader?: boolean; // ✅ optional
@@ -105,13 +106,13 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
             <div className="relative rounded-t-lg overflow-hidden bg-gray-100">
               {/* Cover Image */}
               <div className="relative h-56 sm:h-72 lg:h-80 w-full bg-black">
-                {!user?.profilePicture ? (
+                {!user?.bannerPicture ? (
                   <Image
-                    src="/assets/empty.png"
-                    alt="Profile Avatar"
-                    width={100}
-                    height={100}
+                    src={defaultImages.BANNER}
+                    alt="Banner Avatar"
                     className="object-cover"
+                    priority
+                    fill
                   />
                 ) : (
                   <>
@@ -128,6 +129,7 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
                         fill
                         unoptimized
                         className="object-cover"
+                        priority
                       />
                     )}
                   </>
@@ -160,11 +162,13 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
                   <div className="overflow-hidden bg-black rounded-full h-full w-full flex justify-center items-center relative">
                     {!user?.profilePicture ? (
                       <Image
-                        src="/assets/empty.png"
+                        src={defaultImages.PROFILE}
                         alt="Profile Avatar"
                         width={100}
                         height={100}
                         className="object-cover"
+                        priority
+                        fill
                       />
                     ) : (
                       <>
@@ -177,6 +181,7 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
                             fill
                             unoptimized
                             className="object-cover"
+                            priority
                           />
                         )}
                       </>
