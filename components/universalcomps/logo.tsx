@@ -1,37 +1,23 @@
 "use client";
 
-import Assets from "@/assets/assets";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Poppins } from '@next/font/google';
+
+const poppins = Poppins({
+  weight: ['700', '800', '900'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 const Logo = () => {
-  const [mode, setMode] = useState<string | null>(null);
-
-  useEffect(() => {
-    const mode = localStorage.getItem("mode");
-    setMode(mode);
-  }, []);
-
   return (
-    <>
-      <Image
-        width={50}
-        height={50}
-        src={Assets.getLogoImage()}
-        alt="MainLogo"
-        className={`md:w-[60px] md:h-[60px] filter ${
-          mode === "white" || null ? "" : "invert"
-        }`}
-      />
-
-      <div className="relative left-[-5] text-black">
-        <span className="text-4xl font-bold">c</span>
-        <span className="text-4xl font-bold">r</span>
-        <span className="text-4xl font-bold">i</span>
-        <span className="text-4xl font-bold">l</span>
-        <span className="text-4xl font-bold">c</span>
-      </div>
-    </>
+    <div className="relative left-[-5] text-black font-[Helvetica]">
+      <span className={`text-6xl font-bold ${poppins.className}`}>a</span>
+      <span className="text-4xl font-bold">c</span>
+      <span className="text-4xl font-bold">r</span>
+      <span className="text-4xl font-bold">i</span>
+      <span className="text-4xl font-bold">l</span>
+      <span className="text-4xl font-bold">c</span>
+    </div>
   );
 };
 
