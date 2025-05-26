@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -43,39 +47,192 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* CSS Custom Properties */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: #FAA21B;
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: #834c3d;
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.21 0.006 285.885);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.705 0.015 286.067);
+  --background: #FAFAF9;
+  --text-primary: #2C3E50;
+  --text-secondary: #4A4A4A;
+  --accent-terracotta: #E2725B;
+  --accent-charcoal: #2C3E50;
+  --accent-ochre: #D4A373;
+  --accent-sage: #7D9F8A;
+  --accent-dusty-rose: #D4A5A5;
+  --accent-cream: #F5E6D3;
+  --cta-primary: #E2725B;
+  --cta-secondary: #7D9F8A;
+  --spacing-unit: 1rem;
+  --gradient-primary: linear-gradient(135deg, #E2725B 0%, #D4A373 100%);
+  --gradient-secondary: linear-gradient(135deg, #7D9F8A 0%, #D4A5A5 100%);
+}
+
+/* Font family utilities */
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-cormorant {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-terracotta);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4653f;
+}
+
+/* Custom animations matching original CSS */
+@keyframes zoomEffect {
+  0% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Button styles matching original design */
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #E2725B 0%, #D4A373 100%);
+  color: #fff;
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(226, 114, 91, 0.3);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #E2725B;
+  border: 2px solid #E2725B;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #E2725B;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(226, 114, 91, 0.2);
+}
+
+/* Hero specific styles */
+.hero {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.hero-background {
+  animation: zoomEffect 20s ease-out forwards;
+}
+
+/* Header styles */
+.header {
+  box-shadow: none;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.header.scrolled {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+/* Logo and nav link styles */
+.logo {
+  transition: color 0.3s ease;
+}
+
+.nav-link {
+  position: relative;
+  padding: 0.5rem 0;
+  transition: color 0.3s cubic-bezier(0.4,0.2,0.2,1);
+}
+
+.nav-link:hover {
+  color: #E2725B !important;
+}
+
+/* Body styles */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+}
+
+/* app/globals.css */
+@keyframes zoomEffect {
+  0% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .mobile-nav-hidden {
+    display: none;
+  }
+  
+  /* You might want to add a mobile menu here */
+  .mobile-menu-button {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-menu-button {
+    display: none;
+  }
 }
 
 .dark {

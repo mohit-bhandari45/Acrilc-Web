@@ -1,42 +1,42 @@
-import type { Metadata } from "next";
-import { Geist_Mono, Epilogue } from "next/font/google";
-import "./globals.css";
-import ClientToaster from "./toaster";
-import ReduxProvider from "./provider"; // Import the new component
+import type { Metadata } from 'next'
+import { Inter, Poppins, Cormorant_Garamond } from 'next/font/google'
+import './globals.css'
 
-// Load Geist Mono (optional)
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
-// Load Epilogue
-const epilogue = Epilogue({
-  variable: "--font-epilogue",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-cormorant',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: "Acrilc",
-  description: "Artist Platform",
-};
+  title: 'Acrilc - Empowering Artisans. Inspiring the World.',
+  description: 'Acrilc is the AI-powered platform where handcrafted art finds its voice, value, and global audience.',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body
-        className={`${epilogue.variable} ${geistMono.variable} antialiased`}
-      >
-        <ReduxProvider>
-          <ClientToaster />
-          {children}
-        </ReduxProvider>
+    <html lang="en" className={`${inter.variable} ${poppins.variable} ${cormorant.variable}`}>
+      <body className="font-inter bg-[#FAFAF9] text-[#2C3E50]">
+        {children}
       </body>
     </html>
-  );
+  )
 }
