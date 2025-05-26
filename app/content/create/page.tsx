@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// app/content/create/Create.tsx
 "use client";
 
 import api, { GET_OWN_PROFILE } from "@/apis/api";
@@ -20,15 +20,14 @@ const Create = () => {
     setType(searchParams.get("type"));
   }, [searchParams]);
 
-  // Getting User
   useEffect(() => {
     const getUser = async () => {
       try {
         const response = await api.get(GET_OWN_PROFILE);
-
         if (response.status === 200) {
           dispatch(setUser(response.data.data));
         }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         if (error.status === 401) {
           localStorage.removeItem("token");
@@ -50,7 +49,7 @@ const Create = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <CreateContent type={type} setType={setType} isCreate={true}/>
+      <CreateContent type={type} setType={setType} isCreate={true} />
     </div>
   );
 };
