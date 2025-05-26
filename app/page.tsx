@@ -1,49 +1,35 @@
 "use client";
 
-import FeatCarousel from "@/components/landingpagecomps/carousel";
+import CtaSection from "@/components/landingpagecomps/ctasection";
+import FeaturedArtworks from "@/components/landingpagecomps/featured";
 import Footer from "@/components/landingpagecomps/footer";
-import HeroSection from "@/components/landingpagecomps/herosection";
-import Navbar from "@/components/landingpagecomps/navbar";
-import SubFooter from "@/components/landingpagecomps/subfooter";
-import Title from "@/components/landingpagecomps/title";
-import useTokenCheck from "@/hooks/useTokenCheck";
-import { HashLoader } from "react-spinners";
+import CompareSection from "@/components/landingpagecomps/howitwork2";
+import FeaturesSection from "@/components/landingpagecomps/howitworks";
+import HowItWorksMain from "@/components/landingpagecomps/mainhow";
+import MobileHeaderHero from "@/components/landingpagecomps/mobilenavhero";
+import HeaderHero from "@/components/landingpagecomps/navHero";
+import TestimonialsSection from "@/components/landingpagecomps/testimonial";
+import React from "react";
 
-const HomeClient = () => {
-  const { token, isLoading } = useTokenCheck();
-
-  if (isLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
+const Main = () => {
+  return (
+    <div className="min-h-screen">
+      {/* Desktop Header and Hero */}
+      <div className="hidden md:block">
+        <HeaderHero />
       </div>
-    );
-  }
 
-  if (!token) {
-    return (
-      <div className="font-[Helvetica] overflow-x-hidden">
-        <Navbar />
-        <main className="w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <HeroSection />
-          <div className="">
-            <Title title={"Featured Artists"} />
-            <div className="w-full overflow-hidden">
-              <FeatCarousel />
-            </div>
-          </div>
-          <div className="my-8 sm:my-12 md:my-16">
-            <Title title={"Art Movements"} />
-            {/* Add responsive art movements section here */}
-          </div>
-          <SubFooter />
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  return <div className="hidden"></div>;
+      {/* Mobile Header and Hero */}
+      <MobileHeaderHero />
+      <FeaturesSection/>
+      <TestimonialsSection/>
+      <CompareSection/>
+      <HowItWorksMain/>
+      <FeaturedArtworks/>
+      <CtaSection/>
+      <Footer/>
+    </div>
+  );
 };
 
-export default HomeClient;
+export default Main;
