@@ -54,7 +54,7 @@ export default function   HeaderHero({ className }: HeaderHeroProps) {
           href="#"
           className={cn(
             "logo font-bold text-3xl transition-all duration-300 ease-out no-underline",
-            "font-[Poppins,sans-serif]",
+            "font-poppins",
             isScrolled
               ? "text-[#1A1A1A]"
               : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.18)]"
@@ -151,7 +151,7 @@ export default function   HeaderHero({ className }: HeaderHeroProps) {
 
         {/* Hero Content */}
         <div className="hero-content relative z-20 max-w-3xl mx-auto text-center px-8 transition-transform duration-300 ease-out text-white flex flex-col items-center justify-center">
-          <h1 className="hero-logo font-[Poppins,sans-serif] text-6xl font-bold text-white mb-2 inline-block">
+          <h1 className="hero-logo font-poppins text-6xl text-white mb-2 inline-block">
             acrilc
           </h1>
 
