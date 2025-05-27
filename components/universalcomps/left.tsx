@@ -21,7 +21,7 @@ const Left = () => {
   }, [])
 
   return (
-    <div className="relative w-full h-[425px] min-h-[250px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-screen lg:w-[45%] bg-gray-50 lg:rounded-r-4xl overflow-hidden">
+    <div className="relative w-full h-[425px] min-h-[250px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-screen lg:w-[45%] bg-gray-50 lg:rounded-r-2xl overflow-hidden">
 
       {/* Slideshow background */}
       <div className="absolute top-0 left-0 w-full h-full z-[1]">

@@ -216,7 +216,7 @@ const Right = ({ labels, method, setLoader }: RightProps) => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-14 bg-[#834C3D] cursor-pointer hover:bg-[#6e3f32] rounded-full text-lg font-bold relative overflow-hidden"
+                className="w-full text-white h-14 bg-[#834C3D] cursor-pointer hover:bg-[#6e3f32] rounded-full text-lg font-bold relative overflow-hidden"
               >
                 {loading ? (
                   <div className="flex items-center gap-2">
