@@ -84,7 +84,7 @@ export default function UsernameChooser() {
                 setUsername(e.target.value);
               }}
               placeholder="Enter your username"
-              className={`mb-2 ${error ? "border-red-500" : ""}`}
+              className={`mb-2 rounded-2xl ${error ? "border-red-500" : ""}`}
             />
             {error && <p className="text-red-500 text-sm">{error}</p>}
 

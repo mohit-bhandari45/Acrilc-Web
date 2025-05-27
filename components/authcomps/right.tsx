@@ -165,7 +165,7 @@ const Right = ({ labels, method, setLoader }: RightProps) => {
           className="object-contain text-black filter invert"
         />
       </div> */}
-      <div className="relative w-full lg:w-[55%] h-full flex justify-center items-center flex-col p-4 overflow-hidden">
+      <div className="relative w-full lg:w-[50%] h-full flex justify-center items-center flex-col p-4 overflow-hidden">
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-md h-full flex flex-col justify-center items-center"

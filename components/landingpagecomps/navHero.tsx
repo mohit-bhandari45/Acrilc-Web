@@ -51,7 +51,7 @@ export default function   HeaderHero({ className }: HeaderHeroProps) {
       >
         {/* Logo */}
         <Link
-          href="#"
+          href="/"
           className={cn(
             "logo font-bold text-3xl transition-all duration-300 ease-out no-underline",
             "font-poppins",

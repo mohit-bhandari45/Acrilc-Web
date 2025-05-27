@@ -82,12 +82,12 @@ export default function FortePage() {
       <div className="max-w-6xl mx-auto px-4 py-12 min-h-screen flex flex-col justify-center items-center font-[Helvetica]">
         {/* Header */}
         <div>
-          <h1 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-8 text-center">
+          <h1 className="text-3xl md:text-4xl font-semibold font-[Helvetica] text-gray-800 mb-8 text-center">
             Select Your Fortes (max 4)
           </h1>
 
           {/* Forte Selection Grid */}
-          <div className="bg-[#FAFAFA] p-6 rounded-xl shadow-sm">
+          <div className="bg-[#FAFAFA] p-6 rounded-2xl shadow-sm">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
               {PREFERENCE_ENUM.map((forte) => {
                 const isSelected = selected.includes(forte);
@@ -97,7 +97,7 @@ export default function FortePage() {
                     key={forte}
                     onClick={() => toggleSelection(forte)}
                     className={cn(
-                      "rounded-xl border cursor-pointer text-sm px-4 py-3 font-medium text-center transition-all",
+                      "rounded-2xl border cursor-pointer text-sm px-4 py-3 font-medium text-center transition-all",
                       isSelected
                         ? "bg-[#FFE9D6] text-[#FF7A00] border-[#FF7A00]"
                         : "bg-white text-gray-700 border-gray-300 hover:border-[#FF7A00]",

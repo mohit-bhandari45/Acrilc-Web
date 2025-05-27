@@ -168,7 +168,6 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
                         height={100}
                         className="object-cover"
                         priority
-                        fill
                       />
                     ) : (
                       <>

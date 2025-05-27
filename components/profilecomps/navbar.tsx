@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
               </svg>
             </button>
 
-            <div className="logo flex justify-center items-center cursor-pointer relative right-[15]">
+            <div className="logo flex justify-center items-center cursor-pointer relative right-[7]">
               <Logo/>
             </div>
           </div>
@@ -141,10 +141,10 @@ const Navbar: React.FC = () => {
             <div className="flex items-center space-x-2 sm:space-x-3">
               {pathname !== "/profile" && (
                 <Link
-                  href={`/profile/${user.username}`}
+                  href={`/content/create`}
                   className="hidden sm:inline-block bg-[#FAA21B] hover:bg-[#fa921b] text-white font-medium text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2"
                 >
-                  Profile
+                  Create
                 </Link>
               )}
 
