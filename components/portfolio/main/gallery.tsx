@@ -64,6 +64,8 @@ const Gallery: React.FC<GalleryProps> = ({
     setVisibleItems((prev) => prev + itemsPerPage);
   };
 
+
+  console.log(posts);
   const hasMoreItems = visibleItems < filteredItems!.length;
 
   return (
