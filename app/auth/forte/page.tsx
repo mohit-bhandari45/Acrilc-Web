@@ -8,32 +8,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { HashLoader } from "react-spinners";
 import useProfileRedirect from "../useProfileRedirect";
-
-const PREFERENCE_ENUM = [
-  "Woolen Craft",
-  "Poetry",
-  "Exclusive",
-  "Paintings",
-  "Sculptures",
-  "Wooden Crafts",
-  "Textile Art",
-  "Ceramics",
-  "Jewelry Design",
-  "Glass Art",
-  "Metalwork",
-  "Paper Crafts",
-  "Mixed Media",
-  "Photography",
-  "Digital Art",
-  "Calligraphy",
-  "Printmaking",
-  "Mosaic Art",
-  "Leatherwork",
-  "Pottery",
-  "Fiber Art",
-  "Illustration",
-  "Installation Art",
-];
+import { PREFERENCE_ENUM } from "./data";
 
 export default function FortePage() {
   const { loader, setLoader } = useProfileRedirect();
@@ -97,7 +72,7 @@ export default function FortePage() {
                     key={forte}
                     onClick={() => toggleSelection(forte)}
                     className={cn(
-                      "rounded-2xl border cursor-pointer text-sm px-4 py-3 font-medium text-center transition-all",
+                      "rounded-lg border cursor-pointer text-sm px-4 py-3 font-medium text-center transition-all",
                       isSelected
                         ? "bg-[#FFE9D6] text-[#FF7A00] border-[#FF7A00]"
                         : "bg-white text-gray-700 border-gray-300 hover:border-[#FF7A00]",
@@ -123,7 +98,7 @@ export default function FortePage() {
         <div className="mt-12 flex justify-between items-center gap-5">
           <Button
             className={cn(
-              "bg-[#FAA21B] hover:bg-[#fa921b] text-white font-semibold px-6 py-3 rounded-full transition cursor-pointer",
+              "bg-[#FAA21B] hover:bg-[#fa921b] text-white font-semibold px-6 py-3 rounded-lg transition cursor-pointer",
               selected.length === 0 && "opacity-50 cursor-not-allowed"
             )}
             disabled={selected.length === 0 || loading}

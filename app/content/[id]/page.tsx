@@ -8,6 +8,7 @@ import { IPost } from "@/types/types";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
+import Navbar from "@/components/profilecomps/navbar";
 
 const Post = () => {
   const router = useRouter();
@@ -62,6 +63,7 @@ const Post = () => {
 
   return (
     <div className="font-[Helvetica]">
+      <Navbar currentUser={user} />
       <PostDescription post={post} user={user} />
     </div>
   );

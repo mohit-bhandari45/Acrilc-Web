@@ -9,7 +9,6 @@ import HowItWorksMain from "@/components/landingpagecomps/mainhow";
 import MobileHeaderHero from "@/components/landingpagecomps/mobilenavhero";
 import HeaderHero from "@/components/landingpagecomps/navHero";
 import TestimonialsSection from "@/components/landingpagecomps/testimonial";
-import React from "react";
 
 const Main = () => {
   return (

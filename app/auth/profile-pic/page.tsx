@@ -61,11 +61,11 @@ export default function ProfilePicPage() {
     );
   } else {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f9fafb] px-4 font-[Helvetica]">
+      <div className="min-h-screen flex items-center justify-center bg-[#f9fafb] px-4">
         <div className="bg-white rounded-3xl shadow-xl p-8 max-w-lg w-full text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <div className="text-3xl font-semibold text-gray-800 mb-2">
             Upload Profile Picture
-          </h1>
+          </div>
           <p className="text-gray-500 mb-6">
             This will be displayed on your profile.
           </p>
@@ -89,7 +89,7 @@ export default function ProfilePicPage() {
 
           <label
             htmlFor="file-upload"
-            className="cursor-pointer inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-2xl font-medium transition"
+            className="cursor-pointer inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-xl font-medium transition"
           >
             Choose File
           </label>
@@ -113,7 +113,7 @@ export default function ProfilePicPage() {
             <Button
               onClick={handleSubmit}
               disabled={loading}
-              className="px-5 cursor-pointer text-white font-semibold py-2 rounded-2xl bg-[#FAA21B] hover:bg-[#fa921b] transition"
+              className="px-5 cursor-pointer text-white font-semibold py-2 rounded-xl bg-[#FAA21B] hover:bg-[#fa921b] transition"
             >
               {loading ? (
                 <div className="flex justify-center items-center">

@@ -1,6 +1,5 @@
 // app/profile/layout.tsx
 import Footer from "@/components/profilecomps/footer";
-import Navbar from "@/components/profilecomps/navbar";
 
 export default function ContentLayout({
   children,
@@ -9,7 +8,6 @@ export default function ContentLayout({
 }) {
   return (
     <div className="">
-      <Navbar />
       {children}
       <Footer />
     </div>
