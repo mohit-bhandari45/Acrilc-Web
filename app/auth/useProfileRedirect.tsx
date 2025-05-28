@@ -35,8 +35,6 @@ const useProfileRedirect = () => {
             router.push("/auth/username");
           } else if (!user.preferences?.length) {
             router.push("/auth/forte");
-          } else if (!user.profilePicture) {
-            router.push("/auth/profile-pic");
           } else {
             router.push(`/profile/${user.username}`);
           }
@@ -45,8 +43,6 @@ const useProfileRedirect = () => {
         if (pathName === "/auth/username" && user.username) {
           if (user.preferences?.length === 0) {
             router.push(`/auth/forte`);
-          } else if (!user.profilePicture) {
-            router.push(`/auth/profile-pic`);
           } else {
             router.push(`/profile/${user.username}`);
           }
@@ -55,11 +51,7 @@ const useProfileRedirect = () => {
         }
 
         if (pathName === "/auth/forte" && user.preferences?.length) {
-          if (!user.profilePicture) {
-            router.push(`/auth/profile-pic`);
-          } else {
-            router.push(`/profile/${user.username}`);
-          }
+          router.push(`/profile/${user.username}`);
         } else {
           setLoader(false);
         }

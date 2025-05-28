@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
+import Navbar from "@/components/profilecomps/navbar";
 
 const Create = () => {
   const router = useRouter();
@@ -49,6 +50,7 @@ const Create = () => {
 
   return (
     <div className="font-[Helvetica]">
+      <Navbar currentUser={user} />
       <CreateContent type={type} setType={setType} isCreate={true} />
     </div>
   );

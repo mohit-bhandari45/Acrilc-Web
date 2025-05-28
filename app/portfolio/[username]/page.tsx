@@ -1,11 +1,10 @@
 "use client";
 
-import { FeaturedWorks } from "@/components/portfolio/featured";
 import { FooterActions } from "@/components/portfolio/footeractionc";
-import { ForteSection } from "@/components/portfolio/fortes";
-import Hero from "@/components/portfolio/hero";
-import { StorySection } from "@/components/portfolio/story";
-import Footer from "@/components/profilecomps/footer";
+import ArtistAbout from "@/components/portfolio/main/about";
+import ContactSection from "@/components/portfolio/main/contact";
+import Footer from "@/components/portfolio/main/footer";
+import Gallery from "@/components/portfolio/main/gallery";
 import Navbar from "@/components/profilecomps/navbar";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useUserByUsername from "@/hooks/useUserByUsername";
@@ -105,18 +104,12 @@ const Portfolio = () => {
     }
 
     return (
-      <div className="font-[Helvetica] w-full h-full">
-        <div className="flex justify-center items-center font-bold text-5xl w-full py-15">
-          Portfolio
-        </div>
-        <Hero user={user} isSame={isSame} />
-        {/* <PersonalPort /> */}
-        <ForteSection user={user} />
-        <StorySection user={user} />
-        <FeaturedWorks user={user}/>
-        {/* <PartnershipsSection partnerships={partnerships} /> */}
-        <FooterActions user={user} isSame={isSame} />
-      </div>
+      <>
+          <ArtistAbout user={user} isSame={isSame}/>
+          <Gallery user={user}/>
+          <ContactSection/>
+          <FooterActions user={user} isSame={isSame} />
+        </>
     );
   } else {
     if (!currentUser || !user) {
@@ -125,21 +118,12 @@ const Portfolio = () => {
       /* Actual Content of the page */
       return (
         <>
-          <Navbar />
-          <div className="font-[Helvetica] w-full h-full">
-            <div className="flex justify-center items-center font-bold text-5xl w-full py-15">
-              Portfolio
-            </div>
-            <Hero user={user} isSame={isSame} />
-            {/* <PersonalPort /> */}
-            <ForteSection user={user} />
-            <StorySection user={user} />
-            <FeaturedWorks user={user}/>
-            {/* <PartnershipsSection partnerships={partnerships} /> */}
-            <FooterActions user={user} isSame={isSame} />
-
-            <Footer />
-          </div>
+          <Navbar currentUser={currentUser}/>
+          <ArtistAbout user={user} isSame={isSame}/>
+          <Gallery user={user}/>
+          {!isSame && <ContactSection/>}
+          <FooterActions user={user} isSame={isSame} />
+          <Footer/>
         </>
       );
     }

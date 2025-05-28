@@ -1,8 +1,7 @@
 // tailwind.config.js
 import animate from "tailwindcss-animate"
-import { type Config } from "tailwindcss"
 
-const config: Config = {
+const config = {
   darkMode: "class",
   content: [
     './pages/**/*.{ts,tsx}',
@@ -61,11 +60,6 @@ const config: Config = {
         sage: '#7D9F8A',
         'dusty-rose': '#D4A5A5',
         cream: '#F5E6D3',
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {

@@ -110,8 +110,6 @@ const Right = ({ labels, method, setLoader }: RightProps) => {
             router.push("/auth/username");
           } else if (d.preferences.length === 0) {
             router.push("/auth/forte");
-          } else if (!d.profilePicture) {
-            router.push("/auth/profile-pic");
           } else {
             const username = res.data.data.username;
             router.push(`/profile/${username}`);
