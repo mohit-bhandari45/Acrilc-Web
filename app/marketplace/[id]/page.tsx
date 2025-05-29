@@ -4,6 +4,7 @@ import ArtistInfo from "@/components/marketplacecomps/artistinfo";
 import MarketRight from "@/components/marketplacecomps/marketright";
 import TabsSection from "@/components/marketplacecomps/tabs";
 import Navbar from "@/components/profilecomps/navbar";
+import MainLoader from "@/components/universalcomps/mainloader";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { IMarketplace } from "@/types/marketplace";
 import { AxiosError } from "axios";
@@ -11,7 +12,6 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { HashLoader } from "react-spinners";
 import { handleGetSingleProject } from "../marketutils";
 
 type ApiError = {
@@ -92,11 +92,7 @@ const MarketContent = () => {
   };
 
   if (!currentUser || loading || !project) {
-    return (
-      <div className="min-h-screen flex justify-center items-center w-full">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   return (

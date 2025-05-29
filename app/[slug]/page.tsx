@@ -5,11 +5,11 @@ import { FooterActions } from "@/components/portfolio/footeractionc";
 import ArtistAbout from "@/components/portfolio/main/about";
 import ContactSection from "@/components/portfolio/main/contact";
 import Gallery from "@/components/portfolio/main/gallery";
+import MainLoader from "@/components/universalcomps/mainloader";
 import { IUser } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { HashLoader } from "react-spinners";
 
 const CustomPortfolio = () => {
   const params = useParams();
@@ -40,11 +40,7 @@ const CustomPortfolio = () => {
   }, [params.slug]);
 
   if (loading || !user) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   return (

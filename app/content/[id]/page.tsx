@@ -2,13 +2,13 @@
 
 import api, { GET_OWN_PROFILE, GET_POST } from "@/apis/api";
 import PostDescription from "@/components/postcomps/postdescription";
+import Navbar from "@/components/profilecomps/navbar";
+import MainLoader from "@/components/universalcomps/mainloader";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { IPost } from "@/types/types";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { HashLoader } from "react-spinners";
-import Navbar from "@/components/profilecomps/navbar";
 
 const Post = () => {
   const router = useRouter();
@@ -54,11 +54,7 @@ const Post = () => {
   }, [id, router, user?.username]);
 
   if (!user) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   return (

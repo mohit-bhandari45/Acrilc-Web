@@ -1,23 +1,23 @@
 "use client";
 
+import api, { DELETE_POST } from "@/apis/api";
 import { IPost, IUser } from "@/types/types";
 import {
   ChevronLeft,
   ChevronRight,
+  Edit2,
   Heart,
   MessageCircle,
-  ThumbsUp,
   MoreVertical,
-  Edit2,
+  ThumbsUp,
   Trash2,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { HashLoader } from "react-spinners";
-import CreateContent from "./createcontent";
-import api, { DELETE_POST } from "@/apis/api";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import CreateContent from "./createcontent";
+import MainLoader from "../universalcomps/mainloader";
 
 const PostDescription = ({
   post,
@@ -68,11 +68,7 @@ const PostDescription = ({
   };
 
   if (!post) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   console.log(post);

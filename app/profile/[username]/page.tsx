@@ -3,6 +3,7 @@
 import GallerySection from "@/components/profilecomps/gallery";
 import Navbar from "@/components/profilecomps/navbar";
 import ProfilePage from "@/components/profilecomps/profile";
+import MainLoader from "@/components/universalcomps/mainloader";
 
 /* Redux */
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -11,7 +12,6 @@ import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { HashLoader } from "react-spinners";
 
 interface IParams {
   username: string;
@@ -57,11 +57,7 @@ const Profile = () => {
 
   /* Comps */
   if (currUserLoading || userByUsernameLoading || !user || !currentUser) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   return (

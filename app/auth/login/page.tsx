@@ -2,31 +2,23 @@
 
 import Right from "@/components/authcomps/right";
 import Left from "@/components/universalcomps/left";
+import MainLoader from "@/components/universalcomps/mainloader";
 import { loginLabels } from "@/types/types";
-import { GridLoader } from "react-spinners";
 import useProfileRedirect from "../useProfileRedirect";
 
 const Login = () => {
   const { loader, setLoader } = useProfileRedirect();
 
   if (loader) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <GridLoader color="#FAA21B" size={50} speedMultiplier={1.1}/>
-      </div>
-    );
+    return <MainLoader />;
   }
 
-  if (!loader) {
-    return (
-      <div className="flex flex-col lg:flex-row w-full min-h-screen font-[Helvetica] justify-center items-center">
-        <Left />
-        <Right labels={loginLabels} method="Login" setLoader={setLoader} />
-      </div>
-    );
-  }
-
-  return null;
+  return (
+    <div className="flex flex-col lg:flex-row w-full min-h-screen font-[Helvetica] justify-center items-center">
+      <Left />
+      <Right labels={loginLabels} method="Login" setLoader={setLoader} />
+    </div>
+  );
 };
 
 export default Login;

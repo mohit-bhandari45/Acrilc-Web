@@ -6,13 +6,13 @@ import ContactSection from "@/components/portfolio/main/contact";
 import Footer from "@/components/portfolio/main/footer";
 import Gallery from "@/components/portfolio/main/gallery";
 import Navbar from "@/components/profilecomps/navbar";
+import MainLoader from "@/components/universalcomps/mainloader";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import useUserByUsername from "@/hooks/useUserByUsername";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { HashLoader } from "react-spinners";
 
 interface IParams {
   username: string;
@@ -52,11 +52,7 @@ const Portfolio = () => {
 
   /* Comps */
   if (currUserLoading || userByUsernameLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   // const partnerships = [

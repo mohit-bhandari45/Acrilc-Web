@@ -3,12 +3,12 @@
 
 import api, { GET_OWN_PROFILE } from "@/apis/api";
 import CreateContent from "@/components/postcomps/createcontent";
+import Navbar from "@/components/profilecomps/navbar";
+import MainLoader from "@/components/universalcomps/mainloader";
 import { setUser } from "@/store/features/userSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { HashLoader } from "react-spinners";
-import Navbar from "@/components/profilecomps/navbar";
 
 const Create = () => {
   const router = useRouter();
@@ -41,11 +41,7 @@ const Create = () => {
   }, [dispatch, router]);
 
   if (!user) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   return (

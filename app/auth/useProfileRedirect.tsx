@@ -64,6 +64,7 @@ const useProfileRedirect = () => {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
+        toast.error("Network Connection Failed");
         const err = error as AxiosError<{ msg: string }>;
         const { status } = err.response!;
 

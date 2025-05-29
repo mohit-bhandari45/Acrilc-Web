@@ -2,19 +2,15 @@
 
 import Right from "@/components/authcomps/right";
 import Left from "@/components/universalcomps/left";
+import MainLoader from "@/components/universalcomps/mainloader";
 import { signupLabels } from "@/types/types";
-import { HashLoader } from "react-spinners";
 import useProfileRedirect from "../useProfileRedirect";
 
 const Signup = () => {
   const { loader, setLoader } = useProfileRedirect();
 
   if (loader) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center">
-        <HashLoader color="#FAA21B" size={200} />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   if (!loader) {
