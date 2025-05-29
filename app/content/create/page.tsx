@@ -50,7 +50,7 @@ const Create = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <Navbar currentUser={user} />
+      <Navbar currentUser={user} show={true} portfolio={false}/>
       <CreateContent type={type} setType={setType} isCreate={true} />
     </div>
   );

@@ -105,13 +105,18 @@ const Right = ({ labels, method, setLoader }: RightProps) => {
         setLoader(true);
 
         if (method === "Login") {
-          const d = res.data.data;
+          const d = res?.data?.data;
+          if (!d) {
+            console.error("No data returned from login response");
+            return;
+          }
+
           if (!d.username) {
             router.push("/auth/username");
-          } else if (d.preferences.length === 0) {
+          } else if (!d.preferences || d.preferences.length === 0) {
             router.push("/auth/forte");
           } else {
-            const username = res.data.data.username;
+            const username = d.username;
             router.push(`/profile/${username}`);
           }
         } else {

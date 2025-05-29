@@ -2,8 +2,8 @@ import axios from "axios";
 
 // const BASE_URL: string = "https://joyous-reeta-mohit123-198cb6c8.koyeb.app"
 // const BASE_URL: string = "https://acrilc-backend-production.up.railway.app"
-// const BASE_URL: string = "http://localhost:8000"
-const BASE_URL: string = "https://api.acrilc.com"
+const BASE_URL: string = "http://localhost:8000"
+// const BASE_URL: string = "https://api.acrilc.com"
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -62,6 +62,11 @@ const DELETE_PORTFOLIO = `${BASE_URL}/api/portfolio/delete`;
 const GET_PORTFOLIO = `${BASE_URL}/public/portfolio`;
 export { ADD_PORTFOLIO, GET_PORTFOLIO, CHECK_PORTFOLIO, DELETE_PORTFOLIO };
 
+/* MarketPlace */
+const MARKETBASE = `${BASE_URL}/api/projects`
+const ADD_TO_MARKET = `${MARKETBASE}/create`;
+const GET_SINGLE_Market_PROJECT = `${MARKETBASE}/project`;
+export { ADD_TO_MARKET, GET_SINGLE_Market_PROJECT };
 
 /* Utils Apis */
 const GET_KEYWORDS_API = `${BASE_URL}/api/utils/get-keywords`;

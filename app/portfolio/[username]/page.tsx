@@ -50,7 +50,6 @@ const Portfolio = () => {
     }
   }, [token, currentUser, user]);
 
-
   /* Comps */
   if (currUserLoading || userByUsernameLoading) {
     return (
@@ -105,11 +104,11 @@ const Portfolio = () => {
 
     return (
       <>
-          <ArtistAbout user={user} isSame={isSame}/>
-          <Gallery user={user}/>
-          <ContactSection/>
-          <FooterActions user={user} isSame={isSame} />
-        </>
+        <ArtistAbout user={user} isSame={isSame} />
+        <Gallery user={user} />
+        <ContactSection />
+        <FooterActions user={user} isSame={isSame} />
+      </>
     );
   } else {
     if (!currentUser || !user) {
@@ -118,12 +117,14 @@ const Portfolio = () => {
       /* Actual Content of the page */
       return (
         <>
-          <Navbar currentUser={currentUser}/>
-          <ArtistAbout user={user} isSame={isSame}/>
-          <Gallery user={user}/>
-          {!isSame && <ContactSection/>}
-          <FooterActions user={user} isSame={isSame} />
-          <Footer/>
+          <Navbar currentUser={currentUser} show={true} portfolio={true}/>
+          <div className="mt-15">
+            <ArtistAbout user={user} isSame={isSame} />
+            <Gallery user={user} />
+            {!isSame && <ContactSection />}
+            <FooterActions user={user} isSame={isSame} />
+            <Footer />
+          </div>
         </>
       );
     }

@@ -66,7 +66,7 @@ const Profile = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <Navbar currentUser={currentUser}/>
+      <Navbar currentUser={currentUser} show={true} portfolio={false}/>
       <ProfilePage
         loader={loader}
         setLoader={setLoader}

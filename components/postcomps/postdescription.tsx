@@ -78,7 +78,7 @@ const PostDescription = ({
   console.log(post);
 
   return (
-    <>
+    <div className="mt-20">
       {!edit ? (
         <div className="max-w-4xl mx-auto px-4 py-8">
           {/* Image Carousel with Dropdown */}
@@ -211,7 +211,7 @@ const PostDescription = ({
           setEdit={setEdit}
         />
       )}
-    </>
+    </div>
   );
 };
 

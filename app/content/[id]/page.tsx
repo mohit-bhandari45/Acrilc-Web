@@ -63,7 +63,7 @@ const Post = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <Navbar currentUser={user} />
+      <Navbar currentUser={user} show={false} portfolio={false}/>
       <PostDescription post={post} user={user} />
     </div>
   );

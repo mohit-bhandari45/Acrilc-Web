@@ -239,6 +239,11 @@ const CreateContent = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if(e.target.value === "marketplace"){
+      router.push("/marketplace/add");
+      return;
+    }
+
     setType(e.target.value);
 
     const params = new URLSearchParams(searchParams);
@@ -267,7 +272,7 @@ const CreateContent = ({
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 my-13">
+    <div className="max-w-4xl mx-auto p-4 mb-13 mt-30">
       <h1 className="text-4xl font-bold mb-6 text-center">New Post</h1>
 
       <div>
@@ -280,6 +285,7 @@ const CreateContent = ({
             >
               <option value="post">Post</option>
               <option value="storyboard">Storyboard</option>
+              <option value="marketplace">Marketplace</option>
             </select>
           </div>
 

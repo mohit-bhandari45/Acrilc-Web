@@ -8,32 +8,38 @@ import Image from "next/image";
 import Logo from "../universalcomps/logo";
 import { useRouter } from "next/navigation";
 import { IUser } from "@/types/types";
+import { LogOut } from "lucide-react";
 
 interface NavItem {
   href: string;
   label: string;
   id?: string;
+  linksTo: string;
 }
 
 const navItems: NavItem[] = [
-  { href: "#about", label: "About" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#shop", label: "Marketplace" },
-  { href: "#", label: "Explore", id: "exploreBtn" },
-  { href: "#", label: "Blog" },
-  { href: "#", label: "Collections" },
+  { href: "#about", label: "About", linksTo: "/about" },
+  { href: "#gallery", label: "Gallery", linksTo: "/profile" },
+  { href: "#shop", label: "Marketplace", linksTo: "/profile" },
+  { href: "#", label: "Explore", id: "exploreBtn", linksTo: "/explore" },
+  { href: "#", label: "Blog", linksTo: "/about" },
+  { href: "#", label: "Collections", linksTo: "/profile" },
 ];
 
 interface HeaderProps {
   currentUser: IUser;
   className?: string;
   onExploreClick?: () => void;
+  show: boolean;
+  portfolio: boolean;
 }
 
 export default function Header({
   className,
   onExploreClick,
   currentUser,
+  show = true,
+  portfolio = true,
 }: HeaderProps) {
   const router = useRouter();
   const [activeLink, setActiveLink] = useState("#about");
@@ -79,30 +85,55 @@ export default function Header({
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              id={item.id}
-              onClick={() => handleNavClick(item.href, item.id)}
-              className={cn(
+          {show &&
+            navItems.map((item) => {
+              const isActive = activeLink === item.href;
+              const linkClasses = cn(
                 "relative text-gray-600 font-normal transition-all duration-300",
                 "hover:text-black hover:font-semibold",
                 "after:absolute after:bottom-[-5px] after:left-0 after:right-0 after:h-0.5",
                 "after:bg-black after:scale-x-0 hover:after:scale-x-100",
                 "after:transition-transform after:duration-300",
-                activeLink === item.href && "text-black font-semibold"
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+                isActive && portfolio && "text-black font-semibold"
+              );
+
+              return portfolio ? (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  id={item.id}
+                  onClick={() => handleNavClick(item.href, item.id)}
+                  className={linkClasses}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <Link
+                  key={item.label}
+                  href={
+                    item.linksTo === "/profile"
+                      ? `${item.linksTo}/${currentUser.username}${
+                          item.label.toLowerCase() !== "collections"
+                            ? `?tab=${item.label.toLowerCase()}`
+                            : ""
+                        }`
+                      : item.linksTo
+                  }
+                  id={item.id}
+                  onClick={() => handleNavClick(item.href, item.id)}
+                  className={linkClasses}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          {}
 
           <button
             onClick={handleLogOut}
             className="text-gray-500 cursor-pointer hover:text-black p-1"
           >
-            <Image src="/assets/exit.png" alt="exit" width={20} height={20} />
+            <LogOut className="hover:text-red-600"/>
           </button>
 
           {/* Sign In Button */}

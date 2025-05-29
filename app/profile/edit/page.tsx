@@ -114,11 +114,11 @@ export default function ProfileEditPage() {
   };
 
   const handleSubmit = async () => {
-    if (formData.bio.length > 100) {
+    if (formData.bio.length > 400) {
       toast.error("Bio cannot exceed 100 characters");
       return;
     }
-    if (formData.story.length > 500) {
+    if (formData.story.length > 1000) {
       toast.error("Storyboard cannot exceed 500 characters");
       return;
     }
@@ -275,7 +275,6 @@ export default function ProfileEditPage() {
                     onChange={handleInputChange}
                     className="w-full min-h-20"
                     placeholder="Write a short bio"
-                    // maxLength={50} // Optional: limits input
                   />
                   <div className="flex justify-between text-xs text-gray-500">
                     <p>
@@ -283,11 +282,11 @@ export default function ProfileEditPage() {
                     </p>
                     <span
                       className={`${
-                        formData.bio.length > 100 ? "text-red-500" : "text-black"
+                        formData.bio.length > 400 ? "text-red-500" : "text-black"
                       }`}
                     >
                       {formData.bio.length}
-                      <span className="text-black">/100</span>
+                      <span className="text-black">/400</span>
                     </span>
                   </div>
                 </div>
@@ -309,13 +308,13 @@ export default function ProfileEditPage() {
                     <p>Share more about yourself and your work.</p>
                     <span
                       className={`${
-                        formData.story.length > 500
+                        formData.story.length > 1000
                           ? "text-red-500"
                           : "text-black"
                       }`}
                     >
                       {formData.story.length}
-                      <span className="text-black">/500</span>
+                      <span className="text-black">/1000</span>
                     </span>
                   </div>
                 </div>
@@ -330,6 +329,7 @@ export default function ProfileEditPage() {
                       variant="outline"
                       onClick={handleAddSocialLink}
                       size="sm"
+                      className="cursor-pointer"
                     >
                       Add Link
                     </Button>
@@ -351,13 +351,14 @@ export default function ProfileEditPage() {
                             <SelectValue placeholder="Platform" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Instagram">Instagram</SelectItem>
-                            <SelectItem value="Twitter">Twitter</SelectItem>
-                            <SelectItem value="LinkedIn">LinkedIn</SelectItem>
-                            <SelectItem value="GitHub">GitHub</SelectItem>
-                            <SelectItem value="Facebook">Facebook</SelectItem>
-                            <SelectItem value="YouTube">YouTube</SelectItem>
-                            <SelectItem value="TikTok">TikTok</SelectItem>
+                            <SelectItem className="cursor-pointer" value="Instagram">Instagram</SelectItem>
+                            <SelectItem className="cursor-pointer" value="Twitter">Twitter</SelectItem>
+                            <SelectItem className="cursor-pointer" value="LinkedIn">LinkedIn</SelectItem>
+                            {/* <SelectItem value="GitHub">GitHub</SelectItem> */}
+                            <SelectItem className="cursor-pointer" value="Facebook">Facebook</SelectItem>
+                            <SelectItem className="cursor-pointer" value="YouTube">YouTube</SelectItem>
+                            <SelectItem className="cursor-pointer" value="TikTok">TikTok</SelectItem>
+                            <SelectItem className="cursor-pointer" value="Pinterest">Pinterest</SelectItem>
                           </SelectContent>
                         </Select>
 
@@ -379,7 +380,7 @@ export default function ProfileEditPage() {
                             variant="ghost"
                             size="icon"
                             onClick={() => handleRemoveSocialLink(index)}
-                            className="h-10 w-10 shrink-0"
+                            className="h-10 w-10 shrink-0 cursor-pointer"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
