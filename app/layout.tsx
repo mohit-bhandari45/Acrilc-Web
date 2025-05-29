@@ -3,7 +3,9 @@ import { Geist_Mono, Epilogue, Poppins } from "next/font/google";
 import "./globals.css";
 import ClientToaster from "./toaster";
 import ReduxProvider from "./provider"; // Import the new component
-
+import {config} from "@fortawesome/fontawesome-svg-core";
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
 // Load Geist Mono (optional)
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",

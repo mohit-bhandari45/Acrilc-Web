@@ -30,12 +30,18 @@ export default function   HeaderHero({ className }: HeaderHeroProps) {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    console.log(sectionId);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const element = document.getElementById(sectionId);
+  if (element) {
+    const headerOffset = 50; // Adjust this value based on your header height
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth"
+    });
+  }
+};
 
   return (
     <div className={cn("relative", className)}>
