@@ -86,15 +86,14 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
       }
     }
   };
-
+  
   return (
     <>
       {(bpLoader || ppLoader) && (
         <div className="fixed inset-0 flex flex-col gap-4 sm:gap-8 justify-center z-60 items-center bg-[#171617cc] p-4">
-          <GridLoader color="#FAA21B" size={30} speedMultiplier={1.1} className="sm:hidden" />
           <GridLoader color="#FAA21B" size={50} speedMultiplier={1.1} className="hidden sm:block" />
           <div className="font-bold text-lg sm:text-2xl text-white text-center">
-            {bpLoader ? "Updating Banner Pic..." : "Updating Profile Pic"}
+            {bpLoader ? "Updating Banner Pic..." : "Updating Profile Pic..."}
           </div>
         </div>
       )}
