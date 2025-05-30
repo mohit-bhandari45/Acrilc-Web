@@ -1,8 +1,8 @@
 "use client";
 
 import GallerySection from "@/components/profilecomps/gallery";
+import ArtistProfile from "@/components/profilecomps/profile";
 import Navbar from "@/components/profilecomps/navbar";
-import ProfilePage from "@/components/profilecomps/profile";
 import MainLoader from "@/components/universalcomps/mainloader";
 
 /* Redux */
@@ -20,7 +20,6 @@ interface IParams {
 const Profile = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [loader, setLoader] = useState(false);
   const [isSame, setIsSame] = useState<boolean>(false);
   const params: IParams = useParams() as { username: string };
   const [token, setToken] = useState<string | null>(null);
@@ -62,17 +61,11 @@ const Profile = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <Navbar currentUser={currentUser} show={true} portfolio={false}/>
-      <ProfilePage
-        loader={loader}
-        setLoader={setLoader}
-        isSame={isSame}
-        user={isSame ? currentUser : user}
-      />
-      {/* <ArtworkCarousel /> */}
+      <Navbar currentUser={currentUser} show={true} portfolio={false} />
+      <ArtistProfile user={isSame ? currentUser : user} isSame={isSame} />
 
       {/* Main Three Sections */}
-      <GallerySection user={isSame ? currentUser : user} isSame={isSame}/>
+      <GallerySection user={isSame ? currentUser : user} isSame={isSame} />
     </div>
   );
 };

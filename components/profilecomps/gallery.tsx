@@ -1,88 +1,93 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { motion } from "framer-motion";
+import { IUser } from "@/types/types";
+import { useSearchParams, useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import MarketPlace from "./marketplace";
 import Showcase from "./showcase";
 import Storyboard from "./storyboard";
-import { IUser } from "@/types/types";
+import { reverseTabMap, tabMap } from "./data";
 
-const tabs = [
-  { label: "Showcase", value: "showcase" },
-  { label: "Storyboard", value: "storyboard" },
-  { label: "Marketplace", value: "marketplace" },
-];
-
-type GallerySectionProps = {
-  isSame: boolean;
+interface ArtistProfileTabsProps {
   user: IUser;
-};
+  isSame: boolean;
+  className?: string;
+}
 
-const GallerySection = ({ isSame, user }: GallerySectionProps) => {
-  const [activeTab, setActiveTab] = useState("showcase");
-  const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
-  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
+const ArtistProfileTabs: React.FC<ArtistProfileTabsProps> = ({
+  user,
+  isSame,
+  className,
+}) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const tabsRef = useRef<HTMLDivElement>(null);
 
-  const updateUnderline = useCallback(() => {
-    const currentTab = tabRefs.current[activeTab];
-    if (currentTab) {
-      const { offsetLeft, offsetWidth } = currentTab;
-      setUnderlineStyle({ left: offsetLeft, width: offsetWidth });
-    }
-  }, [activeTab]);
+  const getTabFromUrl = (): string => {
+    const tabParam = searchParams.get("tab");
+    return tabMap[tabParam ?? ""] ?? "showcase";
+  };
+
+  const [tabValue, setTabValue] = useState(getTabFromUrl());
 
   useEffect(() => {
-    updateUnderline();
-    window.addEventListener("resize", updateUnderline);
-    return () => window.removeEventListener("resize", updateUnderline);
-  }, [updateUnderline]);
+    const newTab = getTabFromUrl();
+    setTabValue(newTab);
+  }, [getTabFromUrl, searchParams]);
+
+  useEffect(() => {
+    if (searchParams.get("tab") && tabsRef.current) {
+      tabsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (newTab: string) => {
+    setTabValue(newTab);
+    const queryTab = reverseTabMap[newTab] ?? "gallery";
+    router.replace(`?tab=${queryTab}`, { scroll: false });
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-2 py-8">
-      <Tabs
-        defaultValue="showcase"
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="w-full"
-      >
-        <div className="relative">
-          <TabsList className="flex w-full justify-between md:justify-evenly mb-6 relative cursor-pointer">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                ref={(el) => {
-                  tabRefs.current[tab.value] = el;
-                }}
-                className={`relative px-4 py-2 text-sm sm:text-base font-medium text-gray-600 transition-colors ${
-                  activeTab === tab.value ? "text-black font-bold" : ""
-                }`}
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
-
-            {/* Animated Underline */}
-            <motion.div
-              className="absolute bottom-0 h-[2px] bg-black"
-              animate={{
-                left: underlineStyle.left,
-                width: underlineStyle.width,
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
+    <div
+      ref={tabsRef}
+      className={`bg-white rounded-xl shadow-lg mb-8 mx-auto max-w-6xl w-full ${
+        className || ""
+      }`}
+    >
+      <Tabs value={tabValue} onValueChange={handleTabChange} className="w-full">
+        {/* Responsive Tabs List */}
+        <div className="w-full border-b border-gray-200 px-4 sm:px-6 md:px-8 overflow-x-auto">
+          <TabsList className="inline-flex flex-nowrap gap-2 sm:gap-4 bg-transparent rounded-none h-auto p-0">
+            <TabsTrigger
+              value="showcase"
+              className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-500 data-[state=active]:text-black hover:text-black transition-colors"
+            >
+              Showcase
+            </TabsTrigger>
+            <TabsTrigger
+              value="storyboard"
+              className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-500 data-[state=active]:text-black hover:text-black transition-colors"
+            >
+              Storyboard
+            </TabsTrigger>
+            <TabsTrigger
+              value="marketplace"
+              className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-500 data-[state=active]:text-black hover:text-black transition-colors"
+            >
+              Marketplace
+            </TabsTrigger>
           </TabsList>
         </div>
 
-        {/* Tab Content */}
-        <TabsContent value="showcase">
-          <Showcase user={user} isSame={isSame}/>
+        {/* Tab Contents */}
+        <TabsContent value="showcase" className="p-4 sm:p-6 md:p-8 mt-0">
+          <Showcase user={user} isSame={isSame} />
         </TabsContent>
-        <TabsContent value="storyboard">
-          <Storyboard user={user} isSame={isSame}/>
+        <TabsContent value="storyboard" className="p-4 sm:p-6 md:p-8 mt-0">
+          <Storyboard user={user} isSame={isSame} />
         </TabsContent>
-        <TabsContent value="marketplace">
+        <TabsContent value="marketplace" className="p-4 sm:p-6 md:p-8 mt-0">
           <MarketPlace />
         </TabsContent>
       </Tabs>
@@ -90,4 +95,4 @@ const GallerySection = ({ isSame, user }: GallerySectionProps) => {
   );
 };
 
-export default GallerySection;
+export default ArtistProfileTabs;

@@ -59,7 +59,7 @@ const Post = () => {
 
   return (
     <div className="font-[Helvetica]">
-      <Navbar currentUser={user} show={false} portfolio={false}/>
+      <Navbar currentUser={user} show={true} portfolio={false}/>
       <PostDescription post={post} user={user} />
     </div>
   );

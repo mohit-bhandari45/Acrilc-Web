@@ -14,6 +14,7 @@ type ShowcaseProps = {
 const Showcase = ({ isSame, user }: ShowcaseProps) => {
   const [posts, setPosts] = useState<IPost[] | null>(null);
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
+  const [imageHeights, setImageHeights] = useState<Record<string, number>>({});
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -35,6 +36,18 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Handle image load to get natural dimensions for masonry
+  const handleImageLoad = (postId: string, img: HTMLImageElement) => {
+    const aspectRatio = img.naturalHeight / img.naturalWidth;
+    const baseWidth = 300; // Base width for calculation
+    const calculatedHeight = baseWidth * aspectRatio;
+    
+    setImageHeights(prev => ({
+      ...prev,
+      [postId]: Math.max(200, Math.min(400, calculatedHeight)) // Min 200px, max 400px
+    }));
+  };
 
   const handleEdit = (postId: string) => {
     console.log("Edit", postId);
@@ -80,23 +93,32 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div 
+          className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4"
+          style={{ columnFill: 'balance' }}
+        >
           {posts.map((item: any) => (
             <div
               key={item._id}
-              className="relative overflow-hidden bg-white rounded-xl shadow-sm border border-gray-100"
+              className="relative break-inside-avoid mb-4 overflow-hidden bg-white rounded-xl shadow-sm border border-gray-100"
             >
               <Link
                 href={`/content/${item._id}`}
                 className="block w-full overflow-hidden"
               >
-                <div className="aspect-square relative w-full">
+                <div 
+                  className="relative w-full"
+                  style={{ 
+                    height: imageHeights[item._id] || 250 
+                  }}
+                >
                   <Image
                     src={item.media[0].url}
                     alt={`Artwork ${item._id}`}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    onLoad={(e) => handleImageLoad(item._id, e.target as HTMLImageElement)}
                   />
                 </div>
               </Link>

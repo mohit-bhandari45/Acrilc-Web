@@ -1,10 +1,10 @@
 "use client";
 
 import { FooterActions } from "@/components/portfolio/footeractionc";
-import ArtistAbout from "@/components/portfolio/main/about";
-import ContactSection from "@/components/portfolio/main/contact";
-import Footer from "@/components/portfolio/main/footer";
-import Gallery from "@/components/portfolio/main/gallery";
+import ArtistAbout from "@/components/portfolio/about";
+import ContactSection from "@/components/portfolio/contact";
+import Footer from "@/components/portfolio/footer";
+import Gallery from "@/components/portfolio/gallery";
 import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
 import useCurrentUser from "@/hooks/useCurrentUser";

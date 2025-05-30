@@ -208,7 +208,7 @@ const CreateContent = ({
         if (type === "post") {
           router.push(`/content/${id}`);
         } else {
-          router.push(`/profile/${user.username}`);
+          router.push(`/profile/${user.username}?tab=blog`);
         }
         toast.success(message);
       }

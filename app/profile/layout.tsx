@@ -1,6 +1,3 @@
-import Footer from "@/components/profilecomps/footer";
-
-
 export default function ProfileLayout({
   children,
 }: {
@@ -9,7 +6,7 @@ export default function ProfileLayout({
   return (
     <div className="">
       {children}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

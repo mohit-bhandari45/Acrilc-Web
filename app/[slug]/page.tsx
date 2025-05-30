@@ -2,9 +2,9 @@
 
 import api, { GET_PORTFOLIO } from "@/apis/api";
 import { FooterActions } from "@/components/portfolio/footeractionc";
-import ArtistAbout from "@/components/portfolio/main/about";
-import ContactSection from "@/components/portfolio/main/contact";
-import Gallery from "@/components/portfolio/main/gallery";
+import ArtistAbout from "@/components/portfolio/about";
+import ContactSection from "@/components/portfolio/contact";
+import Gallery from "@/components/portfolio/gallery";
 import MainLoader from "@/components/universalcomps/mainloader";
 import { IUser } from "@/types/types";
 import { useParams } from "next/navigation";

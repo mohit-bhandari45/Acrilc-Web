@@ -1,55 +1,42 @@
+"use client";
+
 import api, { ADD_Banner_PIC, ADD_PROFILE_PIC } from "@/apis/api";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import UploadService from "@/service/service";
-import { setUser } from "@/store/features/userSlice";
-import { useAppDispatch } from "@/store/hooks";
 import { IUser } from "@/types/types";
-import * as Icons from "lucide-react";
-import Image from "next/image";
+import { MapPin, Pencil } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { SetStateAction, useRef, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { FaPencilAlt } from "react-icons/fa";
-import { HashLoader } from "react-spinners";
-import { Button } from "../ui/button";
-import { defaultImages } from "@/assets/assets";
+import { GridLoader } from "react-spinners";
 
-type Props = {
-  loader?: boolean; // ✅ optional
-  setLoader: React.Dispatch<SetStateAction<boolean>>; // ✅ optional
-  isSame: boolean;
+interface ArtistProfileProps {
   user: IUser;
-};
-
-function capitalizeFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  isSame: boolean;
 }
 
-const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
-  const profileInputRef = useRef<HTMLInputElement>(null);
-  const bannerInputRef = useRef<HTMLInputElement>(null);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [bploader, setBpLoader] = useState(false);
-
-  /* Changing Images */
-  const handlerProfileEditClick = () => {
-    if (profileInputRef.current) {
-      profileInputRef.current.click();
-    }
-  };
-
-  const handleBannerEditClick = () => {
-    if (bannerInputRef.current) {
-      bannerInputRef.current.click();
-    }
-  };
+const ArtistProfile: React.FC<ArtistProfileProps> = ({
+  user,
+  isSame,
+}: ArtistProfileProps) => {
+  const [bpLoader, setBpLoader] = useState(false);
+  const [ppLoader, setPpLoader] = useState(false);
 
   const handleProfileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const profilePic = event.target.files?.[0];
-    setLoader(true);
+    setPpLoader(true);
 
     if (profilePic) {
       try {
@@ -58,7 +45,8 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
         const response = await api.post(ADD_PROFILE_PIC, { imageURL: url });
 
         if (response.status === 200) {
-          dispatch(setUser(response.data.data));
+          toast.success("Profile Pic Updated!");
+          window.location.reload();
         }
       } catch (error) {
         console.log(error);
@@ -73,6 +61,7 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const bannerPic = event.target.files?.[0];
+    console.log(bannerPic);
     setBpLoader(true);
 
     if (bannerPic) {
@@ -83,8 +72,11 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
           bannerURL: url,
         });
 
+        console.log(response.status);
+
         if (response.status === 200) {
-          dispatch(setUser(response.data.data));
+          toast.success("Banner Pic Updated!");
+          window.location.reload();
         }
       } catch (error) {
         console.log(error);
@@ -96,274 +88,300 @@ const ProfilePage = ({ loader, setLoader, isSame, user }: Props) => {
   };
 
   return (
-    <div className="bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 lg:px-8">
-      {/* Main profile content */}
-      <div className="max-w-6xl w-full mx-auto px-2 py-6 sm:py-8">
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
-          {/* Left column */}
-          <div className="w-full lg:w-2/5">
-            {/* Profile Image Section */}
-            <div className="relative rounded-t-lg overflow-hidden bg-gray-100">
-              {/* Cover Image */}
-              <div className="relative h-56 sm:h-72 lg:h-80 w-full bg-black">
-                {!user?.bannerPicture ? (
-                  <Image
-                    src={defaultImages.BANNER}
-                    alt="Banner Avatar"
-                    className="object-cover"
-                    priority
-                    fill
-                  />
-                ) : (
-                  <>
-                    {bploader ? (
-                      <HashLoader
-                        color="white"
-                        size={20}
-                        className="relative left-[50%] top-[50%]"
-                      />
-                    ) : (
-                      <Image
-                        src={user.bannerPicture!}
-                        alt="Profile Avatar"
-                        fill
-                        unoptimized
-                        className="object-cover"
-                        priority
-                      />
-                    )}
-                  </>
-                )}
-
-                {/* Edit Icon */}
-                {isSame && (
-                  <>
-                    <button
-                      onClick={handleBannerEditClick}
-                      aria-label="Edit profile picture"
-                      className="absolute top-1 right-1 z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md"
-                    >
-                      <FaPencilAlt size={13} />
-                    </button>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      ref={bannerInputRef}
-                      onChange={handleBannerChange}
-                      className="hidden"
-                    />
-                  </>
-                )}
-              </div>
-
-              {/* Profile Avatar */}
-              <div className="absolute left-4 bottom-0 transform translate-y-1/2">
-                <div className="group relative h-24 w-24 bottom-15 border-4 border-white rounded-full">
-                  <div className="overflow-hidden bg-black rounded-full h-full w-full flex justify-center items-center relative">
-                    {!user?.profilePicture ? (
-                      <Image
-                        src={defaultImages.PROFILE}
-                        alt="Profile Avatar"
-                        width={100}
-                        height={100}
-                        className="object-cover"
-                        priority
-                      />
-                    ) : (
-                      <>
-                        {loader ? (
-                          <HashLoader color="white" size={20} />
-                        ) : (
-                          <Image
-                            src={user.profilePicture}
-                            alt="Profile Avatar"
-                            fill
-                            unoptimized
-                            className="object-cover"
-                            priority
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
-                  {isSame && (
-                    <>
-                      <button
-                        onClick={handlerProfileEditClick}
-                        aria-label="Edit profile picture"
-                        className="absolute top-[-3] right-[-4] z-20 cursor-pointer p-2 bg-gray-800 text-white rounded-full hover:bg-gray-700 transition shadow-md"
-                      >
-                        <FaPencilAlt size={13} />
-                      </button>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        ref={profileInputRef}
-                        onChange={handleProfileChange}
-                        className="hidden"
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Stats Section */}
-            <div className="bg-orange-50 rounded-lg p-4 sm:p-6 flex flex-col gap-5">
-              <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
-                <div className="flex flex-col">
-                  <span className="text-gray-600 text-xs sm:text-sm">
-                    Supporters
-                  </span>
-                  <span className="font-bold text-xl sm:text-2xl">
-                    {user?.totalFollowers?.toLocaleString() || 0}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-gray-600 text-xs sm:text-sm">
-                    Supporting
-                  </span>
-                  <span className="font-bold text-xl sm:text-2xl">
-                    {user?.totalFollowing?.toLocaleString() || 0}
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-gray-600 text-xs sm:text-sm">
-                    Posts
-                  </span>
-                  <span className="font-bold text-xl sm:text-2xl">
-                    {user?.posts?.toLocaleString() || 0}
-                  </span>
-                </div>
-              </div>
-              {/* Social Links */}
-              {user.socialLinks && (
-                <>
-                  <div className="border-2 border-black opacity-40"></div>
-                  <div className="mt-2">
-                    <h3 className="text-base sm:text-lg mb-3 ml-4 font-bold">
-                      Social URLs
-                    </h3>
-                    <div className="flex flex-wrap gap-4 sm:gap-6 justify-center items-center">
-                      {Object.entries(user.socialLinks).map(
-                        ([platform, url]) => {
-                          const iconName = capitalizeFirstLetter(platform); // e.g., "github" => "Github"
-                          const IconComponent = Icons[
-                            iconName as keyof typeof Icons
-                          ] as React.FC<{ className?: string }>;
-
-                          return (
-                            <a
-                              key={platform}
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-600 hover:text-black transition"
-                            >
-                              {IconComponent ? (
-                                <IconComponent className="w-6 h-6" />
-                              ) : (
-                                <span className="capitalize underline">
-                                  {platform}
-                                </span>
-                              )}
-                            </a>
-                          );
-                        }
-                      )}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Right column */}
-          <div className="w-full lg:w-3/5">
-            {/* Artist Info */}
-            <div className="mb-6 sm:mb-8">
-              <h1 className="text-2xl sm:text-3xl font-bold mb-1">
-                {user?.fullName}
-              </h1>
-              <p className="text-gray-600 text-sm sm:text-base leading-relaxed break-words">
-                {user?.bio}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
-                {isSame ? (
-                  <>
-                    <button
-                      onClick={() => {
-                        router.push(`/profile/edit`);
-                      }}
-                      className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg"
-                    >
-                      Edit Profile
-                    </button>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(
-                          `${window.location.host}/profile/${user.username}`
-                        );
-                        toast.success("Link Copied");
-                      }}
-                      className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg"
-                    >
-                      Share Profile
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
-                      Support
-                    </button>
-                    <button className="bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-medium py-2 px-4 sm:px-6 w-full sm:w-[80%] rounded-lg">
-                      Message
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Forte Section */}
-            <div className="mb-6 sm:mb-8">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4">Forte</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                {user?.preferences?.map((category: string, index: number) => (
-                  <div
-                    key={index}
-                    className="bg-gray-100 rounded-lg p-3 sm:p-4"
-                  >
-                    <p className="text-black text-sm">{category}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Story Section */}
-            {user?.story && (
-              <div className="mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4">
-                  Story of the Artist
-                </h2>
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed break-words">
-                  {user?.story}
-                </p>
-              </div>
-            )}
-
-            {/* View Portfolio Button */}
-            <div className="mt-6 sm:mt-8">
-              <Link href={`/portfolio/${user?.username}`}>
-                <Button className="w-full bg-[#FAA21B] hover:bg-[#fa921b] cursor-pointer text-white font-bold text-lg py-6 px-6 rounded-lg">
-                  View Portfolio
-                </Button>
-              </Link>
-            </div>
+    <>
+      {(bpLoader || ppLoader) && (
+        <div className="fixed inset-0 flex flex-col gap-4 sm:gap-8 justify-center z-60 items-center bg-[#171617cc] p-4">
+          <GridLoader color="#FAA21B" size={30} speedMultiplier={1.1} className="sm:hidden" />
+          <GridLoader color="#FAA21B" size={50} speedMultiplier={1.1} className="hidden sm:block" />
+          <div className="font-bold text-lg sm:text-2xl text-white text-center">
+            {bpLoader ? "Updating Banner Pic..." : "Updating Profile Pic"}
           </div>
         </div>
+      )}
+      
+      <div className="w-full max-w-6xl mx-auto p-3 sm:p-5 mt-22 lg:mt-25">
+        <Card className="relative overflow-hidden shadow-lg mb-4 sm:mb-8 border-0">
+          {/* Banner Section */}
+          <div className="relative h-32 sm:h-40 md:h-48 rounded-t-lg overflow-hidden cursor-pointer z-10">
+            {/* Banner Background Image or Gradient */}
+            <div
+              className="w-full h-full bg-gradient-to-r from-gray-200 to-gray-300"
+              style={{
+                backgroundImage: user.bannerPicture
+                  ? `url(${user.bannerPicture})`
+                  : undefined,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            ></div>
+
+            {/* Black overlay with pencil icon */}
+            {isSame && (
+              <>
+                <div className="absolute inset-0 bg-black/50 border-white border-[0.5px] rounded-t-xl flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-20">
+                  <Pencil className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
+                    onChange={(e) => handleBannerChange(e)}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Profile Image - Responsive positioning */}
+          <div className="absolute top-16 sm:top-20 md:top-24 left-4 sm:left-8 md:left-16 w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 z-40">
+            <label className="relative cursor-pointer group w-full h-full">
+              {/* Outer border wrapper */}
+              <div className="w-full h-full rounded-full border-2 sm:border-4 border-white shadow-lg overflow-hidden relative z-40">
+                {/* Avatar and fallback */}
+                <Avatar className="w-full h-full">
+                  <AvatarImage
+                    src={user.profilePicture}
+                    alt={user.fullName}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
+                    {user.fullName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+
+                {isSame && (
+                  <>
+                    {/* Black film over the image only */}
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
+                      <Pencil className="text-white w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Profile Image Upload Input */}
+              {isSame && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleProfileChange}
+                />
+              )}
+            </label>
+          </div>
+
+          {/* Content Section */}
+          <div className="pt-12 sm:pt-16 md:pt-20 pb-4 sm:pb-6 md:pb-8">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 md:px-8">
+              {/* Profile Info Block */}
+              <div className="xl:col-span-2">
+                <Card className="h-full">
+                  <CardContent className="p-4 sm:p-6 md:p-8">
+                    <div className="space-y-4 sm:space-y-6">
+                      {/* Basic Info */}
+                      <div>
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                          {user.fullName}
+                        </h1>
+                        {user.location && (
+                          <div className="flex items-center text-gray-600 mb-3 sm:mb-4">
+                            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                            <span className="text-sm sm:text-base">{user.location}</span>
+                          </div>
+                        )}
+                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4 sm:mb-6">
+                          {user.bio}
+                        </p>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                        {isSame ? (
+                          <Link
+                            className="cursor-pointer flex-1 sm:flex-none"
+                            href={"/profile/edit"}
+                          >
+                            <Button className="w-full sm:w-auto bg-black cursor-pointer hover:bg-gray-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-200 hover:-translate-y-1">
+                              Edit Profile
+                            </Button>
+                          </Link>
+                        ) : (
+                          <Button className="w-full sm:w-auto bg-black cursor-pointer hover:bg-gray-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-200 hover:-translate-y-1">
+                            Support
+                          </Button>
+                        )}
+                        {isSame ? (
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="w-full sm:w-auto border-black cursor-pointer text-black hover:bg-gray-50 px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-200 hover:-translate-y-1"
+                              >
+                                Share Profile
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="mx-4 sm:mx-0 w-[calc(100vw-2rem)] sm:w-full max-w-md">
+                              <DialogHeader>
+                                <DialogTitle className="text-lg sm:text-xl">Share Your Profile</DialogTitle>
+                                <DialogDescription className="text-sm sm:text-base">
+                                  Choose how you&apos;d like to share this artist&apos;s
+                                  profile.
+                                </DialogDescription>
+                              </DialogHeader>
+
+                              {/* Share via Web Share API if supported */}
+                              <Button
+                                onClick={() => {
+                                  const shareData = {
+                                    title: `${user.fullName}'s Profile`,
+                                    text: "Check out this artist profile!",
+                                    url:
+                                      typeof window !== "undefined"
+                                        ? window.location.href
+                                        : "",
+                                  };
+
+                                  if (navigator.share) {
+                                    navigator
+                                      .share(shareData)
+                                      .catch((err) =>
+                                        console.error("Share failed:", err)
+                                      );
+                                  } else {
+                                    toast.error(
+                                      "Sharing is not supported on this device."
+                                    );
+                                  }
+                                }}
+                                className="w-full bg-black hover:bg-black cursor-pointer text-white rounded-lg transition-all duration-200 text-sm sm:text-base"
+                              >
+                                Share via Apps
+                              </Button>
+
+                              {/* Copy Link Option */}
+                              <Button
+                                variant="outline"
+                                onClick={() => {
+                                  const profileUrl =
+                                    typeof window !== "undefined"
+                                      ? window.location.href
+                                      : "";
+                                  navigator.clipboard.writeText(profileUrl);
+                                  toast.success("Profile link copied!");
+                                }}
+                                className="w-full mt-2 cursor-pointer text-sm sm:text-base"
+                              >
+                                Copy Link
+                              </Button>
+                            </DialogContent>
+                          </Dialog>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            className="w-full sm:w-auto border-black cursor-pointer text-black hover:bg-gray-50 px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-200 hover:-translate-y-1"
+                          >
+                            Message
+                          </Button>
+                        )}
+                      </div>
+
+                      {/* Story Section */}
+                      <div className="pt-4 sm:pt-6 border-t border-gray-100">
+                        <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
+                          Story of the Artist
+                        </h3>
+                        <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                          {user.story}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Stats and Social */}
+              <div className="space-y-4 sm:space-y-6">
+                <Card>
+                  <CardContent className="p-4 sm:p-6 md:p-8">
+                    {/* Stats */}
+                    <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
+                      <div className="text-center">
+                        <div className="text-lg sm:text-xl font-bold text-gray-900">
+                          {user.totalFollowers}
+                        </div>
+                        <div className="text-xs sm:text-sm text-gray-600">Supporters</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg sm:text-xl font-bold text-gray-900">
+                          {user.totalFollowing}
+                        </div>
+                        <div className="text-xs sm:text-sm text-gray-600">Supporting</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg sm:text-xl font-bold text-gray-900">
+                          {user.posts}
+                        </div>
+                        <div className="text-xs sm:text-sm text-gray-600">Posts</div>
+                      </div>
+                    </div>
+
+                    {/* Social Links - Commented out in original */}
+                    {/* <div className="flex justify-center gap-4 mb-8">
+                    {socialLinks.map((social, index) => (
+                      <a
+                        key={index}
+                        href={social.url}
+                        className="text-gray-600 hover:text-black transition-colors duration-200"
+                        aria-label={social.platform}
+                      >
+                        {social.icon}
+                      </a>
+                    ))}
+                  </div> */}
+
+                    {/* Forte Section - Commented out in original */}
+                    <div className="mb-6 sm:mb-8">
+                      <h3 className="text-base sm:text-lg font-bold text-center text-gray-900 mb-3 sm:mb-4">
+                        Forte
+                      </h3>
+                      <div className="flex justify-center gap-3 sm:gap-5">
+                        {/* {user.preferences && user.preferences.map((forte, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col items-center text-center bg-gray-50 rounded-lg p-3 sm:p-5 flex-1 max-w-[100px] sm:max-w-[140px]"
+                        >
+                          <div className="text-gray-600 mb-2">{forte.icon}</div>
+                          <h4 className="font-semibold text-gray-900 text-xs sm:text-sm mb-1">
+                            {forte.title}
+                          </h4>
+                          <p className="text-xs text-gray-600">
+                            {forte.description}
+                          </p>
+                        </div>
+                      ))} */}
+                      </div>
+                    </div>
+
+                    {/* Portfolio Button */}
+                    <div className="text-center">
+                      <Link href={`/portfolio/${user?.username}`}>
+                        <Button className="w-full sm:w-auto bg-black cursor-pointer hover:bg-gray-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg text-sm sm:text-base lg:text-lg font-semibold transition-all duration-200 hover:-translate-y-1">
+                          View Portfolio
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </Card>
       </div>
-    </div>
+    </>
   );
 };
 
-export default ProfilePage;
+export default ArtistProfile;

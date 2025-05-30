@@ -3,7 +3,7 @@ import axios from "axios";
 const IMGBB_API_KEY = "34cb3d0fe2362f6b0dcf3fcd9e8860b6";
 
 type ImgBBResponse = {
-    data:{
+    data: {
         url: string,
         display_url: string,
         size: number,
@@ -12,22 +12,32 @@ type ImgBBResponse = {
         };
     };
     success: boolean;
-    status: boolean
+    status: number
 }
 
-class UploadService{
-    static async uploadToImgBB(file: File): Promise<string>{
+class UploadService {
+    static async uploadToImgBB(file: File): Promise<string> {
         const formdata = new FormData();
         formdata.append("image", file);
 
-        const response = await axios.post<ImgBBResponse>(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, formdata);
+        try {
+            const response = await axios.post<ImgBBResponse>(
+                `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,
+                formdata
+            );
 
-        if(!response.data.success){
-            throw new Error("Upload failed");
+            if (!response.data.success) {
+                console.error("Upload failed response:", response.data);
+                throw new Error("Upload failed");
+            }
+
+            return response.data.data.url;
+        } catch (error: any) {
+            console.error("Error uploading to ImgBB:", error?.response?.data || error.message);
+            throw error;
         }
-
-        return response.data.data.url;
     }
+
 }
 
 export default UploadService;
