@@ -10,7 +10,7 @@ const Signup = () => {
   const { loader, setLoader } = useProfileRedirect();
 
   if (loader) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   if (!loader) {

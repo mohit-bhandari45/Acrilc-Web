@@ -3,7 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IUser } from "@/types/types";
 import { useSearchParams, useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import MarketPlace from "./marketplace";
 import Showcase from "./showcase";
 import Storyboard from "./storyboard";
@@ -24,10 +24,10 @@ const ArtistProfileTabs: React.FC<ArtistProfileTabsProps> = ({
   const router = useRouter();
   const tabsRef = useRef<HTMLDivElement>(null);
 
-  const getTabFromUrl = (): string => {
+  const getTabFromUrl = useCallback((): string => {
     const tabParam = searchParams.get("tab");
     return tabMap[tabParam ?? ""] ?? "showcase";
-  };
+  }, [searchParams]);
 
   const [tabValue, setTabValue] = useState(getTabFromUrl());
 

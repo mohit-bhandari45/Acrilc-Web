@@ -61,7 +61,7 @@ export default function UsernameChooser() {
   };
 
   if (loader) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   return (

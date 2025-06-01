@@ -54,7 +54,7 @@ export default function ProfilePicPage() {
   };
 
   if (loader) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   } else {
     return (
       <div className="flex justify-center items-center min-h-screen px-4 font-sans bg-orange-50 relative overflow-hidden bg-gradient-to-br from-orange-50 via-yellow-50 to-amber-50">

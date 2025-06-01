@@ -54,10 +54,14 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
     setMenuOpen(null);
   };
 
-  const handleDelete = (postId: string) => {
-    console.log("Delete", postId);
-    setMenuOpen(null);
-  };
+  // const handleDelete = async () => {
+    // const res = await api.delete(`${DELETE_POST}/${post?._id}`);
+
+    // if (res.status === 200) {
+    //   router.push(`/profile/${user.username}`);
+    //   toast.success("Post Deleted Successfully");
+    // }
+  // };
 
   if (!posts) {
     return (
@@ -176,7 +180,7 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
                       </button>
                       <button
                         className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100 flex items-center gap-2"
-                        onClick={() => handleDelete(item._id)}
+                        // onClick={() => handleDelete(item._id)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

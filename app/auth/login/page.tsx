@@ -10,7 +10,7 @@ const Login = () => {
   const { loader, setLoader } = useProfileRedirect();
 
   if (loader) {
-    return <MainLoader />;
+   return <MainLoader msg="Loading, please wait"/>;
   }
 
   return (

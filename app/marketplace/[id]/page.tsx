@@ -92,7 +92,7 @@ const MarketContent = () => {
   };
 
   if (!currentUser || loading || !project) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   return (

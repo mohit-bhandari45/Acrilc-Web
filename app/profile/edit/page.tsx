@@ -359,6 +359,7 @@ export default function ProfileEditPage() {
                             <SelectItem className="cursor-pointer" value="YouTube">YouTube</SelectItem>
                             <SelectItem className="cursor-pointer" value="TikTok">TikTok</SelectItem>
                             <SelectItem className="cursor-pointer" value="Pinterest">Pinterest</SelectItem>
+                            <SelectItem className="cursor-pointer" value="Behance">Behance</SelectItem>
                           </SelectContent>
                         </Select>
 

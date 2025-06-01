@@ -9,24 +9,40 @@ import HowItWorksMain from "@/components/landingpagecomps/mainhow";
 import MobileHeaderHero from "@/components/landingpagecomps/mobilenavhero";
 import HeaderHero from "@/components/landingpagecomps/navHero";
 import TestimonialsSection from "@/components/landingpagecomps/testimonial";
+import MainLoader from "@/components/universalcomps/mainloader";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { useEffect, useState } from "react";
 
 const Main = () => {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setToken(token);
+  }, []);
+
+  const { currentUser, loading } = useCurrentUser({ token });
+
+  if (loading) {
+    return <MainLoader msg="Loading, please wait"/>;
+  }
+
   return (
     <div className="min-h-screen">
       {/* Desktop Header and Hero */}
       <div className="hidden md:block">
-        <HeaderHero />
+        <HeaderHero user={currentUser} />
       </div>
 
       {/* Mobile Header and Hero */}
-      <MobileHeaderHero />
-      <FeaturesSection/>
-      <TestimonialsSection/>
-      <CompareSection/>
-      <HowItWorksMain/>
-      <FeaturedArtworks/>
-      <CtaSection/>
-      <Footer/>
+      <MobileHeaderHero user={currentUser} />
+      <FeaturesSection />
+      <TestimonialsSection />
+      <CompareSection />
+      <HowItWorksMain />
+      <FeaturedArtworks />
+      <CtaSection />
+      <Footer />
     </div>
   );
 };

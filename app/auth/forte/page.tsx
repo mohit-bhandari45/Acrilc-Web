@@ -45,7 +45,7 @@ export default function FortePage() {
   };
 
   if (loader) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   if (!loader) {

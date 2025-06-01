@@ -41,7 +41,7 @@ const Create = () => {
   }, [dispatch, router]);
 
   if (!user) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   return (

@@ -44,7 +44,7 @@ const CreateContent = ({
   const user = useAppSelector((state) => state.user.user)!;
   const [loader, setLoader] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const MAX_IMAGES = 5;
+  const MAX_IMAGES = 1;
 
   /*Content */
   const [images, setImages] = useState<File[]>([]);

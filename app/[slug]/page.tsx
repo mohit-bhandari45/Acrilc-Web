@@ -40,7 +40,7 @@ const CustomPortfolio = () => {
   }, [params.slug]);
 
   if (loading || !user) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   return (

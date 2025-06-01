@@ -56,7 +56,7 @@ const Profile = () => {
 
   /* Comps */
   if (currUserLoading || userByUsernameLoading || !user || !currentUser) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   return (

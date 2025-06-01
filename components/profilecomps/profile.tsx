@@ -18,6 +18,16 @@ import { MapPin, Pencil } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import {
+  FaBehance,
+  FaFacebook,
+  FaInstagram,
+  FaLink,
+  FaLinkedin,
+  FaPinterest,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa";
 import { GridLoader } from "react-spinners";
 
 interface ArtistProfileProps {
@@ -86,18 +96,44 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
       }
     }
   };
-  
+
+  const getIcon = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case "instagram":
+        return <FaInstagram />;
+      case "twitter":
+        return <FaTwitter />;
+      case "linkedin":
+        return <FaLinkedin />;
+      case "facebook":
+        return <FaFacebook />;
+      case "youtube":
+        return <FaYoutube />;
+      case "pinterest":
+        return <FaPinterest />;
+      case "behance":
+        return <FaBehance />;
+      default:
+        return <FaLink />;
+    }
+  };
+
   return (
     <>
       {(bpLoader || ppLoader) && (
         <div className="fixed inset-0 flex flex-col gap-4 sm:gap-8 justify-center z-60 items-center bg-[#171617cc] p-4">
-          <GridLoader color="#FAA21B" size={50} speedMultiplier={1.1} className="hidden sm:block" />
+          <GridLoader
+            color="#FAA21B"
+            size={50}
+            speedMultiplier={1.1}
+            className="hidden sm:block"
+          />
           <div className="font-bold text-lg sm:text-2xl text-white text-center">
             {bpLoader ? "Updating Banner Pic..." : "Updating Profile Pic..."}
           </div>
         </div>
       )}
-      
+
       <div className="w-full max-w-6xl mx-auto p-3 sm:p-5 mt-22 lg:mt-25">
         <Card className="relative overflow-hidden shadow-lg mb-4 sm:mb-8 border-0">
           {/* Banner Section */}
@@ -188,7 +224,9 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                         {user.location && (
                           <div className="flex items-center text-gray-600 mb-3 sm:mb-4">
                             <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                            <span className="text-sm sm:text-base">{user.location}</span>
+                            <span className="text-sm sm:text-base">
+                              {user.location}
+                            </span>
                           </div>
                         )}
                         <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4 sm:mb-6">
@@ -224,10 +262,12 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                             </DialogTrigger>
                             <DialogContent className="mx-4 sm:mx-0 w-[calc(100vw-2rem)] sm:w-full max-w-md">
                               <DialogHeader>
-                                <DialogTitle className="text-lg sm:text-xl">Share Your Profile</DialogTitle>
+                                <DialogTitle className="text-lg sm:text-xl">
+                                  Share Your Profile
+                                </DialogTitle>
                                 <DialogDescription className="text-sm sm:text-base">
-                                  Choose how you&apos;d like to share this artist&apos;s
-                                  profile.
+                                  Choose how you&apos;d like to share this
+                                  artist&apos;s profile.
                                 </DialogDescription>
                               </DialogHeader>
 
@@ -311,56 +351,86 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                         <div className="text-lg sm:text-xl font-bold text-gray-900">
                           {user.totalFollowers}
                         </div>
-                        <div className="text-xs sm:text-sm text-gray-600">Supporters</div>
+                        <div className="text-xs sm:text-sm text-gray-600">
+                          Supporters
+                        </div>
                       </div>
                       <div className="text-center">
                         <div className="text-lg sm:text-xl font-bold text-gray-900">
                           {user.totalFollowing}
                         </div>
-                        <div className="text-xs sm:text-sm text-gray-600">Supporting</div>
+                        <div className="text-xs sm:text-sm text-gray-600">
+                          Supporting
+                        </div>
                       </div>
                       <div className="text-center">
                         <div className="text-lg sm:text-xl font-bold text-gray-900">
                           {user.posts}
                         </div>
-                        <div className="text-xs sm:text-sm text-gray-600">Posts</div>
+                        <div className="text-xs sm:text-sm text-gray-600">
+                          Posts
+                        </div>
                       </div>
                     </div>
 
                     {/* Social Links - Commented out in original */}
-                    {/* <div className="flex justify-center gap-4 mb-8">
-                    {socialLinks.map((social, index) => (
-                      <a
-                        key={index}
-                        href={social.url}
-                        className="text-gray-600 hover:text-black transition-colors duration-200"
-                        aria-label={social.platform}
-                      >
-                        {social.icon}
-                      </a>
-                    ))}
-                  </div> */}
+                    <div className="flex justify-center gap-4 mb-8">
+                      {Object.entries(user.socialLinks).map(
+                        ([platform, url], index) => (
+                          <a
+                            key={index}
+                            href={url}
+                            className="text-gray-600 hover:text-black transition-colors duration-200"
+                            aria-label={platform}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {getIcon(platform)}
+                          </a>
+                        )
+                      )}
+                    </div>
 
                     {/* Forte Section - Commented out in original */}
                     <div className="mb-6 sm:mb-8">
                       <h3 className="text-base sm:text-lg font-bold text-center text-gray-900 mb-3 sm:mb-4">
                         Forte
                       </h3>
-                      <div className="flex justify-center gap-3 sm:gap-5">
-                        {/* {user.preferences && user.preferences.map((forte, index) => (
-                        <div
-                          key={index}
-                          className="flex flex-col items-center text-center bg-gray-50 rounded-lg p-3 sm:p-5 flex-1 max-w-[100px] sm:max-w-[140px]"
-                        >
-                          <div className="text-gray-600 mb-2">{forte.icon}</div>
-                          <h4 className="font-semibold text-gray-900 text-xs sm:text-sm mb-1">
-                            {forte.title}
-                          </h4>
-                          <p className="text-xs text-gray-600">
-                            {forte.description}
-                          </p>
-                        </div>
-                      ))} */}
+                      <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+                        {user.preferences &&
+                          user.preferences.map((forte, index) => (
+                            <div
+                              key={index}
+                              className="group relative flex flex-col items-center text-center bg-gradient-to-br from-white to-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-w-[90px] max-w-[120px] sm:min-w-[110px] sm:max-w-[140px]"
+                            >
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                                <path d="M2 2l7.586 7.586" />
+                                <circle cx="11" cy="11" r="2" />
+                              </svg>
+                              {/* Subtle glow effect */}
+                              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/0 to-indigo-400/0 group-hover:from-blue-400/10 group-hover:to-indigo-400/10 transition-all duration-300"></div>
+
+                              {/* Skill Name */}
+                              <h4 className="font-semibold text-gray-800 text-xs sm:text-sm leading-tight group-hover:text-gray-900 transition-colors duration-300">
+                                {forte}
+                              </h4>
+
+                              {/* Subtle accent line */}
+                              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full"></div>
+                            </div>
+                          ))}
                       </div>
                     </div>
 

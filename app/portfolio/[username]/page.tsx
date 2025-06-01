@@ -52,7 +52,7 @@ const Portfolio = () => {
 
   /* Comps */
   if (currUserLoading || userByUsernameLoading) {
-    return <MainLoader />;
+    return <MainLoader msg="Loading, please wait"/>;
   }
 
   // const partnerships = [
