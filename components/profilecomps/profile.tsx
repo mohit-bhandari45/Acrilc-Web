@@ -374,22 +374,24 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                     </div>
 
                     {/* Social Links - Commented out in original */}
-                    <div className="flex justify-center gap-4 mb-8">
-                      {Object.entries(user.socialLinks).map(
-                        ([platform, url], index) => (
-                          <a
-                            key={index}
-                            href={url}
-                            className="text-gray-600 hover:text-black transition-colors duration-200"
-                            aria-label={platform}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {getIcon(platform)}
-                          </a>
-                        )
-                      )}
-                    </div>
+                    {user?.socialLinks && (
+                      <div className="flex justify-center gap-4 mb-8">
+                        {Object.entries(user.socialLinks).map(
+                          ([platform, url], index) => (
+                            <a
+                              key={index}
+                              href={url}
+                              className="text-gray-600 hover:text-black transition-colors duration-200"
+                              aria-label={platform}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {getIcon(platform)}
+                            </a>
+                          )
+                        )}
+                      </div>
+                    )}
 
                     {/* Forte Section - Commented out in original */}
                     <div className="mb-6 sm:mb-8">
