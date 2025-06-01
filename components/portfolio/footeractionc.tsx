@@ -97,6 +97,8 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
     }
   };
 
+  console.log(user);
+
   return (
     <>
       {isSame && (
@@ -175,7 +177,7 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
                   className="underline"
                   rel="noopener noreferrer"
                 >
-                  Link{user.portfolioURL}
+                  Link
                 </a>
               </h2>
               <button

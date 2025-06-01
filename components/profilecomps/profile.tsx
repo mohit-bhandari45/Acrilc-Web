@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import UploadService from "@/service/service";
 import { IUser } from "@/types/types";
-import { MapPin, Pencil } from "lucide-react";
+import { Camera, MapPin } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -154,7 +154,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
             {isSame && (
               <>
                 <div className="absolute inset-0 bg-black/50 border-white border-[0.5px] rounded-t-xl flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-20">
-                  <Pencil className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                  <Camera className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                   <input
                     type="file"
                     accept="image/*"
@@ -190,7 +190,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                   <>
                     {/* Black film over the image only */}
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50">
-                      <Pencil className="text-white w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                      <Camera className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                     </div>
                   </>
                 )}

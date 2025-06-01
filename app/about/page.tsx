@@ -1,122 +1,602 @@
-import { Card } from "@/components/ui/card";
-import { FC } from "react";
-import { teamMembers } from "./data";
-import Image from "next/image";
+"use client";
 
-interface TeamMemberProps {
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Brush,
+  GalleryHorizontal,
+  Globe,
+  Handshake,
+  Heart,
+  HeartHandshake,
+  Lightbulb,
+  MessageCircle,
+  Palette,
+  Scissors,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+interface TeamMember {
   name: string;
   role: string;
-  description: string[];
-  profileImage: string;
+  bio: string;
+  avatar: string;
 }
 
-const TeamMember: FC<TeamMemberProps> = ({
-  name,
-  role,
-  description,
-  profileImage,
-}) => (
-  <Card className="bg-white rounded-xl overflow-hidden shadow-lg mb-12 transform transition-all duration-300 hover:shadow-xl cursor-pointer">
-    <div className="flex flex-col md:flex-row justify-center items-center px-5">
-      <div className="md:w-1/3 bg-[#ffa20021] rounded-4xl">
-        <div className="p-8 flex flex-col items-center">
-          <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-orange-400 mb-6 shadow-md transform transition-transform duration-300 hover:scale-105">
-            <Image
-              width={100}
-              height={100}
-              src={profileImage}
-              alt={name}
-              className="w-full h-full object-cover object-top rounded-full"
-            />
-          </div>
-          <h2 className="text-2xl font-bold text-center text-gray-800">
-            {name}
-          </h2>
-          <p className="text-[#FAA21B] font-semibold text-lg text-center mt-1">
-            {role}
-          </p>
-          <div className="mt-4 flex space-x-3">
-            <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white hover:bg-orange-600 cursor-pointer transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
-              </svg>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white hover:bg-orange-600 cursor-pointer transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
-              </svg>
-            </div>
-            <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white hover:bg-orange-600 cursor-pointer transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="md:w-2/3 p-8">
-        <div className="space-y-4">
-          {description.map((paragraph, index) => (
-            <p key={index} className="text-gray-700 leading-relaxed">
-              {paragraph}
-            </p>
-          ))}
-        </div>
+interface ValueCard {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+interface ContentBlock {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+const AboutAcrilc = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const sectionsRef = useRef<(HTMLElement | null)[]>([]);
+
+  const teamMembers: TeamMember[] = [
+    {
+      name: "Sambit",
+      role: "Founder & CEO",
+      bio: "Doesn't just start companies, he starts conversations that scale. Born in West Bengal with a deep love for culture, he saw what happens when art gets lost in modern noise. Acrilc is his quiet rebellion turned ecosystem for artists.",
+      avatar: "S",
+    },
+    {
+      name: "Joydip",
+      role: "Managing Director",
+      bio: "Physiotherapist by profession, artist by passion. He and Sambit spent weeks in Bengal's lanes, listening to creators and understanding what talent goes unnoticed. That journey shaped how Acrilc works today.",
+      avatar: "J",
+    },
+    {
+      name: "Mohit",
+      role: "CTO",
+      bio: "Makes tech feel less like a machine and more like it's working with you. He quietly builds Acrilc's backbone — fast, secure, and ready to grow with every artist who joins.",
+      avatar: "M",
+    },
+    {
+      name: "Sanpreet",
+      role: "Chief Communication Officer",
+      bio: "The bridge between what we say and how people feel it. Sharp with words, soft with people — she doesn't just craft communication, she builds connection.",
+      avatar: "S",
+    },
+    {
+      name: "Avantika",
+      role: "Chief Quality Officer",
+      bio: "Doesn't just review art — she lives it. An artist herself, she brings deep understanding of the creative process into every decision, ensuring what leaves Acrilc reflects honest, intentional art.",
+      avatar: "A",
+    },
+    {
+      name: "Amit",
+      role: "Software Developer",
+      bio: "Turns complex problems into elegant solutions. With a keen eye for detail and a passion for clean code, he crafts the digital experiences that make Acrilc feel intuitive and seamless for artists and art lovers alike.",
+      avatar: "A",
+    },
+  ];
+
+  const values: ValueCard[] = [
+    {
+      icon: <Palette className="w-16 h-16" />,
+      title: "Creative Integrity",
+      description:
+        "We respect the creative process and never compromise artistic vision for commercial interests.",
+    },
+    {
+      icon: <HeartHandshake className="w-16 h-16" />,
+      title: "Community First",
+      description:
+        "Our platform exists to serve artists and foster genuine connections within the creative community.",
+    },
+    {
+      icon: <ShieldCheck className="w-16 h-16" />,
+      title: "Privacy Respected",
+      description:
+        "Your art, your data, your choice. We believe in transparency and respect for privacy.",
+    },
+  ];
+
+  const visionContent: ContentBlock[] = [
+    {
+      icon: <Users className="w-10 h-10" />,
+      title: "Mentorship & Growth",
+      description:
+        "Connect with established artists, find mentors, share knowledge. We believe in lifting each other up, not competing for attention.",
+    },
+    {
+      icon: <Globe className="w-10 h-10" />,
+      title: "Local & Global",
+      description:
+        "From the lanes of Bengal to galleries worldwide, we celebrate art in all its forms and origins. Your local story matters as much as any trending topic.",
+    },
+  ];
+
+  const philosophyContent: ContentBlock[] = [
+    {
+      icon: <Heart className="w-10 h-10" />,
+      title: "Art First",
+      description:
+        'Every decision we make starts with one question: "What\'s best for the art?" Not the algorithm, not the metrics, not the trends. The art.',
+    },
+    {
+      icon: <Users className="w-10 h-10" />,
+      title: "Community Driven",
+      description:
+        "We're not just building a platform; we're nurturing a community where artists can grow, collaborate, and thrive together.",
+    },
+  ];
+
+  const communityContent: ContentBlock[] = [
+    {
+      icon: <MessageCircle className="w-10 h-10" />,
+      title: "Real Conversations",
+      description:
+        "No bots, no automated responses. Just real people having real conversations about art, creativity, and growth.",
+    },
+    {
+      icon: <Handshake className="w-10 h-10" />,
+      title: "Mutual Support",
+      description:
+        "From sharing techniques to collaborating on projects, our community thrives on the principle of lifting each other up.",
+    },
+    {
+      icon: <Lightbulb className="w-10 h-10" />,
+      title: "Continuous Learning",
+      description:
+        "Every artist brings unique perspectives and skills. We create spaces for knowledge sharing and skill development.",
+    },
+  ];
+
+  useEffect(() => {
+    setIsLoaded(true);
+
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+
+    sectionsRef.current.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    // Parallax effect for hero
+    const handleScroll = () => {
+      if (heroRef.current) {
+        const scrolled = window.pageYOffset;
+        heroRef.current.style.transform = `translateY(${scrolled * 0.5}px)`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
+  }, []);
+
+  const FloatingIcon = ({
+    icon,
+    className,
+  }: {
+    icon: React.ReactNode;
+    className: string;
+  }) => (
+    <div className={`absolute animate-float ${className}`}>
+      <div className="text-5xl text-yellow-500 opacity-60 drop-shadow-lg">
+        {icon}
       </div>
     </div>
-  </Card>
-);
+  );
 
-const AcrilcTeamPage: FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-orange-50 font-[Helvetica]">
-      <div className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-800 mb-4">Our Team</h1>
-          <div className="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Meet the talented professionals behind Acrilc&apos;s success. Our diverse
-            team brings together expertise from various fields to deliver
-            exceptional results.
-          </p>
+    <div
+      className={`min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 transition-opacity duration-1000 ${
+        isLoaded ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      {/* Hero Section */}
+      <section
+        ref={heroRef}
+        className="relative min-h-screen flex items-center justify-center text-center overflow-hidden"
+      >
+        {/* YouTube Video Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <iframe
+            className="w-full h-full object-cover"
+            src="https://www.youtube.com/embed/3TIzu02vJIo?autoplay=1&mute=1&loop=1&controls=0&playlist=3TIzu02vJIo&modestbranding=1&showinfo=0"
+            title="YouTube video background"
+            frameBorder="0"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          ></iframe>
         </div>
+        <div className="absolute inset-0 bg-black/50 backdrop-brightness-75 z-10" />
 
-        {/* Team Section */}
-        <div className="mb-12">
-          <div className="space-y-12">
-            {teamMembers.map((member, index) => (
-              <TeamMember
+        {/* Floating Art Elements */}
+        <FloatingIcon
+          icon={<Palette />}
+          className="top-[15%] left-[10%] animate-delay-0 z-20"
+        />
+        <FloatingIcon
+          icon={<Brush />}
+          className="top-[25%] right-[15%] animate-delay-1000 z-20"
+        />
+        <FloatingIcon
+          icon={<Scissors />}
+          className="bottom-[20%] left-[15%] animate-delay-2000 z-20"
+        />
+
+        {/* Hero Content */}
+        <div className="relative z-30 max-w-4xl mx-auto px-4">
+          <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-yellow-400 to-white bg-clip-text text-transparent animate-glow">
+            About Acrilc
+          </h1>
+          <p className="text-xl md:text-2xl text-amber-50/90 max-w-2xl mx-auto mb-8 leading-relaxed">
+            Where artists find their voice, and art finds its home.
+          </p>
+          <div className="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/40 px-6 py-3 rounded-full backdrop-blur-md text-yellow-400 animate-bounce-slow">
+            <Heart className="w-4 h-4" />
+            <span>Celebrating Traditional Artisans</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Vision Section */}
+      <section
+        ref={(el) => {
+          sectionsRef.current[0] = el;
+        }}
+        className="py-20 md:py-32 opacity-0 translate-y-12 bg-white transition-all duration-1000 animate-on-scroll"
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-800 via-orange-600 to-teal-800 bg-clip-text text-transparent">
+              Our Vision
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              We believe art shouldn&apos;t be confined by algorithms or
+              corporate noise. It deserves a space that breathes, evolves, and
+              honors the creative spirit.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {visionContent.map((item, index) => (
+              <Card
                 key={index}
-                name={member.name}
-                role={member.role}
-                description={member.description}
-                profileImage={member.profileImage}
-              />
+                className="group hover:scale-105 transition-all duration-500 hover:shadow-2xl border-yellow-200/50 bg-white/90 backdrop-blur-sm"
+              >
+                <CardContent className="p-8">
+                  <div className="text-orange-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-slate-800">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {item.description}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Philosophy Section */}
+      <section
+        ref={(el) => {
+          sectionsRef.current[0] = el;
+        }}
+        className="py-20 md:py-32 bg-gradient-to-r from-amber-50 to-orange-50 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-800 via-orange-600 to-teal-800 bg-clip-text text-transparent">
+              Our Philosophy
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              We believe in the power of art to transform lives and communities.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {philosophyContent.map((item, index) => (
+              <Card
+                key={index}
+                className="group hover:scale-105 transition-all duration-500 hover:shadow-2xl border-yellow-200/50 bg-white/90 backdrop-blur-sm"
+              >
+                <CardContent className="p-8">
+                  <div className="text-orange-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-slate-800">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {item.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Manifesto Quote */}
+      <section className="py-20 md:py-32 bg-gradient-to-r from-red-900 via-teal-800 to-slate-900 text-white text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-32 h-32 bg-yellow-500 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-orange-500 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-teal-500 rounded-full blur-3xl" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4">
+          <blockquote className="text-3xl md:text-5xl font-serif font-normal mb-8 leading-tight">
+            &quot;We don&apos;t build for users, we build with artists.&quot;
+          </blockquote>
+          <p className="text-xl text-yellow-400">— The Acrilc Manifesto</p>
+        </div>
+      </section>
+
+      {/* Community Matters Section */}
+      <section
+        ref={(el) => {
+          sectionsRef.current[0] = el;
+        }}
+        className="py-20 md:py-32 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-800 via-orange-600 to-teal-800 bg-clip-text text-transparent">
+              Community Matters
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Because art isn&apos;t just about creating—it&apos;s about
+              connecting.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {communityContent.map((item, index) => (
+              <Card
+                key={index}
+                className="group hover:scale-105 transition-all duration-500 hover:shadow-2xl border-yellow-200/50 bg-white/90 backdrop-blur-sm"
+              >
+                <CardContent className="p-8">
+                  <div className="text-orange-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-slate-800">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {item.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section
+        ref={(el) => {
+          sectionsRef.current[0] = el;
+        }}
+        className="py-20 md:py-32 bg-gradient-to-r from-amber-50 to-orange-50 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-800 via-orange-600 to-teal-800 bg-clip-text text-transparent">
+              Our Values
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {values.map((value, index) => (
+              <Card
+                key={index}
+                className="group text-center p-8 hover:scale-105 transition-all duration-500 hover:shadow-2xl border-yellow-200/50 bg-white/90 backdrop-blur-sm relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-conic from-yellow-400 via-orange-500 to-teal-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+                <CardContent className="relative z-10">
+                  <div className="text-orange-600 mb-8 flex justify-center group-hover:scale-110 transition-transform duration-300">
+                    {value.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-slate-800">
+                    {value.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {value.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section
+        ref={(el) => {
+          sectionsRef.current[0] = el;
+        }}
+        id="team"
+        className="py-20 md:py-32 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-red-800 via-orange-600 to-teal-800 bg-clip-text text-transparent">
+              Behind Acrilc
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Meet the humans who believe in art&apos;s power to change the
+              world.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {teamMembers.map((member, index) => (
+              <Card
+                key={index}
+                className="text-center group hover:scale-105 transition-all duration-500 hover:shadow-2xl border-yellow-200/50 bg-white/90 backdrop-blur-sm relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-orange-500/10 to-teal-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <CardContent className="p-8 relative z-10">
+                  <div className="w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    {member.avatar}
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-slate-800 group-hover:text-orange-600 transition-colors duration-300">
+                    {member.name}
+                  </h3>
+                  <p className="text-orange-600 mb-4 font-medium group-hover:text-teal-700 transition-colors duration-300">
+                    {member.role}
+                  </p>
+                  <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                    {member.bio}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 md:py-32 bg-gradient-to-r from-slate-900 via-teal-800 to-red-900 text-white text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-yellow-500 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-orange-500 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/2 left-1/4 w-48 h-48 bg-teal-500 rounded-full blur-3xl animate-pulse" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4">
+          <h2 className="text-4xl md:text-6xl font-bold mb-8">
+            Ready to Create?
+          </h2>
+          <p className="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed">
+            Join a community that celebrates your art for what it is, not how
+            many likes it gets.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-orange-600 hover:to-yellow-500 text-white px-8 py-8 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[280px] rounded-full"
+            >
+              <Brush className="w-5 h-5 mr-2" />
+              Start Creating Portfolio
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="bg-transparent text-white hover:bg-white hover:text-slate-900 px-8 py-8 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[280px]"
+            >
+              <GalleryHorizontal className="w-5 h-5 mr-2" />
+              Explore Galleries
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-20px) rotate(5deg);
+          }
+        }
+
+        @keyframes glow {
+          0%,
+          100% {
+            filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.5));
+          }
+          50% {
+            filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.8));
+          }
+        }
+
+        @keyframes gradient-shift {
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          25% {
+            background-position: 100% 50%;
+          }
+          50% {
+            background-position: 100% 100%;
+          }
+          75% {
+            background-position: 0% 100%;
+          }
+        }
+
+        @keyframes bounce-slow {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-glow {
+          animation: glow 4s ease-in-out infinite alternate;
+        }
+
+        .animate-gradient-shift {
+          background-size: 400% 400%;
+          animation: gradient-shift 8s ease-in-out infinite;
+        }
+
+        .animate-bounce-slow {
+          animation: bounce-slow 3s ease-in-out infinite;
+        }
+
+        .animate-delay-0 {
+          animation-delay: 0s;
+        }
+        .animate-delay-1000 {
+          animation-delay: 2s;
+        }
+        .animate-delay-2000 {
+          animation-delay: 4s;
+        }
+
+        .animate-on-scroll.animate-in {
+          opacity: 1 !important;
+          transform: translateY(0) !important;
+        }
+
+        @media (max-width: 768px) {
+          .floating-art {
+            display: none;
+          }
+        }
+      `}</style>
     </div>
   );
 };
 
-export default AcrilcTeamPage;
+export default AboutAcrilc;
