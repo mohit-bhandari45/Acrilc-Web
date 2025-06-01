@@ -38,7 +38,11 @@ const Profile = () => {
     username,
   });
   const { currentUser, loading: currUserLoading } = useCurrentUser({ token });
-  dispatch(setUser(currentUser!));
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(setUser(currentUser));
+    }
+  }, [currentUser, dispatch]);
 
   useEffect(() => {
     localStorage.removeItem("username");
@@ -56,7 +60,7 @@ const Profile = () => {
 
   /* Comps */
   if (currUserLoading || userByUsernameLoading || !user || !currentUser) {
-    return <MainLoader msg="Loading, please wait"/>;
+    return <MainLoader msg="Loading, please wait" />;
   }
 
   return (
