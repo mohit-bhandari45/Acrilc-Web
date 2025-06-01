@@ -394,47 +394,44 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                     )}
 
                     {/* Forte Section - Commented out in original */}
-                    <div className="mb-6 sm:mb-8">
-                      <h3 className="text-base sm:text-lg font-bold text-center text-gray-900 mb-3 sm:mb-4">
-                        Forte
-                      </h3>
-                      <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
-                        {user.preferences &&
-                          user.preferences.map((forte, index) => (
-                            <div
-                              key={index}
-                              className="group relative flex flex-col items-center text-center bg-gradient-to-br from-white to-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-w-[90px] max-w-[120px] sm:min-w-[110px] sm:max-w-[140px]"
-                            >
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              >
-                                <path d="M12 19l7-7 3 3-7 7-3-3z" />
-                                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
-                                <path d="M2 2l7.586 7.586" />
-                                <circle cx="11" cy="11" r="2" />
-                              </svg>
-                              {/* Subtle glow effect */}
-                              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400/0 to-indigo-400/0 group-hover:from-blue-400/10 group-hover:to-indigo-400/10 transition-all duration-300"></div>
+                   {/* Forte Section */}
+<div className="mb-6 sm:mb-8">
+  <h3 className="text-base sm:text-lg font-bold text-center text-gray-900 mb-3 sm:mb-4">
+    Forte
+  </h3>
+  <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8">
+    {user.preferences &&
+      user.preferences.map((forte, index) => (
+        <div
+          key={index}
+          className="group relative flex flex-col items-center text-center bg-gradient-to-br from-white to-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 w-[110px]"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 19l7-7 3 3-7 7-3-3z" />
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+            <path d="M2 2l7.586 7.586" />
+            <circle cx="11" cy="11" r="2" />
+          </svg>
 
-                              {/* Skill Name */}
-                              <h4 className="font-semibold text-gray-800 text-xs sm:text-sm leading-tight group-hover:text-gray-900 transition-colors duration-300">
-                                {forte}
-                              </h4>
+          <h4 className="font-semibold text-gray-800 text-xs sm:text-sm leading-tight group-hover:text-gray-900 transition-colors duration-300 mt-2">
+            {forte}
+          </h4>
 
-                              {/* Subtle accent line */}
-                              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full"></div>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-full"></div>
+        </div>
+      ))}
+  </div>
+</div>
 
                     {/* Portfolio Button */}
                     <div className="text-center">

@@ -4,6 +4,7 @@ import api, { GET_OWN_PROFILE, UPDATE_PROFILE } from "@/apis/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import {
   Select,
   SelectContent,
@@ -142,9 +143,11 @@ export default function ProfileEditPage() {
       <header className="bg-white dark:bg-gray-800 shadow">
         <div className="container mx-auto px-4 py-4 flex items-center">
           <div className="flex items-center space-x-3">
+            <Link href={`/profile/${user?.username}`}>
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>
+            </Link>
             <h1 className="text-xl font-semibold">Edit Profile</h1>
           </div>
         </div>
