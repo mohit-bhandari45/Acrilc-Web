@@ -42,6 +42,8 @@ const PostDescription = ({
   const [type, setType] = useState<string | null>("");
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [justOpened, setJustOpened] = useState(false);
 
   useEffect(() => {
     setType("post");
@@ -51,23 +53,38 @@ const PostDescription = ({
     setMenuOpen(false);
   }, [edit]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
-      }
-    };
+  const dialogRef = useRef<HTMLDivElement | null>(null);
 
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+ useEffect(() => {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (justOpened) {
+      setJustOpened(false); // Ignore the first click after opening
+      return;
     }
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target as Node) &&
+      (!dialogRef.current || !dialogRef.current.contains(event.target as Node))
+    ) {
+      setMenuOpen(false);
+    }
+  };
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [menuOpen]);
+  if (menuOpen) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [menuOpen, justOpened]);
+
+  const toggleMenu = () => {
+  setMenuOpen((prev) => {
+    if (!prev) setJustOpened(true); // If opening, set flag
+    return !prev;
+  });
+};
 
   const prevImage = () => {
     if (post) {
@@ -100,7 +117,7 @@ const PostDescription = ({
   };
 
   if (!post) {
-    return <MainLoader msg="Loading, please wait"/>;
+    return <MainLoader msg="Loading, please wait" />;
   }
 
   return (
@@ -148,11 +165,10 @@ const PostDescription = ({
                           <button
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
-                            className={`w-2 h-2 rounded-full ${
-                              index === currentImageIndex
-                                ? "bg-white"
-                                : "bg-white/50"
-                            }`}
+                            className={`w-2 h-2 rounded-full ${index === currentImageIndex
+                              ? "bg-white"
+                              : "bg-white/50"
+                              }`}
                           />
                         ))}
                       </div>
@@ -167,7 +183,10 @@ const PostDescription = ({
                 {user._id === post.author && (
                   <div className="absolute top-4 right-4 z-20">
                     <button
-                      onClick={toggleMenu}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent click from bubbling up
+                        toggleMenu();
+                      }}
                       className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition cursor-pointer"
                     >
                       <MoreVertical size={20} className="text-gray-700" />
@@ -176,6 +195,7 @@ const PostDescription = ({
                     {menuOpen && (
                       <div
                         ref={menuRef}
+                        onClick={e => e.stopPropagation()}
                         className="absolute cursor-pointer transition duration-500 ease-in-out right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 text-sm z-30"
                       >
                         <Button
@@ -192,47 +212,52 @@ const PostDescription = ({
                         </Button>
 
                         {/* Share Function */}
-                        <Dialog>
+                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                          {/* This is the ONLY DialogTrigger */}
                           <DialogTrigger asChild>
-                            <Button className="w-full flex cursor-pointer items-center justify-start gap-2 px-4 py-2 text-blue-500 hover:bg-gray-100">
+                            <Button
+                              className="w-full flex cursor-pointer items-center justify-start gap-2 px-4 py-2 text-blue-500 hover:bg-gray-100"
+                              onClick={() => setIsDialogOpen(true)}
+                            >
                               <Share size={16} /> Share
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="mx-4 sm:mx-0 w-[calc(100vw-2rem)] sm:w-full max-w-md">
+                          <DialogContent
+                            ref={dialogRef}
+                            className="mx-4 sm:mx-0 w-[calc(100vw-2rem)] sm:w-full max-w-md"
+                          >
                             <DialogHeader>
                               <DialogTitle className="text-lg sm:text-xl">
                                 Share Your Profile
                               </DialogTitle>
                               <DialogDescription className="text-sm sm:text-base">
-                                Choose how you&apos;d like to share this
-                                artist&apos;s profile.
+                                Choose how you&apos;d like to share this artist&apos;s profile.
                               </DialogDescription>
                             </DialogHeader>
 
                             {/* Share via Web Share API if supported */}
                             <Button
                               onClick={() => {
-                                console.log("Mohit");
+                                console.log("Share via Apps clicked!");
                                 const shareData = {
                                   title: `${user.fullName}'s Profile`,
                                   text: "Check out this artist Post!",
-                                  url:
-                                    typeof window !== "undefined"
-                                      ? window.location.href
-                                      : "",
+                                  url: typeof window !== "undefined" ? window.location.href : "",
                                 };
 
                                 if (navigator.share) {
-                                  console.log("Web Share supported");
                                   navigator
                                     .share(shareData)
-                                    .catch((err) =>
-                                      console.error("Share failed:", err)
-                                    );
+                                    .then(() => {
+                                      toast.success("Shared successfully!");
+                                      setIsDialogOpen(false); // Only close on success
+                                    })
+                                    .catch((err) => {
+                                      console.error("Share failed:", err);
+                                      // Do not close dialog on error/cancel
+                                    });
                                 } else {
-                                  toast.error(
-                                    "Sharing is not supported on this device."
-                                  );
+                                  toast.error("Sharing is not supported on this device.");
                                 }
                               }}
                               className="w-full z-60 bg-black hover:bg-black cursor-pointer text-white rounded-lg transition-all duration-200 text-sm sm:text-base"
@@ -244,13 +269,9 @@ const PostDescription = ({
                             <Button
                               variant="outline"
                               onClick={() => {
-                                const profileUrl =
-                                  typeof window !== "undefined"
-                                    ? window.location.href
-                                    : "";
+                                const profileUrl = typeof window !== "undefined" ? window.location.href : "";
                                 navigator.clipboard.writeText(profileUrl);
                                 toast.success("Profile link copied!");
-                                console.log("Blue")
                               }}
                               className="w-full mt-2 cursor-pointer text-sm sm:text-base"
                             >

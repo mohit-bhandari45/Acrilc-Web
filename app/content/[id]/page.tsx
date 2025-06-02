@@ -352,7 +352,7 @@ const Post = () => {
   return (
     <>
       <InteractiveBackground />
-      <div className="font-[Helvetica] relative z-10">
+      <div className="font-[Helvetica] relative z-10 w-[100%]">
         <Navbar currentUser={user} show={true} portfolio={false}/>
         <PostDescription post={post} user={user} />
       </div>

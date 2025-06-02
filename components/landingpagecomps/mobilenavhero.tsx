@@ -201,6 +201,7 @@ export default function MobileHeaderHero({ user }: { user: IUser | null }) {
             </button>
           </Link>
         ) : (
+          <Link href={"/auth/signup"}>
           <button
             className={cn(
               "bg-white text-[#E2725B] border-2 border-[#E2725B] px-6 py-3 rounded-[50px] font-medium transition-all duration-300",
@@ -208,8 +209,9 @@ export default function MobileHeaderHero({ user }: { user: IUser | null }) {
             )}
             onClick={() => console.log("Sign in clicked")}
           >
-            Sign In
+            Sign Up
           </button>
+          </Link>
         )}
       </nav>
 
