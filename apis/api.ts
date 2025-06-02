@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL: string = "http://localhost:8000";
-const BASE_URL: string = "https://api.acrilc.com";
+const BASE_URL: string = "http://localhost:8000";
+// const BASE_URL: string = "https://api.acrilc.com";
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -49,6 +49,8 @@ const GET_POST = `${BASE_URL}/api/posts`;
 const CREATE_POST = `${BASE_URL}/api/posts`;
 const UPDATE_POST = `${BASE_URL}/api/posts`;
 const DELETE_POST = `${BASE_URL}/api/posts`;
+const GET_FEATURED_POSTS = `${BASE_URL}/public/user`;
+export { GET_POSTS, CREATE_POST, CREATE_STORYBOARD, GET_STORYBOARD, GET_POST, UPDATE_POST, DELETE_POST, GET_FEATURED_POSTS };
 
 const CREATE_STORYBOARD = `${BASE_URL}/api/story`;
 const GET_STORYBOARD = `${BASE_URL}/api/story/user`;
@@ -64,11 +66,12 @@ export { ADD_PORTFOLIO, GET_PORTFOLIO, CHECK_PORTFOLIO, DELETE_PORTFOLIO };
 const MARKETBASE = `${BASE_URL}/api/projects`
 const ADD_TO_MARKET = `${MARKETBASE}/create`;
 const GET_SINGLE_Market_PROJECT = `${MARKETBASE}/project`;
-export { ADD_TO_MARKET, GET_SINGLE_Market_PROJECT };
+const GET_ALL_API_Market_PROJECT = `${MARKETBASE}`;
+const GET_ALL_Market_PROJECT = `${BASE_URL}/public/user`;
+export { ADD_TO_MARKET, GET_SINGLE_Market_PROJECT, GET_ALL_API_Market_PROJECT, GET_ALL_Market_PROJECT };
 
 /* Utils Apis */
 const GET_KEYWORDS_API = `${BASE_URL}/api/utils/get-keywords`;
 export { GET_KEYWORDS_API };
 
-export { GET_POSTS, CREATE_POST, CREATE_STORYBOARD, GET_STORYBOARD, GET_POST, UPDATE_POST, DELETE_POST };
 export default api;

@@ -9,7 +9,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import { IMarketplace } from "@/types/marketplace";
 import { AxiosError } from "axios";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { handleGetSingleProject } from "../marketutils";
@@ -22,11 +22,15 @@ const MarketContent = () => {
   const [token, setToken] = useState<string | null>(null);
   const [project, setProject] = useState<IMarketplace | null>(null);
   const { id } = useParams();
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/auth/login");
+    }
     setToken(token);
-  }, []);
+  }, [router]);
 
   const { currentUser, loading } = useCurrentUser({ token });
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
@@ -65,7 +69,7 @@ const MarketContent = () => {
     // Keep magnifier within bounds
     const maxX = rect.width - magnifierSize;
     const maxY = rect.height - magnifierSize;
-    
+
     const magnifierX = Math.max(0, Math.min(x - magnifierSize / 2, maxX));
     const magnifierY = Math.max(0, Math.min(y - magnifierSize / 2, maxY));
 
@@ -75,11 +79,13 @@ const MarketContent = () => {
 
     // Calculate the background position for zoom effect
     // The background should show the area under the cursor, magnified
-    const backgroundX = -((x * zoomLevel) - (magnifierSize / 2));
-    const backgroundY = -((y * zoomLevel) - (magnifierSize / 2));
+    const backgroundX = -(x * zoomLevel - magnifierSize / 2);
+    const backgroundY = -(y * zoomLevel - magnifierSize / 2);
 
     magnifier.style.backgroundPosition = `${backgroundX}px ${backgroundY}px`;
-    magnifier.style.backgroundSize = `${rect.width * zoomLevel}px ${rect.height * zoomLevel}px`;
+    magnifier.style.backgroundSize = `${rect.width * zoomLevel}px ${
+      rect.height * zoomLevel
+    }px`;
   };
 
   const handleMouseEnter = () => {
@@ -92,7 +98,7 @@ const MarketContent = () => {
   };
 
   if (!currentUser || loading || !project) {
-    return <MainLoader msg="Loading, please wait"/>;
+    return <MainLoader msg="Loading, please wait" />;
   }
 
   return (
@@ -121,7 +127,7 @@ const MarketContent = () => {
                 className="w-full object-cover transition-transform duration-300 select-none"
                 draggable={false}
               />
-              
+
               {/* Magnifier */}
               {isZoomed && (
                 <div
@@ -137,7 +143,7 @@ const MarketContent = () => {
                 />
               )}
             </div>
-            
+
             {/* Optional: Add a small indicator showing zoom is available */}
             <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               🔍 Hover to zoom

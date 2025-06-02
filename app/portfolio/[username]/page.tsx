@@ -1,10 +1,11 @@
 "use client";
 
-import { FooterActions } from "@/components/portfolio/footeractionc";
 import ArtistAbout from "@/components/portfolio/about";
 import ContactSection from "@/components/portfolio/contact";
 import Footer from "@/components/portfolio/footer";
+import { FooterActions } from "@/components/portfolio/footeractionc";
 import Gallery from "@/components/portfolio/gallery";
+import { ShopSection } from "@/components/portfolio/marketplace";
 import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -55,44 +56,6 @@ const Portfolio = () => {
     return <MainLoader msg="Loading, please wait"/>;
   }
 
-  // const partnerships = [
-  //   {
-  //     id: "1",
-  //     name: "Amazon",
-  //     logo: "/api/placeholder/150/150",
-  //     date: "Jan 1, 2022",
-  //     rating: 5,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Amazon",
-  //     logo: "/api/placeholder/150/150",
-  //     date: "Jan 1, 2022",
-  //     rating: 5,
-  //   },
-  //   {
-  //     id: "3",
-  //     name: "Google",
-  //     logo: "/api/placeholder/150/150",
-  //     date: "Dec 15, 2021",
-  //     rating: 4,
-  //   },
-  //   {
-  //     id: "4",
-  //     name: "Meta",
-  //     logo: "/api/placeholder/150/150",
-  //     date: "Nov 30, 2021",
-  //     rating: 5,
-  //   },
-  //   {
-  //     id: "5",
-  //     name: "Meta",
-  //     logo: "/api/placeholder/150/150",
-  //     date: "Nov 30, 2021",
-  //     rating: 5,
-  //   },
-  // ];
-
   if (!token) {
     if (!user) {
       return <div>Please Try again by refresing the page!</div>;
@@ -102,6 +65,7 @@ const Portfolio = () => {
       <>
         <ArtistAbout user={user} isSame={isSame} />
         <Gallery user={user} />
+        <ShopSection user={user}/>
         <ContactSection />
         <FooterActions user={user} isSame={isSame} />
       </>
@@ -117,6 +81,7 @@ const Portfolio = () => {
           <div className="mt-15">
             <ArtistAbout user={user} isSame={isSame} />
             <Gallery user={user} />
+            <ShopSection user={user}/>
             {!isSame && <ContactSection />}
             <FooterActions user={user} isSame={isSame} />
             <Footer />

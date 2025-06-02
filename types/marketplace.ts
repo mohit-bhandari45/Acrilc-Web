@@ -24,6 +24,7 @@ type Preference =
     | "Installation Art";
 
 export interface IMarketplace {
+    _id: string
     author: string;
     image: string;
     title: string;

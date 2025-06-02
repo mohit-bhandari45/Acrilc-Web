@@ -1,4 +1,4 @@
-import api, { GET_ALL_API_Market_PROJECT } from "@/apis/api";
+import api, { GET_ALL_Market_PROJECT } from "@/apis/api";
 import { Button } from "@/components/ui/button";
 import { IMarketplace } from "@/types/marketplace";
 import { IUser } from "@/types/types";
@@ -6,26 +6,20 @@ import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export const ShopSection = ({
-  user,
-  // isSame,
-}: {
-  user: IUser;
-  isSame: boolean;
-}) => {
+export const ShopSection = ({ user }: { user: IUser }) => {
   const [projects, setProjects] = useState<IMarketplace[] | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     async function getMarket() {
-      const res = await api.get(GET_ALL_API_Market_PROJECT);
+      const res = await api.get(
+        `${GET_ALL_Market_PROJECT}/${user._id}/featured-market`
+      );
       setProjects(res.data.data);
     }
 
     getMarket();
   }, [user._id]);
-
-  console.log(projects);
 
   const getGradientClass = (image: string) => {
     const gradients = {
@@ -41,11 +35,17 @@ export const ShopSection = ({
     );
   };
 
-  if (!projects) return null;
+  if(!projects) return null;
 
   return (
-    <section id="shop" className="min-h-screen px-10">
+    <section id="shop" className="min-h-screen px-10 py-20">
       <div className="max-w-6xl mx-auto">
+        <h2 className="font-playfair text-4xl text-center mb-5">Shop</h2>
+        <p className="text-gray-600 text-center mb-10">
+          Available pieces from my studio. Each piece is unique and handcrafted
+          with care.
+        </p>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
             <div
@@ -69,7 +69,9 @@ export const ShopSection = ({
                   ₹{project.pricingOptions.sizesAndPrices[0].price}
                 </div>
 
-                <div className="flex gap-2 mb-4">{project.forte}</div>
+                <div className="flex gap-2 mb-4">
+                  {project.forte}
+                </div>
 
                 <div className="flex gap-2">
                   <Button
@@ -92,6 +94,12 @@ export const ShopSection = ({
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Button variant="outline" className="rounded-full px-6 py-3">
+            Show More
+          </Button>
         </div>
       </div>
     </section>

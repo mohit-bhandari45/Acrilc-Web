@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import api, { GET_FEATURED_POSTS } from "@/apis/api";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { IPost, IUser } from "@/types/types";
-import api, { GET_POSTS } from "@/apis/api";
+import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 
 interface GalleryProps {
   title?: string;
@@ -30,7 +30,7 @@ const Gallery: React.FC<GalleryProps> = ({
 
   useEffect(() => {
     const getPosts = async () => {
-      const res = await api.get(`${GET_POSTS}/${user._id}`);
+      const res = await api.get(`${GET_FEATURED_POSTS}/${user._id}/featured-posts`);
       console.log(res);
 
       if (res.status === 200) {
@@ -63,7 +63,6 @@ const Gallery: React.FC<GalleryProps> = ({
   const handleLoadMore = () => {
     setVisibleItems((prev) => prev + itemsPerPage);
   };
-
 
   console.log(posts);
   const hasMoreItems = visibleItems < filteredItems!.length;

@@ -2,12 +2,12 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IUser } from "@/types/types";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import MarketPlace from "./marketplace";
+import { reverseTabMap, tabMap } from "./data";
+import { ShopSection } from "./marketplace";
 import Showcase from "./showcase";
 import Storyboard from "./storyboard";
-import { reverseTabMap, tabMap } from "./data";
 
 interface ArtistProfileTabsProps {
   user: IUser;
@@ -88,7 +88,7 @@ const ArtistProfileTabs: React.FC<ArtistProfileTabsProps> = ({
           <Storyboard user={user} isSame={isSame} />
         </TabsContent>
         <TabsContent value="marketplace" className="p-4 sm:p-6 md:p-8 mt-0">
-          <MarketPlace />
+          <ShopSection user={user} isSame={isSame} />
         </TabsContent>
       </Tabs>
     </div>
