@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL: string = "http://localhost:8000";
-const BASE_URL: string = "https://api.acrilc.com";
+const BASE_URL: string = "http://localhost:8000";
+// const BASE_URL: string = "https://api.acrilc.com";
 
 const api = axios.create({
     baseURL: BASE_URL,

@@ -37,7 +37,6 @@ class UploadService {
             throw error;
         }
     }
-
 }
 
 export default UploadService;

@@ -7,7 +7,9 @@ import api, {
   UPDATE_POST,
 } from "@/apis/api";
 import { useAppSelector } from "@/store/hooks";
+import { IPost } from "@/types/types";
 import { Upload, X } from "lucide-react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ChangeEvent,
@@ -17,11 +19,10 @@ import {
   useRef,
   useState,
 } from "react";
-import checkContent from "./utils";
 import toast from "react-hot-toast";
-import Image from "next/image";
-import { IPost } from "@/types/types";
 import { Button } from "../ui/button";
+import checkContent, { IFormData } from "./utils";
+import UploadService from "@/service/service";
 
 interface CreateContentProps {
   isCreate: boolean;
@@ -38,6 +39,7 @@ const CreateContent = ({
   data,
   setEdit,
 }: CreateContentProps) => {
+  /* States */
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -57,27 +59,29 @@ const CreateContent = ({
   const [input, setInput] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
 
-  /*Content */
+  useEffect(() => {
+    if (data) {
+      if (type === "post") {
+        setDescription(data.story);
+      } else {
+        setDescription(data.story);
+      }
+      setTitle(data.title);
+      setSize(data.size);
+      setTags(data.hashTags);
+      setForte(data.forte);
+      setPreviews(data.media.map((item) => item.url));
+    }
+  }, [data, type]);
+
+  /* useeffects */
   useEffect(() => {
     if (user?.preferences?.length) {
       setForte(user.preferences[0]);
     }
   }, [user.preferences]);
 
-  useEffect(() => {
-    if (!isCreate) {
-      if (type === "post" && data) {
-        setImages(data.media as unknown as File[]);
-        const previewUrls = data.media.map((m) => m.url); // assuming `m.url` is already a string
-        setPreviews(previewUrls!);
-        setTitle(data.title);
-        setDescription(data.story);
-        setSize(data.size);
-        setForte(data.forte);
-      }
-    }
-  }, [data, isCreate, type]);
-
+  /* functions */
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -116,70 +120,110 @@ const CreateContent = ({
     }
   };
 
+  function mediaType(type: string): string {
+    if (type.startsWith("image")) {
+      return "image";
+    } else if (type.startsWith("video")) {
+      return "video";
+    } else if (type.startsWith("audio")) {
+      return "audio";
+    } else {
+      return "gif";
+    }
+  }
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     // checks
     const result = checkContent(
+      isCreate,
       type!,
       title,
       description,
       size,
-      // collection,
       forte,
       tags,
       images
     );
+
     if (result.status === false) {
       toast.error(result.msg);
       return;
     }
 
     setLoader(true);
-    const formData = new FormData();
 
-    // Appending images
-    images.forEach(async (image) => {
-      // if (image.url) {
-      //   const res = await fetch(image.url);
-      //   const blob = await res.blob();
-      //   const f = new File([blob], `${idx}/${blob.type.split("/")[1]}`, {
-      //     type: blob.type,
-      //   });
-      //   formData.append("media", f);
-      // } else {
-      formData.append("media", image);
-      // }
-    });
+    const formData: IFormData = {};
+    let response;
+    let urls;
 
-    if (type === "post") {
-      formData.append("size", size);
-      // formData.append("collectionId", collection);
-      formData.append("forte", forte);
-      formData.append("story", description);
-    } else {
-      formData.append("description", description);
-    }
+    if (isCreate) {
+      urls = await Promise.all(
+        images.map(async (image) => {
+          const response = await UploadService.uploadToImgBB(image);
+          return { url: response, type: mediaType(image.type) };
+        })
+      );
 
-    formData.append("title", title);
-    formData.append("hashTags", tags.join(""));
+      if (type === "post") {
+        formData.size = size;
+        formData.forte = forte;
+        formData.story = description;
+      } else {
+        formData.description = description;
+      }
 
-    if (!isCreate) {
+      formData.media = urls;
+      formData.title = title;
+      formData.hashTags = tags.join("");
+
       try {
-        let response;
         if (type === "post") {
-          response = await api.patch(`${UPDATE_POST}/${data!._id}`, formData);
+          response = await api.post(CREATE_POST, formData);
         } else {
-          response = await api.patch(CREATE_STORYBOARD, formData);
+          response = await api.post(CREATE_STORYBOARD, formData);
         }
 
+        const id = response.data.data._id;
+
+        if (response.status === 201) {
+          const message =
+            type === "post" ? "Post Created!" : "Storyboard Created!";
+          if (type === "post") {
+            router.push(`/content/${id}`);
+          } else {
+            router.push(`/profile/${user.username}?tab=blog`);
+          }
+          toast.success(message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong!");
+      }
+    } else {
+      try {
+        if (type === "post") {
+          formData.size = size;
+          formData.forte = forte;
+          formData.story = description;
+        } else {
+          formData.description = description;
+        }
+
+        formData.media = data?.media;
+        formData.title = title;
+        formData.hashTags = tags.join("");
+        response = await api.patch(`${UPDATE_POST}/${data?._id}`, formData);
+
+        const id = response.data.data._id;
         if (response.status === 200) {
           const message =
             type === "post" ? "Post Updated!" : "Storyboard Updated!";
           if (type === "post") {
-            // window.location.reload();
+            router.push(`/content/${id}`);
           } else {
-            router.push(`/profile`);
+            router.push(`/profile/${user.username}?tab=blog`);
           }
           toast.success(message);
         }
@@ -187,34 +231,6 @@ const CreateContent = ({
         console.log(error);
         toast.error("Something went wrong");
       }
-      setLoader(false);
-
-      return;
-    }
-
-    try {
-      let response;
-      if (type === "post") {
-        response = await api.post(CREATE_POST, formData);
-      } else {
-        response = await api.post(CREATE_STORYBOARD, formData);
-      }
-
-      const id = response.data.data._id;
-
-      if (response.status === 200) {
-        const message =
-          type === "post" ? "Post Created!" : "Storyboard Created!";
-        if (type === "post") {
-          router.push(`/content/${id}`);
-        } else {
-          router.push(`/profile/${user.username}?tab=blog`);
-        }
-        toast.success(message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
     }
     setLoader(false);
   };
@@ -239,7 +255,7 @@ const CreateContent = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if(e.target.value === "marketplace"){
+    if (e.target.value === "marketplace") {
       router.push("/marketplace/add");
       return;
     }
@@ -259,10 +275,12 @@ const CreateContent = ({
         title,
         story: description,
       });
-      
-      if(response.status===200){
+
+      if (response.status === 200) {
         let tags = response.data.data;
-        tags = tags.map((tag: string)=> tag.trim().replace(/^[.,\s]+|[.,\s]+$/g, ''));
+        tags = tags.map((tag: string) =>
+          tag.trim().replace(/^[.,\s]+|[.,\s]+$/g, "")
+        );
 
         setTags(tags);
       }
@@ -273,21 +291,25 @@ const CreateContent = ({
 
   return (
     <div className="max-w-4xl mx-auto p-4 mb-13 mt-30">
-      <h1 className="text-4xl font-bold mb-6 text-center">New Post</h1>
+      <h1 className="text-4xl font-bold mb-6 text-center">
+        {isCreate ? "New Post" : "Edit Post"}
+      </h1>
 
       <div>
         <div className="mb-6">
-          <div className="flex mb-2">
-            <select
-              className="px-1 py-2 cursor-pointer border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={type!}
-              onChange={handleChange}
-            >
-              <option value="post">Post</option>
-              <option value="storyboard">Storyboard</option>
-              <option value="marketplace">Marketplace</option>
-            </select>
-          </div>
+          {isCreate && (
+            <div className="flex mb-2">
+              <select
+                className="px-1 py-2 cursor-pointer border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={type!}
+                onChange={handleChange}
+              >
+                <option value="post">Post</option>
+                <option value="storyboard">Storyboard</option>
+                <option value="marketplace">Marketplace</option>
+              </select>
+            </div>
+          )}
 
           {/* Image Upload Section */}
           <div className="grid grid-cols-3 gap-3">
@@ -303,17 +325,19 @@ const CreateContent = ({
                   width={40}
                   height={40}
                 />
-                <button
-                  type="button"
-                  onClick={() => removeImage(index)}
-                  className="absolute top-1 right-1 bg-white rounded-full p-1 shadow-md"
-                >
-                  <X size={16} />
-                </button>
+                {isCreate && (
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute top-1 right-1 bg-white rounded-full p-1 shadow-md"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
               </div>
             ))}
 
-            {images.length < MAX_IMAGES && (
+            {isCreate && images.length < MAX_IMAGES && (
               <div
                 onClick={triggerFileInput}
                 className="h-32 border-2 border-dashed border-gray-300 rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
@@ -369,7 +393,7 @@ const CreateContent = ({
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <div className="text-right text-xs text-gray-500">
+            <div className="text-right text-xs text-gray-500 break-words flex-wrap">
               <span
                 className={`${description.length > 1000 && "text-red-500"}`}
               >
@@ -509,7 +533,7 @@ const CreateContent = ({
                 setEdit(false);
               }
             }} // or any custom cancel logic
-            className="w-full mb-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+            className="w-full mb-3 py-2 cursor-pointer bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
           >
             Cancel
           </button>
@@ -519,7 +543,7 @@ const CreateContent = ({
             onClick={() => {
               router.push(`/profile/${user.username}`);
             }} // or any custom cancel logic
-            className="w-full mb-3 py-2 bg-gray-200 cursor-pointer text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
+            className="w-full mb-3 py-2 cursor-pointer bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
           >
             Cancel
           </button>
@@ -531,7 +555,7 @@ const CreateContent = ({
           disabled={loader}
           variant={"outline"}
           className={`
-    w-full py-3 gap-3 flex justify-center cursor-pointer items-center text-white rounded-md transition-colors bg-[#FAA21B] hover:bg-[#fa921b]
+    w-full py-3 gap-3 flex justify-center hover:text-white cursor-pointer items-center text-white rounded-md transition-colors bg-[#FAA21B] hover:bg-[#fa921b]
   `}
         >
           <div>

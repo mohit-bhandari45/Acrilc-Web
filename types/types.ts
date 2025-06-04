@@ -59,7 +59,7 @@ interface IPost {
     size: string;
     story: string;
     links: string[];
-    hashTags: string;
+    hashTags: string[];
     mentions: string[];
     thumbnail?: string;
     media: IMedia[];

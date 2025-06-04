@@ -1,9 +1,24 @@
+interface IMedia {
+    url: string;
+    type: string;
+}
+
+export interface IFormData {
+    title?: string;
+    description?: string;
+    size?: string;
+    forte?: string;
+    story?: string;
+    media?: IMedia[];
+    hashTags?: string
+}
+
 interface RObject {
     msg: string,
     status: boolean
 }
 
-function checkContent(type: string, title: string, description: string, size: string, forte: string, keywords: string[], images: File[]) {
+function checkContent(isCreate: boolean, type: string, title: string, description: string, size: string, forte: string, keywords: string[], images: File[]) {
     const robject: RObject = {
         msg: "",
         status: true
@@ -27,7 +42,7 @@ function checkContent(type: string, title: string, description: string, size: st
         return robject;
     }
 
-    if (!images || images.length <1) {
+    if (isCreate && (!images || images.length < 1)) {
         robject.status = false;
         robject.msg = `Atleast One image is required`;
         return robject;

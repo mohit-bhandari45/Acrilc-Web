@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import api, { GET_POSTS } from "@/apis/api";
+import api, { DELETE_POST, GET_POSTS } from "@/apis/api";
 import { IPost, IUser } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { HashLoader } from "react-spinners";
 
 type ShowcaseProps = {
@@ -12,6 +14,7 @@ type ShowcaseProps = {
 };
 
 const Showcase = ({ isSame, user }: ShowcaseProps) => {
+  const router = useRouter();
   const [posts, setPosts] = useState<IPost[] | null>(null);
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
   const [imageHeights, setImageHeights] = useState<Record<string, number>>({});
@@ -42,26 +45,21 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
     const aspectRatio = img.naturalHeight / img.naturalWidth;
     const baseWidth = 300; // Base width for calculation
     const calculatedHeight = baseWidth * aspectRatio;
-    
-    setImageHeights(prev => ({
+
+    setImageHeights((prev) => ({
       ...prev,
-      [postId]: Math.max(200, Math.min(400, calculatedHeight)) // Min 200px, max 400px
+      [postId]: Math.max(200, Math.min(400, calculatedHeight)), // Min 200px, max 400px
     }));
   };
 
-  const handleEdit = (postId: string) => {
-    console.log("Edit", postId);
-    setMenuOpen(null);
+  const handleDelete = async (id: string) => {
+    const res = await api.delete(`${DELETE_POST}/${id}`);
+
+    if (res.status === 200) {
+      window.location.reload();
+      toast.success("Post Deleted Successfully");
+    }
   };
-
-  // const handleDelete = async () => {
-    // const res = await api.delete(`${DELETE_POST}/${post?._id}`);
-
-    // if (res.status === 200) {
-    //   router.push(`/profile/${user.username}`);
-    //   toast.success("Post Deleted Successfully");
-    // }
-  // };
 
   if (!posts) {
     return (
@@ -97,9 +95,9 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
           )}
         </div>
       ) : (
-        <div 
+        <div
           className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4"
-          style={{ columnFill: 'balance' }}
+          style={{ columnFill: "balance" }}
         >
           {posts.map((item: any) => (
             <div
@@ -110,10 +108,10 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
                 href={`/content/${item._id}`}
                 className="block w-full overflow-hidden"
               >
-                <div 
+                <div
                   className="relative w-full"
-                  style={{ 
-                    height: imageHeights[item._id] || 250 
+                  style={{
+                    height: imageHeights[item._id] || 250,
                   }}
                 >
                   <Image
@@ -122,7 +120,9 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                    onLoad={(e) => handleImageLoad(item._id, e.target as HTMLImageElement)}
+                    onLoad={(e) =>
+                      handleImageLoad(item._id, e.target as HTMLImageElement)
+                    }
                   />
                 </div>
               </Link>
@@ -136,15 +136,15 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
                     className="flex items-center justify-center w-8 h-8 bg-black/80 backdrop-blur-sm rounded-full text-white hover:text-white hover:bg-black/90 transition cursor-pointer"
                     aria-label="Post options"
                   >
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                     >
                       <circle cx="12" cy="5" r="1" />
@@ -160,7 +160,9 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
                     >
                       <button
                         className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2"
-                        onClick={() => handleEdit(item._id)}
+                        onClick={() => {
+                          router.push(`/content/edit/${item._id}?type=post`);
+                        }}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -180,7 +182,7 @@ const Showcase = ({ isSame, user }: ShowcaseProps) => {
                       </button>
                       <button
                         className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100 flex items-center gap-2"
-                        // onClick={() => handleDelete(item._id)}
+                        onClick={() => handleDelete(item._id)}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
