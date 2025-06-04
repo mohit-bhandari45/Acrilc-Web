@@ -218,14 +218,14 @@ const AboutAcrilc = () => {
       >
         {/* YouTube Video Background */}
         <div className="absolute inset-0 z-0 pointer-events-none">
-          <iframe
+          <video
             className="w-full h-full object-cover"
-            src="https://www.youtube.com/embed/3TIzu02vJIo?autoplay=1&mute=1&loop=1&controls=0&playlist=3TIzu02vJIo&modestbranding=1&showinfo=0"
-            title="YouTube video background"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          ></iframe>
+            src="https://dl.dropboxusercontent.com/scl/fi/5jb9atwie6k6z4hwe8j98/acrilc-video.mp4?rlkey=u78yw9kdccbv08xwqsw0rbhr2&st=1qr9p679"
+            autoPlay
+            muted
+            loop
+            playsInline
+          ></video>
         </div>
         <div className="absolute inset-0 bg-black/50 backdrop-brightness-75 z-10" />
 
@@ -302,7 +302,7 @@ const AboutAcrilc = () => {
       {/* Philosophy Section */}
       <section
         ref={(el) => {
-          sectionsRef.current[0] = el;
+          sectionsRef.current[1] = el;
         }}
         className="py-20 md:py-32 bg-gradient-to-r from-amber-50 to-orange-50 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
       >
@@ -356,7 +356,7 @@ const AboutAcrilc = () => {
       {/* Community Matters Section */}
       <section
         ref={(el) => {
-          sectionsRef.current[0] = el;
+          sectionsRef.current[2] = el;
         }}
         className="py-20 md:py-32 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
       >
@@ -396,7 +396,7 @@ const AboutAcrilc = () => {
       {/* Values Section */}
       <section
         ref={(el) => {
-          sectionsRef.current[0] = el;
+          sectionsRef.current[3] = el;
         }}
         className="py-20 md:py-32 bg-gradient-to-r from-amber-50 to-orange-50 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
       >
@@ -433,7 +433,7 @@ const AboutAcrilc = () => {
       {/* Team Section */}
       <section
         ref={(el) => {
-          sectionsRef.current[0] = el;
+          sectionsRef.current[4] = el;
         }}
         id="team"
         className="py-20 md:py-32 opacity-0 translate-y-12 transition-all duration-1000 animate-on-scroll"
