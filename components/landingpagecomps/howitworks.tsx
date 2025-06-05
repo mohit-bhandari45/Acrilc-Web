@@ -85,20 +85,17 @@ export default function FeaturesSection({ className }: FeaturesSectionProps) {
           <div className="w-full max-w-[700px] bg-white shadow-[0_8px_24px_rgba(0,0,0,0.08)] rounded-[18px] overflow-hidden relative">
             <video
               id="acrilcTestimonialVideo"
-              className="w-full h-auto bg-[#EEE]"
+              className="w-full h-auto bg-[#EEE] object-cover"
+              src="https://dl.dropboxusercontent.com/scl/fi/nf33ongpye13a593h8fxr/WhatsApp-Video-2025-06-05-at-3.32.58-AM.mp4?rlkey=ji81ja4vix1wk8x0vge4dlqmv&st=i88w5wxf"
               poster="https://i.ibb.co/ks2FNyCV/Phone-profile-section.jpg"
-              controls
+              autoPlay
+              muted
+              loop
+              playsInline
             >
-              <iframe
-                src="https://player.vimeo.com/video/1087759368?h=1d69b048ba"
-                width="640"
-                height="360"
-                frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowFullScreen
-              ></iframe>
               Your browser does not support the video tag.
             </video>
+
             <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[rgba(0,0,0,0.7)] to-transparent p-2 md:p-4">
               <span className="text-white font-['Cormorant_Garamond',serif] text-lg md:text-xl font-semibold">
                 Acrilc App Promo: Coming Soon!

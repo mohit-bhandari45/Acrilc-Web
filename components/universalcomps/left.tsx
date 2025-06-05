@@ -64,7 +64,7 @@ const Left = () => {
         {/* Logo in top-left corner */}
         <Link
           href="/"
-          className="absolute text-white top-10 left-10 z-20 font-bold text-3xl transition-all duration-300 ease-out no-underline font-poppins"
+          className="absolute text-white top-10 left-10 z-30 font-bold text-3xl transition-all duration-300 ease-out no-underline font-poppins"
         >
           acrilc
         </Link>
