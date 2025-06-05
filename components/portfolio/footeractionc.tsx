@@ -97,8 +97,6 @@ export const FooterActions = ({ user, isSame }: FooterActionsProps) => {
     }
   };
 
-  console.log(user);
-
   return (
     <>
       {isSame && (

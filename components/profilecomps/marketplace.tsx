@@ -25,8 +25,6 @@ export const ShopSection = ({
     getMarket();
   }, [user._id]);
 
-  console.log(projects);
-
   const getGradientClass = (image: string) => {
     const gradients = {
       bowl: "from-orange-50 to-orange-100",

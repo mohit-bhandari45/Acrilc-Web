@@ -1,5 +1,4 @@
 // app/profile/layout.tsx
-import Footer from "@/components/profilecomps/footer";
 
 export default function ContentLayout({
   children,
@@ -9,7 +8,6 @@ export default function ContentLayout({
   return (
     <div className="">
       {children}
-      <Footer />
     </div>
   );
 }

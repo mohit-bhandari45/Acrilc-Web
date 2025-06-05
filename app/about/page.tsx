@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 interface TeamMember {
@@ -491,21 +492,25 @@ const AboutAcrilc = () => {
             many likes it gets.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-orange-600 hover:to-yellow-500 text-white px-8 py-8 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[280px] rounded-full"
-            >
-              <Brush className="w-5 h-5 mr-2" />
-              Start Creating Portfolio
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="bg-transparent text-white hover:bg-white hover:text-slate-900 px-8 py-8 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[280px]"
-            >
-              <GalleryHorizontal className="w-5 h-5 mr-2" />
-              Explore Galleries
-            </Button>
+            <Link href={"/auth/signup"}>
+              <Button
+                size="lg"
+                className="bg-gradient-to-r cursor-pointer from-yellow-500 to-orange-600 hover:from-orange-600 hover:to-yellow-500 text-white px-8 py-8 text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[280px] rounded-full"
+              >
+                <Brush className="w-5 h-5 mr-2" />
+                Start Creating Portfolio
+              </Button>
+            </Link>
+            <Link href={"/coming"}>
+              <Button
+                variant="outline"
+                size="lg"
+                className="bg-transparent cursor-pointer text-white hover:bg-white hover:text-slate-900 px-8 py-8 rounded-full text-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[280px]"
+              >
+                <GalleryHorizontal className="w-5 h-5 mr-2" />
+                Explore Galleries
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

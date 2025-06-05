@@ -202,7 +202,6 @@ const PostDescription = ({
                           {/* Share via Web Share API if supported */}
                           <Button
                             onClick={() => {
-                              console.log("Mohit");
                               const shareData = {
                                 title: `${user.fullName}'s Profile`,
                                 text: "Check out this artist Post!",
@@ -213,7 +212,6 @@ const PostDescription = ({
                               };
 
                               if (navigator.share) {
-                                console.log("Web Share supported");
                                 navigator
                                   .share(shareData)
                                   .catch((err) =>
@@ -240,7 +238,6 @@ const PostDescription = ({
                                   : "";
                               navigator.clipboard.writeText(profileUrl);
                               toast.success("Profile link copied!");
-                              console.log("Blue");
                             }}
                             className="w-full mt-2 cursor-pointer text-sm sm:text-base"
                           >

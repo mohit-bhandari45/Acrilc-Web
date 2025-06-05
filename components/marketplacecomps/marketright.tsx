@@ -15,7 +15,6 @@ import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 
 const MarketRight = ({ data }: { data: IMarketplace }) => {
-    console.log(data);
   const [selectedSize, setSelectedSize] = useState<string>(
     data.pricingOptions.sizesAndPrices[0]?.size || ""
   );

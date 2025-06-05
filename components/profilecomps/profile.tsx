@@ -71,7 +71,6 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const bannerPic = event.target.files?.[0];
-    console.log(bannerPic);
     setBpLoader(true);
 
     if (bannerPic) {
@@ -82,7 +81,6 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
           bannerURL: url,
         });
 
-        console.log(response.status);
 
         if (response.status === 200) {
           toast.success("Banner Pic Updated!");

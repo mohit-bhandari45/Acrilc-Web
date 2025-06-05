@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { heroImages } from "./data";
 import { IUser } from "@/types/types";
 import Image from "next/image";
+import { Button } from "../ui/button";
 
 export default function MobileHeaderHero({ user }: { user: IUser | null }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,8 +35,6 @@ export default function MobileHeaderHero({ user }: { user: IUser | null }) {
     }
   };
 
-  console.log(isScrolled);
-
   return (
     <div className="md:hidden relative">
       {/* Mobile Header */}
@@ -50,11 +49,10 @@ export default function MobileHeaderHero({ user }: { user: IUser | null }) {
       >
         <div className="flex justify-between items-center w-full">
           {/* Logo */}
-          <Link
-            href="#"
+          <Button
             onClick={() => scrollToSection("hero")}
             className={cn(
-              "logo font-bold text-2xl transition-all duration-300 ease-out no-underline",
+              "logo font-bold text-2xl transition-all duration-300 cursor-pointer ease-out no-underline",
               "font-[Poppins,sans-serif]",
               isScrolled
                 ? "text-[#1A1A1A]"
@@ -62,7 +60,7 @@ export default function MobileHeaderHero({ user }: { user: IUser | null }) {
             )}
           >
             acrilc
-          </Link>
+          </Button>
 
           {/* Mobile Menu Button */}
           <button

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { heroImages } from "./data";
 import { IUser } from "@/types/types";
 import Image from "next/image";
+import { Button } from "../ui/button";
 
 interface HeaderHeroProps {
   user: IUser | null;
@@ -33,7 +34,6 @@ export default function HeaderHero({ className, user }: HeaderHeroProps) {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    console.log(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -41,7 +41,7 @@ export default function HeaderHero({ className, user }: HeaderHeroProps) {
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative", className)} id="navbar">
       {/* Header */}
       <header
         className={cn(
@@ -53,10 +53,10 @@ export default function HeaderHero({ className, user }: HeaderHeroProps) {
         )}
       >
         {/* Logo */}
-        <Link
-          href="/"
+        <Button
+          onClick={() => scrollToSection("navbar")}
           className={cn(
-            "logo font-bold text-3xl transition-all duration-300 ease-out no-underline",
+            "logo font-bold text-3xl transition-all cursor-pointer duration-300 ease-out no-underline",
             "font-poppins",
             isScrolled
               ? "text-[#1A1A1A]"
@@ -64,7 +64,7 @@ export default function HeaderHero({ className, user }: HeaderHeroProps) {
           )}
         >
           acrilc
-        </Link>
+        </Button>
 
         {/* Navigation */}
         <nav className="nav-links flex items-center gap-8">
@@ -137,16 +137,16 @@ export default function HeaderHero({ className, user }: HeaderHeroProps) {
                     }}
                   />
                 ) : (
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="50" cy="50" r="50" fill="#e5e7eb" />
+                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="50" fill="#e5e7eb" />
 
-                  <circle cx="50" cy="35" r="18" fill="#9ca3af" />
+                    <circle cx="50" cy="35" r="18" fill="#9ca3af" />
 
-                  <path
-                    d="M20 85 Q20 65 35 58 Q42.5 55 50 55 Q57.5 55 65 58 Q80 65 80 85 L80 100 L20 100 Z"
-                    fill="#9ca3af"
-                  />
-                </svg>
+                    <path
+                      d="M20 85 Q20 65 35 58 Q42.5 55 50 55 Q57.5 55 65 58 Q80 65 80 85 L80 100 L20 100 Z"
+                      fill="#9ca3af"
+                    />
+                  </svg>
                 )}
               </Link>
             </div>
@@ -208,7 +208,7 @@ export default function HeaderHero({ className, user }: HeaderHeroProps) {
             </Link>
 
             <Link
-              href="#"
+              href="/coming"
               className="btn btn-secondary bg-white text-[#E2725B] border-2 border-[#E2725B] px-8 py-4 rounded-[50px] font-medium no-underline transition-all duration-300 ease-out hover:bg-[#E2725B] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.2)]"
             >
               Explore Artworks
