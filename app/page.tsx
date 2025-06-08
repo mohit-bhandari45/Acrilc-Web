@@ -1,51 +1,50 @@
-import React from 'react'
-import Main from './main'
+"use client";
 
-export const metadata = {
-  title: "Acrilc - Showcase, Sell, and Connect as an Artist",
-  description:
-    "Acrilc is a dynamic platform for artists to showcase their artwork, connect with creators, and monetize their talents. Join a vibrant community and grow your artistic journey.",
-  keywords: [
-    "art portfolio",
-    "artist community",
-    "sell artwork online",
-    "digital art gallery",
-    "acrylic",
-    "Acrilc app",
-    "artist hub",
-    "art monetization",
-    "art platform India",
-    "art showcase website"
-  ],
-  openGraph: {
-    title: "Acrilc - Empowering Artists Worldwide",
-    description:
-      "Join Acrilc to showcase your creations, connect with other artists, and monetize your talent in a supportive community.",
-    url: "https://acrilc.com",
-    siteName: "Acrilc",
-    images: [
-      {
-        url: "https://i.ibb.co/JRkvH0XH/Project-20250516020412.png", // Make sure this exists
-        width: 1200,
-        height: 630,
-        alt: "Acrilc Art Platform Preview"
-      }
-    ],
-    locale: "en_US",
-    type: "website"
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Acrilc - Showcase, Sell, and Connect",
-    description:
-      "A creative hub for artists to share their work, build connections, and earn from their art.",
-    images: ["https://i.ibb.co/JRkvH0XH/Project-20250516020412.png"]
+import { useEffect, useState } from "react";
+import CtaSection from "@/components/landingpagecomps/ctasection";
+import FeaturedArtworks from "@/components/landingpagecomps/featured";
+import Footer from "@/components/landingpagecomps/footer";
+import CompareSection from "@/components/landingpagecomps/howitwork2";
+import FeaturesSection from "@/components/landingpagecomps/howitworks";
+import HowItWorksMain from "@/components/landingpagecomps/mainhow";
+import MobileHeaderHero from "@/components/landingpagecomps/mobilenavhero";
+import HeaderHero from "@/components/landingpagecomps/navHero";
+import TestimonialsSection from "@/components/landingpagecomps/testimonial";
+import MainLoader from "@/components/universalcomps/mainloader";
+import useCurrentUser from "@/hooks/useCurrentUser";
+
+const Main = () => {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setToken(token);
+  }, []);
+
+  const { currentUser, loading } = useCurrentUser({ token });
+
+  if (loading) {
+    return <MainLoader msg="Loading, please wait"/>;
   }
+
+  return (
+    <div className="min-h-screen">
+      {/* Desktop Header and Hero */}
+      <div className="hidden md:block">
+        <HeaderHero user={currentUser} />
+      </div>
+
+      {/* Mobile Header and Hero */}
+      <MobileHeaderHero user={currentUser} />
+      <FeaturesSection />
+      <TestimonialsSection />
+      <CompareSection />
+      <HowItWorksMain />
+      <FeaturedArtworks />
+      <CtaSection />
+      <Footer />
+    </div>
+  );
 };
 
-
-const page = () => {
-  return <Main/>
-}
-
-export default page
+export default Main;
