@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import CtaSection from "@/components/landingpagecomps/ctasection";
 import FeaturedArtworks from "@/components/landingpagecomps/featured";
 import Footer from "@/components/landingpagecomps/footer";
@@ -11,7 +12,6 @@ import HeaderHero from "@/components/landingpagecomps/navHero";
 import TestimonialsSection from "@/components/landingpagecomps/testimonial";
 import MainLoader from "@/components/universalcomps/mainloader";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { useEffect, useState } from "react";
 
 const Main = () => {
   const [token, setToken] = useState<string | null>(null);
