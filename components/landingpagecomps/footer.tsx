@@ -199,7 +199,7 @@ export default function Footer({ className }: FooterProps) {
           className
         )}
       >
-        <p>&copy; 2024 Acrilc. All rights reserved.</p>
+        <p>&copy; 2025 Acrilc. All rights reserved.</p>
       </div>
     </>
   );
