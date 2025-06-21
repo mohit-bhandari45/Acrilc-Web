@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { artworks, NewArtWork, newArtworks } from "./data";
+import { NewArtWork, newArtworks } from "./data";
 import Link from "next/link";
 
 // interface Artwork {
