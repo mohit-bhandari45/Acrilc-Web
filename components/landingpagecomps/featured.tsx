@@ -70,42 +70,6 @@ export default function FeaturedArtworks({ className }: FeaturedArtworksProps) {
         </div>
       </div>
 
-      {/* Artwork Gallery */}
-      {/* <div
-        className="artwork-gallery-scroll flex gap-8 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-thin scrollbar-thumb-[#E2725B] scrollbar-track-transparent w-[95vw] left-0 relative"
-        id="artworkGalleryScroll"
-      >
-        <div className="flex-none w-[calc(50vw-320px)]"></div>
-        {displayedArtworks.map((artwork, index) => (
-          <div
-            key={`${artwork.title}-${index}`}
-            className="artwork-card flex-none w-[320px] bg-white rounded-2xl overflow-hidden shadow-[0_2px_12px_rgba(34,34,34,0.08)] border-[1.5px] border-[#ECECEC] snap-start transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(212,165,165,0.15)] hover:border-[#D4A5A5] cursor-pointer"
-            onClick={() => index < artworks.length && openModal(artwork)}
-          >
-            <div className="h-40 bg-[#DEDEDE] flex items-center justify-center">
-              <img src={artwork.image} alt="" />
-            </div>
-            <div className="p-4 flex flex-col">
-              <div className="artwork-title font-['Cormorant_Garamond',serif] font-semibold text-lg text-[#222] mb-1">
-                {artwork.title}
-              </div>
-              <div className="artwork-artist text-[#666] text-sm mb-2">
-                by <Link target="blank" href={artwork.artistLink} className="hover:underline">{artwork.artist}</Link>
-              </div>
-              <div className="artwork-bottom-row flex justify-between items-end mt-auto">
-                <div className="artwork-price font-bold text-[#222] text-lg">
-                  ₹ {artwork.price}
-                </div>
-                <div className="artwork-category text-[#B0B0B0] text-sm">
-                  {artwork.category}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-        <div className="flex-none w-[calc(50vw-320px)]"></div>
-      </div> */}
-
       <div className="relative">
         {/* Left scroll hint */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent" />
@@ -163,51 +127,6 @@ export default function FeaturedArtworks({ className }: FeaturedArtworksProps) {
           ))}
         </div>
       </div>
-
-      {/* Modal */}
-      {/* {selectedArtwork && (
-        <div className="artwork-modal-overlay fixed inset-0 bg-[rgba(34,34,34,0.85)] z-[2000] flex items-center justify-center animate-[fadeIn_0.2s]">
-          <div className="artwork-modal bg-white rounded-xl max-w-[540px] w-[95vw] shadow-[0_8px_32px_rgba(0,0,0,0.18)] flex flex-col animate-[popIn_0.2s]">
-            <div className="artwork-modal-img bg-[#E5E5E5] p-8 pb-4 flex items-center justify-center rounded-t-xl">
-              <img src={selectedArtwork.image} alt="" />
-            </div>
-            <div className="artwork-modal-content p-6 pb-2">
-              <div className="artwork-modal-title font-['Cormorant_Garamond',serif] text-xl font-bold mb-1">
-                {selectedArtwork.title}
-              </div>
-              <div className="artwork-modal-artist text-[#444] text-base mb-2">
-                by {selectedArtwork.artist}
-              </div>
-              <div className="artwork-modal-row flex justify-between items-center mb-2">
-                <div className="artwork-modal-price font-bold text-lg">
-                  Rs {selectedArtwork.price}
-                </div>
-                <div className="artwork-modal-category text-[#888] text-sm">
-                  {selectedArtwork.category}
-                </div>
-              </div>
-              <div className="artwork-modal-desc text-[#444] text-base mb-6">
-                {selectedArtwork.desc}
-              </div>
-              <div className="artwork-modal-buttons flex gap-4 justify-center">
-                <Link
-                  href={selectedArtwork.link}
-                  target="blank"
-                  className="artwork-modal-btn artwork-modal-btn-primary bg-[#2C3E50] text-[#FAFAF9] border-[1.5px] border-[#2C3E50] py-2 px-6 rounded-full font-medium transition-all duration-200 hover:bg-[#4A4A4A] hover:border-[#4A4A4A]"
-                >
-                  Purchase
-                </Link>
-                <button
-                  className="artwork-modal-btn artwork-modal-btn-secondary bg-transparent text-[#2C3E50] border-[1.5px] border-[#2C3E50] py-2 px-6 rounded-full font-medium transition-all duration-200 hover:bg-[#2C3E50] hover:text-[#FAFAF9]"
-                  onClick={closeModal}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
 
       {selectedArtwork && (
         <div

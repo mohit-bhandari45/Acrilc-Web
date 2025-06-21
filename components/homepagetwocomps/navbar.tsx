@@ -1,12 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import { IUser } from "@/types/types";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { heroImages } from "../landingpagecomps/data";
 
 interface HeaderHeroProps {
     user: IUser | null;
@@ -16,7 +15,7 @@ interface HeaderHeroProps {
 
 const Navbar = ({ className, user }: HeaderHeroProps) => {
     const [isScrolled, setIsScrolled] = useState(false);
-    const [backgroundImage, setBackgroundImage] = useState('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    const backgroundImage = 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80';
 
     // Handle scroll for header
     useEffect(() => {
