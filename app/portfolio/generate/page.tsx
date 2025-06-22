@@ -259,7 +259,7 @@ const AiPorfolio = () => {
                             </svg>
                             <p className="font-medium">Your AI portfolio is being generated!</p>
                         </div>
-                        <p className="mt-2 text-sm text-green-600">You'll receive an email with your personalized portfolio website shortly.</p>
+                        <p className="mt-2 text-sm text-green-600">{"You'll receive an email with your personalized portfolio website shortly."}</p>
                     </div>
                 )}
 
