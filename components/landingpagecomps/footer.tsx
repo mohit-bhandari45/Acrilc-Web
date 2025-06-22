@@ -137,21 +137,21 @@ export default function Footer({ className }: FooterProps) {
                     Terms of Service
                   </Link>
                 </li>
-                <li className="mb-2">
+                {/* <li className="mb-2">
                   <a
                     href="#"
                     className="text-white/80 text-base hover:text-[#E2725B] transition-all duration-300"
                   >
                     Contact
                   </a>
-                </li>
+                </li> */}
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/coming"
                     className="text-white/80 text-base hover:text-[#E2725B] transition-all duration-300"
                   >
                     Blog
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -199,7 +199,7 @@ export default function Footer({ className }: FooterProps) {
           className
         )}
       >
-        <p>&copy; 2024 Acrilc. All rights reserved.</p>
+        <p>&copy; 2025 Acrilc. All rights reserved.</p>
       </div>
     </>
   );
