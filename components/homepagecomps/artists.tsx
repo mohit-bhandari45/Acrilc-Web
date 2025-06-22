@@ -1,5 +1,3 @@
-import React from 'react'
-
 const FeaturedArtists = () => {
     const artists = [
         { name: 'Reshma Venkatraman', type: 'Acrylic Artist', location: 'Bangalore, India', followers: '1500+', img: 'https://randomuser.me/api/portraits/women/1.jpg' },
