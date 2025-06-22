@@ -161,10 +161,10 @@ export default function TermsOfService() {
                     support@acrilc.com
                   </a>
                 </div>
-                <div className="flex items-start">
+                {/* <div className="flex items-start">
                   <span className="mr-2">📞</span>
                   <span>+91-........</span>
-                </div>
+                </div> */}
               </div>
             </Section>
           </CardContent>
