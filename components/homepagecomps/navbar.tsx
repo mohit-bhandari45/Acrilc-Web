@@ -61,7 +61,7 @@ const Navbar = ({ className, user }: HeaderHeroProps) => {
                 {/* Navigation */}
                 <nav className="nav-links flex items-center gap-8">
                     <button
-                        onClick={() => scrollToSection("features")}
+                        onClick={() => scrollToSection("artists")}
                         className={cn(
                             "nav-link font-medium text-base transition-colors duration-300 ease-out",
                             "relative py-2 no-underline",
@@ -70,11 +70,11 @@ const Navbar = ({ className, user }: HeaderHeroProps) => {
                                 : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.18)] hover:text-[#E2725B]"
                         )}
                     >
-                        Features
+                        Artists
                     </button>
 
                     <button
-                        onClick={() => scrollToSection("testimonials")}
+                        onClick={() => scrollToSection("artworks")}
                         className={cn(
                             "nav-link font-medium text-base transition-colors duration-300 ease-out",
                             "relative py-2 no-underline",
@@ -83,11 +83,11 @@ const Navbar = ({ className, user }: HeaderHeroProps) => {
                                 : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.18)] hover:text-[#E2725B]"
                         )}
                     >
-                        Testimonials
+                        Artworks
                     </button>
 
                     <button
-                        onClick={() => scrollToSection("how-it-works")}
+                        onClick={() => scrollToSection("marketplace")}
                         className={cn(
                             "nav-link font-medium text-base transition-colors duration-300 ease-out",
                             "relative py-2 no-underline",
@@ -96,11 +96,11 @@ const Navbar = ({ className, user }: HeaderHeroProps) => {
                                 : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.18)] hover:text-[#E2725B]"
                         )}
                     >
-                        How It Works
+                        Marketplace
                     </button>
 
                     <button
-                        onClick={() => scrollToSection("gallery")}
+                        onClick={() => scrollToSection("blog")}
                         className={cn(
                             "nav-link font-medium text-base transition-colors duration-300 ease-out",
                             "relative py-2 no-underline",
@@ -109,7 +109,7 @@ const Navbar = ({ className, user }: HeaderHeroProps) => {
                                 : "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.18)] hover:text-[#E2725B]"
                         )}
                     >
-                        Gallery
+                        Blog
                     </button>
 
                     {/* Sign In Button */}
@@ -123,10 +123,6 @@ const Navbar = ({ className, user }: HeaderHeroProps) => {
                                         fill
                                         unoptimized
                                         className="object-cover cursor-pointer"
-                                        onError={(e) => {
-                                            const target = e.target as HTMLImageElement;
-                                            target.src = "https://via.placeholder.com/32";
-                                        }}
                                     />
                                 ) : (
                                     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">

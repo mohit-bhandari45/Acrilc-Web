@@ -4,11 +4,9 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { heroImages } from "./data";
-import { IUser } from "@/types/types";
-import Image from "next/image";
 import { Button } from "../ui/button";
 
-export default function MobileHeaderHero({ user }: { user: IUser | null }) {
+export default function MobileHeaderHero() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState("");
@@ -137,78 +135,15 @@ export default function MobileHeaderHero({ user }: { user: IUser | null }) {
         >
           Gallery
         </button>
-        {user ? (
-          <Link href={`/profile/${user.username}`} className="no-underline">
-            <button className="flex items-center gap-3 px-4 py-2 border-2 border-[#E2725B] text-[#E2725B] rounded-full bg-white hover:bg-[#E2725B] hover:text-white transition-all duration-300">
-              {/* Profile Image */}
-              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-black relative">
-                <Image
-                  src={user.profilePicture!}
-                  alt="Profile"
-                  fill
-                  unoptimized
-                  className="object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "https://via.placeholder.com/32";
-                  }}
-                />
-              </div>
-
-              {/* Text */}
-              <span className="text-sm sm:text-base font-medium">
-                Go to profile
-              </span>
-
-              {/* Right Arrow Icon */}
-              <style jsx>{`
-                @keyframes wiggleX {
-                  0%,
-                  100% {
-                    transform: translateX(0);
-                  }
-                  25% {
-                    transform: translateX(4px);
-                  }
-                  50% {
-                    transform: translateX(-4px);
-                  }
-                  75% {
-                    transform: translateX(2px);
-                  }
-                }
-                .animate-wiggleX {
-                  animation: wiggleX 0.8s ease-in-out infinite;
-                }
-              `}</style>
-
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="w-5 h-5 animate-wiggleX"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </Link>
-        ) : (
-          <button
-            className={cn(
-              "bg-white text-[#E2725B] border-2 border-[#E2725B] px-6 py-3 rounded-[50px] font-medium transition-all duration-300",
-              "hover:bg-[#E2725B] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.2)]"
-            )}
-            onClick={() => console.log("Sign in clicked")}
-          >
-            Sign In
-          </button>
-        )}
+        <button
+          className={cn(
+            "bg-white text-[#E2725B] border-2 border-[#E2725B] px-6 py-3 rounded-[50px] font-medium transition-all duration-300",
+            "hover:bg-[#E2725B] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.2)]"
+          )}
+          onClick={() => console.log("Sign in clicked")}
+        >
+          Sign In
+        </button>
       </nav>
 
       {/* Mobile Hero Section */}
@@ -219,9 +154,8 @@ export default function MobileHeaderHero({ user }: { user: IUser | null }) {
         <div
           className="hero-background absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat z-0 animate-[zoomEffect_20s_ease-out_forwards]"
           style={{
-            backgroundImage: `url('${
-              backgroundImage || "/images/fallback.jpg"
-            }')`,
+            backgroundImage: `url('${backgroundImage || "/images/fallback.jpg"
+              }')`,
           }}
         />
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/40 z-10 pointer-events-none" />
