@@ -7,7 +7,12 @@ import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 
 const useCurrentUser = ({ token }: { token: string | null }) => {
-  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const localUser = (window as any).localStorage.getItem("user");
+  let user;
+  if (localUser) {
+    user = JSON.parse(localUser);
+  }
+  const [currentUser, setCurrentUser] = useState<IUser | null>(user || null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -23,6 +28,7 @@ const useCurrentUser = ({ token }: { token: string | null }) => {
 
         if (response.status === 200) {
           setCurrentUser(response.data.data);
+          (window as any).localStorage.setItem("user", JSON.stringify(response.data.data))
         }
       } catch (error: unknown) {
         const axiosError = error as AxiosError;

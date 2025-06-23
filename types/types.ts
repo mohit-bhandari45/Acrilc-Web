@@ -101,8 +101,8 @@ export interface IUser {
     location?: string;
     story?: string;
     portfolioURL: string
-    totalFollowers?: string[];
-    totalFollowing?: string[];
+    followers?: string[];
+    following?: string[];
     role?: "user" | "admin";
     preferences?: string[];
     services?: string[];

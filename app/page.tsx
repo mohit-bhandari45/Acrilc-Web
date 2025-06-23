@@ -12,9 +12,11 @@ import HeaderHero from "@/components/landingpagecomps/navHero";
 import TestimonialsSection from "@/components/landingpagecomps/testimonial";
 import MainLoader from "@/components/universalcomps/mainloader";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { useRouter } from "next/navigation";
 
 const Main = () => {
   const [token, setToken] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,20 +24,26 @@ const Main = () => {
   }, []);
 
   const { currentUser, loading } = useCurrentUser({ token });
+  
+  useEffect(() => {
+    if (!loading && currentUser) {
+      router.push("/home");
+    }
+  }, [loading, currentUser, router]);
 
   if (loading) {
-    return <MainLoader msg="Loading, please wait"/>;
+    return <MainLoader msg="Loading, please wait" />;
   }
 
   return (
     <div className="min-h-screen">
       {/* Desktop Header and Hero */}
       <div className="hidden md:block">
-        <HeaderHero user={currentUser} />
+        <HeaderHero />
       </div>
 
       {/* Mobile Header and Hero */}
-      <MobileHeaderHero user={currentUser} />
+      <MobileHeaderHero />
       <FeaturesSection />
       <TestimonialsSection />
       <CompareSection />

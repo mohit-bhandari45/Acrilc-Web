@@ -166,10 +166,6 @@ export default function Header({
                     fill
                     unoptimized
                     className="object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "https://via.placeholder.com/32";
-                    }}
                   />
                 )}
               </div>
@@ -196,10 +192,6 @@ export default function Header({
                   fill
                   unoptimized
                   className="object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "https://via.placeholder.com/32";
-                  }}
                 />
               )}
             </div>

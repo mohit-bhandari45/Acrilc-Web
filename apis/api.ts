@@ -23,8 +23,11 @@ api.interceptors.request.use(
 )
 
 // public apis
-const GET_FEATURED_ARTISTS = `${BASE_URL}/public`;
-export { GET_FEATURED_ARTISTS };
+const GET_FEATURED_ARTISTS = `${BASE_URL}/public/featured/artists`;
+const GET_FEATURED_ARTWORKS = `${BASE_URL}/public/featured/arts`;
+const GET_FEATURED_MARKETS = `${BASE_URL}/public/featured/markets`;
+// const GET_FEATURED_ARTWORKS = `${BASE_URL}/public/featured/arts`;
+export { GET_FEATURED_ARTISTS, GET_FEATURED_ARTWORKS, GET_FEATURED_MARKETS };
 
 // auth apis
 const SIGNUP_URL: string = `${BASE_URL}/auth/signup`;
