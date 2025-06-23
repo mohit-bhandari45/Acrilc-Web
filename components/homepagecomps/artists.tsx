@@ -45,18 +45,33 @@ const FeaturedArtists = () => {
                             key={idx}
                             className="bg-white rounded-[20px] shadow-lg overflow-hidden transform transition hover:-translate-y-2 duration-[0.3s] ease-in-out hover:shadow-2xl"
                         >
-                            <div className="relative h-72 bg-gradient-to-tr from-[#f093fb] to-[#f5576c]">
+                            <div className="relative h-72">
+                                {a.profilePicture ? (
+                                    <div className="w-full aspect-w-16 aspect-h-9 overflow-hidden">
+                                        <img
+                                            src={a.profilePicture}
+                                            alt={a.fullName}
+                                            className="absolute inset-0 object-cover w-full h-full"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="h-full bg-gradient-to-tr from-[#f093fb] to-[#f5576c]" />
+                                )}
                                 <div className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2.5 rounded-full text-sm font-semibold">
                                     {a.followers?.length} Followers
                                 </div>
                             </div>
                             <div className="p-6">
                                 <div className="flex items-center gap-3 mb-2">
-                                    <img
-                                        src={a.profilePicture}
-                                        alt={a.fullName}
-                                        className="w-10 h-10 rounded-full border border-gray-200 shadow-sm object-cover"
-                                    />
+                                    {a.profilePicture ? (
+                                        <img
+                                            src={a.profilePicture}
+                                            alt={a.fullName}
+                                            className="w-10 h-10 rounded-full border border-gray-200 shadow-sm object-cover"
+                                        />
+                                    ) : (
+                                        <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-[#f093fb] to-[#f5576c]" />
+                                    )}
                                     <h3 className="text-lg font-bold">{a.fullName}</h3>
                                 </div>
                                 <p className="text-blue-500 font-semibold mb-1">{a.preferences?.[0]}</p>

@@ -6,7 +6,7 @@ const LatestArtworks = () => {
     const [artworks, setArtworks] = useState<IPost[] | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const pushToArray = (arr: Record<string, any>) => {
+    const pushToArray = (arr: Record<string, IPost[]>) => {
         const array = [];
         for (const key in arr) {
             if (arr.hasOwnProperty(key)) {

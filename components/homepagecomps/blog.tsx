@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const Blog = () => {
     const posts = [
         {
@@ -32,9 +34,11 @@ const Blog = () => {
                         className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-[0.3s] ease-in-out"
                     >
                         <div className="aspect-w-16 aspect-h-9 w-full overflow-hidden">
-                            <img
+                            <Image
                                 src={post.image}
                                 alt={post.title}
+                                height={100}
+                                width={100}
                                 className="object-cover w-full h-full"
                             />
                         </div>

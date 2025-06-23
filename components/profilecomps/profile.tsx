@@ -347,7 +347,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                     <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
                       <div className="text-center">
                         <div className="text-lg sm:text-xl font-bold text-gray-900">
-                          {user.totalFollowers}
+                          {user.followers}
                         </div>
                         <div className="text-xs sm:text-sm text-gray-600">
                           Supporters
@@ -355,7 +355,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                       </div>
                       <div className="text-center">
                         <div className="text-lg sm:text-xl font-bold text-gray-900">
-                          {user.totalFollowing}
+                          {user.following}
                         </div>
                         <div className="text-xs sm:text-sm text-gray-600">
                           Supporting

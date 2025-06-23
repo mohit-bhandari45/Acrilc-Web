@@ -17,19 +17,19 @@ const HomePage = () => {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<IUser | null>(null);
 
-    const getUser = () => {
-        setLoading(true);
-        const localUser = (window as any).localStorage.getItem("user");
-        if (localUser) {
-            setUser(JSON.parse(localUser));
-        }
-        setLoading(false);
-        return user;
-    }
-
+    
     useEffect(() => {
-        const user = getUser();
-        if (!user && !loading) {
+        const getUser = () => {
+            setLoading(true);
+            const localUser = localStorage.getItem("user");
+            if (localUser) {
+                setUser(JSON.parse(localUser));
+            }
+            setLoading(false);
+            return user;
+        }
+        const userCurrent = getUser();
+        if (!userCurrent && !loading) {
             router.back();
         }
     }, [loading, router]);

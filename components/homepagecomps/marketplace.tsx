@@ -1,12 +1,6 @@
 const FeaturedMarketplace = () => {
-    const items = [
-        { title: 'Handcrafted Mandala Art', price: '₹15,999', desc: 'Beautiful intricate mandala painting with gold accents, perfect for meditation spaces.' },
-        { title: 'Ceramic Vase Collection', price: '₹8,500', desc: 'Set of 3 handmade ceramic vases with unique textures and earth tones.' },
-        { title: 'Bronze Sculpture', price: '₹25,000', desc: 'Limited edition bronze sculpture depicting classical Indian dance forms.' },
-        { title: 'Handwoven Textile Art', price: '₹12,000', desc: 'Traditional handwoven textile with contemporary design elements.' },
-    ];
 
-    const newData = [
+    const items = [
         {
             author: "60c72b2f9b1e8a5f4d8e7f33",
             image: "https://picsum.photos/id/101/800/600",
@@ -309,7 +303,7 @@ const FeaturedMarketplace = () => {
                 Featured Marketplace
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {newData.slice(0, 4).map((it, index) => (
+                {items.slice(0, 4).map((it, index) => (
                     <div
                         key={index}
                         className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transform hover:-translate-y-2 transition duration-[0.3s] ease-in-out"

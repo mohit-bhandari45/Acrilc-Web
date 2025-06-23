@@ -4,8 +4,6 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { heroImages } from "./data";
-import { IUser } from "@/types/types";
-import Image from "next/image";
 import { Button } from "../ui/button";
 
 export default function MobileHeaderHero() {

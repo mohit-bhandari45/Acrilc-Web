@@ -136,13 +136,26 @@ export default function HomePageMobileNavBar({ user }: { user: IUser | null }) {
                         <button className="flex items-center gap-3 px-4 py-2 border-2 border-[#E2725B] text-[#E2725B] rounded-full bg-white hover:bg-[#E2725B] hover:text-white transition-all duration-300">
                             {/* Profile Image */}
                             <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-black relative">
-                                <Image
-                                    src={user.profilePicture!}
-                                    alt="Profile"
-                                    fill
-                                    unoptimized
-                                    className="object-cover"
-                                />
+                                {user.profilePicture ? (
+                                    <Image
+                                        src={user.profilePicture!}
+                                        alt="Profile"
+                                        fill
+                                        unoptimized
+                                        className="object-cover"
+                                    />
+                                ) : (
+                                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="50" cy="50" r="50" fill="#e5e7eb" />
+
+                                        <circle cx="50" cy="35" r="18" fill="#9ca3af" />
+
+                                        <path
+                                            d="M20 85 Q20 65 35 58 Q42.5 55 50 55 Q57.5 55 65 58 Q80 65 80 85 L80 100 L20 100 Z"
+                                            fill="#9ca3af"
+                                        />
+                                    </svg>
+                                )}
                             </div>
 
                             {/* Text */}
