@@ -1,6 +1,6 @@
 "use client";
 
-import api, { GET_OWN_PROFILE, UPDATE_PROFILE } from "@/apis/api";
+import api, { UPDATE_PROFILE } from "@/apis/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,9 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { IUser } from "@/types/types";
-import { AxiosError } from "axios";
+import { useAppSelector } from "@/store/hooks";
+// import { IUser } from "@/types/types";
+// import { AxiosError } from "axios";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,9 +29,9 @@ interface SocialLink {
 
 export default function ProfileEditPage() {
   const router = useRouter();
-  const [, setToken] = useState<string | null>(null);
+  // const [, setToken] = useState<string | null>(null);
   const [loader, setLoader] = useState(false);
-  const [user, setUser] = useState<IUser | null>(null);
+  // const [user, setUser] = useState<IUser | null>(null);
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -40,27 +41,29 @@ export default function ProfileEditPage() {
   });
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setToken(token);
-  }, []);
+  const { user } = useAppSelector(state => state.userReducer);
 
-  useEffect(() => {
-    async function getUser() {
-      try {
-        const response = await api.get(GET_OWN_PROFILE);
-        setUser(response.data.data);
-      } catch (error) {
-        const uperror = error as AxiosError<{ msg: string }>;
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   setToken(token);
+  // }, []);
 
-        if (uperror.response?.status === 401) {
-          router.push("/auth/login");
-        }
-      }
-    }
+  // useEffect(() => {
+  //   async function getUser() {
+  //     try {
+  //       const response = await api.get(GET_OWN_PROFILE);
+  //       setUser(response.data.data);
+  //     } catch (error) {
+  //       const uperror = error as AxiosError<{ msg: string }>;
 
-    getUser();
-  }, [router]);
+  //       if (uperror.response?.status === 401) {
+  //         router.push("/auth/login");
+  //       }
+  //     }
+  //   }
+
+  //   getUser();
+  // }, [router]);
 
   useEffect(() => {
     if (user) {

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import useCurrentUser from "@/hooks/useCurrentUser";
+// import useCurrentUser from "@/hooks/useCurrentUser";
 import { Instagram, Mail, MessageCircle, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,19 +27,21 @@ import {
   currencies,
   handleAddToMarket,
 } from "../marketutils";
+import { useAppSelector } from "@/store/hooks";
 
 export default function AddProjectsPage() {
   const [file, setFile] = useState<File>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setToken(token);
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   setToken(token);
+  // }, []);
 
-  const { currentUser, loading } = useCurrentUser({ token });
+  // const { currentUser, loading } = useCurrentUser({ token });
+  const { user: currentUser, loading } = useAppSelector(state => state.userReducer);
 
   const imageUrl = useMemo(() => {
     if (!file) return null;

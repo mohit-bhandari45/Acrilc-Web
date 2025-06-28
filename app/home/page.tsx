@@ -3,36 +3,25 @@
 import FeaturedArtists from '@/components/homepagecomps/artists';
 import LatestArtworks from '@/components/homepagecomps/artworks';
 import Blog from '@/components/homepagecomps/blog';
-import Footer from '@/components/homepagecomps/footer';
 import FeaturedMarketplace from '@/components/homepagecomps/marketplace';
 import HomePageMobileNavBar from '@/components/homepagecomps/mobilenav';
 import Navbar from '@/components/homepagecomps/navbar';
+import Footer from '@/components/landingpagecomps/footer';
 import MainLoader from '@/components/universalcomps/mainloader';
-import { IUser } from '@/types/types';
+import { useAppSelector } from '@/store/hooks';
+// import { IUser } from '@/types/types';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 const HomePage = () => {
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState<IUser | null>(null);
+    const { user, loading } = useAppSelector(state => state.userReducer);
 
-    
     useEffect(() => {
-        const getUser = () => {
-            setLoading(true);
-            const localUser = localStorage.getItem("user");
-            if (localUser) {
-                setUser(JSON.parse(localUser));
-            }
-            setLoading(false);
-            return user;
-        }
-        const userCurrent = getUser();
-        if (!userCurrent && !loading) {
+        if (!user && !loading) {
             router.back();
         }
-    }, [loading, router]);
+    }, [user, loading, router]);
 
     if (loading) {
         return <MainLoader msg="Loading, please wait" />;

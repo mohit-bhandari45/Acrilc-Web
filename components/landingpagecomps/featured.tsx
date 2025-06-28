@@ -102,7 +102,7 @@ export default function FeaturedArtworks({ className }: FeaturedArtworksProps) {
                   {art.title}
                 </h3>
 
-                <p className="artwork-artist text-[#666] text-sm mb-2">
+                <div className="artwork-artist text-[#666] text-sm mb-2">
                   by{' '}
                   <Link
                     href={art.artistLink}
@@ -112,7 +112,7 @@ export default function FeaturedArtworks({ className }: FeaturedArtworksProps) {
                   >
                     {art.artist}
                   </Link>
-                </p>
+                </div>
 
                 <div className="mt-auto flex justify-between items-end">
                   <span className="artwork-price font-bold text-lg text-[#222]">

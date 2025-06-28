@@ -1,26 +1,29 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "@/types/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface IUserState {
+interface UserReducerInitialState {
     user: IUser | null;
+    loading: boolean;
 }
 
-const initialState: IUserState = {
+const initialState: UserReducerInitialState = {
     user: null,
-}
+    loading: true,
+};
 
-const userSlice = createSlice({
-    name: "user",
+export const userSlice = createSlice({
+    name: "userReducer",
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<IUser>) => {
             state.user = action.payload;
+            state.loading = false;
         },
         clearUser: (state) => {
+            state.loading = false;
             state.user = null;
         },
-    }
-})
+    },
+});
 
 export const { setUser, clearUser } = userSlice.actions;
-export default userSlice.reducer;
