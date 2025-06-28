@@ -26,12 +26,12 @@ interface ProfileData {
 
 /* Collection Types */
 interface Artwork {
-  id: string;
-  title: string;
-  year: string;
-  medium: string;
-  dimensions: string;
-  imageUrl: string;
+    id: string;
+    title: string;
+    year: string;
+    medium: string;
+    dimensions: string;
+    imageUrl: string;
 }
 
 export type { SocialLink, ProfileStats, ProfileData, CategoryItem, Artwork }

@@ -3,21 +3,21 @@
 import api, { GET_POST } from "@/apis/api";
 import { InteractiveBackground } from "@/components/bgs/InteractiveBG";
 import MainLoader from "@/components/universalcomps/mainloader";
-import useCurrentUser from "@/hooks/useCurrentUser";
+// import useCurrentUser from "@/hooks/useCurrentUser";
 import { IPost } from "@/types/types";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Navbar from "@/components/profilecomps/navbar";
 import CreateContent from "@/components/postcomps/createcontent";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setUser } from "@/store/features/userSlice";
 
 const Edit = () => {
   /* states */
   const dispatch = useAppDispatch();
   const [post, setPost] = useState<IPost | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
   const [type, setType] = useState<string | null>("");
   const searchParams = useSearchParams();
   const params = useParams();
@@ -28,9 +28,9 @@ const Edit = () => {
     setType(searchParams.get("type"));
   }, [searchParams]);
 
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
+  // useEffect(() => {
+  //   setToken(localStorage.getItem("token"));
+  // }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -47,7 +47,8 @@ const Edit = () => {
   }, [id]);
 
   /* hook */
-  const { currentUser, loading } = useCurrentUser({ token });
+  const { user: currentUser, loading } = useAppSelector(state => state.userReducer);
+  // const { currentUser, loading } = useCurrentUser({ token });
 
   if (!currentUser || loading || !post) {
     return (

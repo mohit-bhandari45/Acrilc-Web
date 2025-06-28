@@ -5,7 +5,8 @@ import { InteractiveBackground } from "@/components/bgs/InteractiveBG";
 import PostDescription from "@/components/postcomps/postdescription";
 import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
-import useCurrentUser from "@/hooks/useCurrentUser";
+import { useAppSelector } from "@/store/hooks";
+// import useCurrentUser from "@/hooks/useCurrentUser";
 import { IPost } from "@/types/types";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,13 +16,15 @@ const Post = () => {
   const params = useParams();
   const id = params.id;
   const [post, setPost] = useState<IPost | null>(null);
-  const [token, setToken] = useState<string | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
+  // useEffect(() => {
+  //   setToken(localStorage.getItem("token"));
+  // }, []);
 
-  const { currentUser, loading } = useCurrentUser({ token });
+  // const { currentUser, loading } = useCurrentUser({ token });
+
+  const { user: currentUser, loading } = useAppSelector(state => state.userReducer);
 
   useEffect(() => {
     const getData = async () => {

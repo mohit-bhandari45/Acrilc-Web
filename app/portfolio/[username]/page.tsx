@@ -1,95 +1,65 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { useAppSelector } from "@/store/hooks";
+
 import ArtistAbout from "@/components/portfolio/about";
-import ContactSection from "@/components/portfolio/contact";
-import Footer from "@/components/portfolio/footer";
-import { FooterActions } from "@/components/portfolio/footeractionc";
 import Gallery from "@/components/portfolio/gallery";
 import { ShopSection } from "@/components/portfolio/marketplace";
+import ContactSection from "@/components/portfolio/contact";
+import Footer from "@/components/portfolio/footer";
 import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
-import useCurrentUser from "@/hooks/useCurrentUser";
 import useUserByUsername from "@/hooks/useUserByUsername";
-import { setUser } from "@/store/features/userSlice";
-import { useAppDispatch } from "@/store/hooks";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-
-interface IParams {
-  username: string;
-}
+import { FooterActions } from "@/components/portfolio/footeractionc";
 
 const Portfolio = () => {
-  const params: IParams = useParams() as { username: string };
-  const username = params.username;
-  const [isSame, setIsSame] = useState<boolean>(false);
-  const [token, setToken] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
+	const { username } = useParams() as { username: string };
 
-  /* Getting the user and updating things */
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
-  }, []);
+	// the user whose portfolio we're viewing
+	const {
+		user: viewedUser,
+		loading: loadingViewedUser,
+	} = useUserByUsername({ username });
 
-  const { user, loading: userByUsernameLoading } = useUserByUsername({
-    username,
-  });
-  const { currentUser, loading: currUserLoading } = useCurrentUser({ token });
-  dispatch(setUser(currentUser!));
+	// the currently logged-in user (or null)
+	const {
+		user: currentUser,
+		loading: loadingCurrentUser,
+	} = useAppSelector((state) => state.userReducer);
 
-  useEffect(() => {
-    if (
-      token &&
-      currentUser &&
-      user &&
-      currentUser.username === user.username
-    ) {
-      setIsSame(true);
-    } else {
-      setIsSame(false);
-    }
-  }, [token, currentUser, user]);
+	// are they looking at their own page?
+	const [isSameUser, setIsSameUser] = useState(false);
+	useEffect(() => {
+		setIsSameUser(
+			!!currentUser && viewedUser?.username === currentUser.username
+		);
+	}, [currentUser, viewedUser]);
 
-  /* Comps */
-  if (currUserLoading || userByUsernameLoading) {
-    return <MainLoader msg="Loading, please wait"/>;
-  }
+	// loading / error states
+	if (loadingViewedUser || loadingCurrentUser) {
+		return <MainLoader msg="Loading, please wait" />;
+	}
+	if (!viewedUser) {
+		return <div>Please try again by refreshing the page!</div>;
+	}
 
-  if (!token) {
-    if (!user) {
-      return <div>Please Try again by refresing the page!</div>;
-    }
-
-    return (
-      <>
-        <ArtistAbout user={user} isSame={isSame} />
-        <Gallery user={user} />
-        <ShopSection user={user}/>
-        <ContactSection />
-        <FooterActions user={user} isSame={isSame} />
-      </>
-    );
-  } else {
-    if (!currentUser || !user) {
-      return <div>Please Try again by refresing the page!</div>;
-    } else {
-      /* Actual Content of the page */
-      return (
-        <>
-          <Navbar currentUser={currentUser} show={true} portfolio={true}/>
-          <div className="mt-15">
-            <ArtistAbout user={user} isSame={isSame} />
-            <Gallery user={user} />
-            <ShopSection user={user}/>
-            {!isSame && <ContactSection />}
-            <FooterActions user={user} isSame={isSame} />
-            <Footer />
-          </div>
-        </>
-      );
-    }
-  }
+	return (
+		<>
+			{currentUser && (
+				<Navbar currentUser={currentUser} show portfolio />
+			)}
+			<div className="mt-15">
+				<ArtistAbout user={viewedUser} isSame={isSameUser} />
+				<Gallery user={viewedUser} />
+				<ShopSection user={viewedUser} />
+				{!isSameUser && <ContactSection />}
+				<FooterActions user={viewedUser} isSame={isSameUser} />
+				{currentUser && <Footer />}
+			</div>
+		</>
+	);
 };
 
 export default Portfolio;

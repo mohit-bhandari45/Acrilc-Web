@@ -1,77 +1,54 @@
 "use client";
 
-import GallerySection from "@/components/profilecomps/gallery";
-import ArtistProfile from "@/components/profilecomps/profile";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { useAppSelector } from "@/store/hooks";
+
 import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
+import ArtistProfile from "@/components/profilecomps/profile";
+import GallerySection from "@/components/profilecomps/gallery";
 
-/* Redux */
-import useCurrentUser from "@/hooks/useCurrentUser";
 import useUserByUsername from "@/hooks/useUserByUsername";
-import { setUser } from "@/store/features/userSlice";
-import { useAppDispatch } from "@/store/hooks";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
-interface IParams {
-  username: string;
+export default function Profile() {
+	const { username } = useParams() as { username: string };
+
+	// fetch the profile we're viewing
+	const { user: profileUser, loading: loadingProfile } =
+		useUserByUsername({ username });
+
+	// get the currently authenticated user from redux
+	const { user: currentUser, loading: loadingCurrent } = useAppSelector(
+		(state) => state.userReducer
+	);
+
+	// determine if it's the same user
+	const [isSameUser, setIsSameUser] = useState(false);
+	useEffect(() => {
+		setIsSameUser(
+			!!currentUser && profileUser?.username === currentUser.username
+		);
+	}, [currentUser, profileUser]);
+
+	// show loader while either is loading
+	if (loadingProfile || loadingCurrent) {
+		return <MainLoader msg="Loading, please wait" />;
+	}
+
+	// handle "no such user" error
+	if (!profileUser) {
+		return <div>User not found. Please refresh and try again.</div>;
+	}
+
+	// pick which user object to display
+	const displayedUser = isSameUser ? currentUser! : profileUser;
+
+	return (
+		<div className="font-[Helvetica]">
+			<Navbar currentUser={currentUser!} show portfolio={false} />
+			<ArtistProfile user={displayedUser} isSame={isSameUser} />
+			<GallerySection user={displayedUser} isSame={isSameUser} />
+		</div>
+	);
 }
-
-const Profile = () => {
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-  const [isSame, setIsSame] = useState<boolean>(false);
-  const params: IParams = useParams() as { username: string };
-  const [token, setToken] = useState<string | null>(null);
-  const username = params.username;
-
-  /* Getting the user and updating things */
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (!storedToken) {
-      router.push("/auth/login");
-    }
-    setToken(storedToken);
-  }, [router]);
-
-  const { user, loading: userByUsernameLoading } = useUserByUsername({
-    username,
-  });
-  const { currentUser, loading: currUserLoading } = useCurrentUser({ token });
-  useEffect(() => {
-    if (currentUser) {
-      dispatch(setUser(currentUser));
-    }
-  }, [currentUser, dispatch]);
-
-  useEffect(() => {
-    localStorage.removeItem("username");
-    if (
-      token &&
-      currentUser &&
-      user &&
-      currentUser.username === user.username
-    ) {
-      setIsSame(true);
-    } else {
-      setIsSame(false);
-    }
-  }, [token, currentUser, user]);
-
-  /* Comps */
-  if (currUserLoading || userByUsernameLoading || !user || !currentUser) {
-    return <MainLoader msg="Loading, please wait" />;
-  }
-
-  return (
-    <div className="font-[Helvetica]">
-      <Navbar currentUser={currentUser} show={true} portfolio={false} />
-      <ArtistProfile user={isSame ? currentUser : user} isSame={isSame} />
-
-      {/* Main Three Sections */}
-      <GallerySection user={isSame ? currentUser : user} isSame={isSame} />
-    </div>
-  );
-};
-
-export default Profile;
