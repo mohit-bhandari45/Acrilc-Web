@@ -15,16 +15,16 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
 
         const inAuthPath = pathname.startsWith('/auth');
         const protectedRoutes = ["/home"];
-
+        
         const isProtectedRoute = protectedRoutes.some(prefix =>
             pathname === prefix || pathname.startsWith(prefix + '/')
         );
-
+        
         if (!user && isProtectedRoute) {
             router.replace(`/auth/login?next=${encodeURIComponent(pathname)}`);
             return;
         }
-
+        
         if (user && inAuthPath) {
             if (!user.username) {
                 router.replace('/auth/username');
@@ -33,7 +33,7 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
             } else if (!user.profilePicture) {
                 router.replace('/auth/profile-pic');
             } else {
-                router.replace(`/profile/${user.username}`);
+                router.replace(`/home`);
             }
             return;
         }

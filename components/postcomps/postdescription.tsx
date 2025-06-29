@@ -79,7 +79,6 @@ const PostDescription = ({
       const res = await api.delete(`${DELETE_POST}/${post?._id}`);
 
       if (res.status === 200) {
-        console.log(`/profile/${user.username}`);
         router.push(`/profile/${user.username}`);
         toast.success("Post Deleted Successfully");
       }

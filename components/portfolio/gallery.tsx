@@ -31,7 +31,6 @@ const Gallery: React.FC<GalleryProps> = ({
   useEffect(() => {
     const getPosts = async () => {
       const res = await api.get(`${GET_FEATURED_POSTS}/${user._id}/featured-posts`);
-      console.log(res);
 
       if (res.status === 200) {
         setPosts(res.data.data);

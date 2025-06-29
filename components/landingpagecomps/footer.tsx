@@ -35,7 +35,6 @@ export default function Footer({ className }: FooterProps) {
   };
 
   const scrollToSection = (sectionId: string) => {
-    console.log(sectionId);
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });

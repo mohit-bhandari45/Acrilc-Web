@@ -177,7 +177,7 @@ export default function HeaderHero({ className }: HeaderHeroProps) {
               href="/coming"
               className="btn btn-secondary bg-white text-[#E2725B] border-2 border-[#E2725B] px-8 py-4 rounded-[50px] font-medium no-underline transition-all duration-300 ease-out hover:bg-[#E2725B] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.2)]"
             >
-              Create Your Portfolio
+              Create Your AI Portfolio
             </Link>
           </div>
         </div>

@@ -57,7 +57,7 @@ const AboutAcrilc = () => {
       avatar: "J",
     },
     {
-      name: "Mohit",
+      name: "Subhopriya Ghosh",
       role: "CTO",
       bio: "Makes tech feel less like a machine and more like it's working with you. He quietly builds Acrilc's backbone — fast, secure, and ready to grow with every artist who joins.",
       avatar: "M",
