@@ -14,7 +14,7 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
         if (loading) return;
 
         const inAuthPath = pathname.startsWith('/auth');
-        const protectedRoutes = ["/profile", "/home"];
+        const protectedRoutes = ["/home"];
 
         const isProtectedRoute = protectedRoutes.some(prefix =>
             pathname === prefix || pathname.startsWith(prefix + '/')
