@@ -12,6 +12,8 @@ import { LogOut, User, Settings } from "lucide-react";
 import MainLoader from "../universalcomps/mainloader";
 import toast from "react-hot-toast";
 import api from "@/apis/api";
+import { useAppDispatch } from "@/store/hooks";
+import { clearUser } from "@/store/features/userSlice";
 
 interface NavItem {
 	href: string;
@@ -49,6 +51,7 @@ export default function Header({
 	const [scrolled, setScrolled] = useState(false);
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 	const [loader, setLoader] = useState(false);
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -74,6 +77,7 @@ export default function Header({
 		setLoader(true);
 		try {
 			await api.get(`/auth/logout`);
+			dispatch(clearUser());
 			toast.success("Logged out successfully");
 			router.push("/");
 		} catch (error) {
