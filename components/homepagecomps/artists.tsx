@@ -40,7 +40,7 @@ const FeaturedArtists = () => {
                             </div>
                         </div>
                     ))
-                    : artists?.map((a, idx) => (
+                    : artists?.reverse()?.map((a, idx) => (
                         <div
                             key={idx}
                             className="bg-white rounded-[20px] shadow-lg overflow-hidden transform transition hover:-translate-y-2 duration-[0.3s] ease-in-out hover:shadow-2xl"
