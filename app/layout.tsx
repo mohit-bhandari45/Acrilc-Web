@@ -7,9 +7,8 @@ import ClientToaster from "./toaster";
 import ReduxProvider from "./provider";
 import ClientUserLoader from "../hooks/ClientUserLoader";
 import RouteGuard from "@/hooks/RouteGuard";
-import Head from "next/head";
 
-// Load Fonts
+// Fonts
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
 	subsets: ["latin"],
@@ -41,6 +40,9 @@ export const metadata: Metadata = {
 		"art platform India",
 		"art showcase website"
 	],
+	alternates: {
+		canonical: "https://acrilc.com",
+	},
 	openGraph: {
 		title: "Acrilc - Empowering Artists Worldwide",
 		description:
@@ -64,6 +66,20 @@ export const metadata: Metadata = {
 		description:
 			"A creative hub for artists to share their work, build connections, and earn from their art.",
 		images: ["https://i.ibb.co/JRkvH0XH/Project-20250516020412.png"]
+	},
+	// ✅ JSON-LD Schema
+	other: {
+		"script:ld+json": JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Organization",
+			"name": "Acrilc",
+			"url": "https://acrilc.com",
+			"logo": "https://i.ibb.co/JRkvH0XH/Project-20250516020412.png",
+			"sameAs": [
+				"https://twitter.com/acrilc",
+				"https://www.instagram.com/acrilc"
+			]
+		}),
 	}
 };
 
@@ -72,7 +88,6 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-
 	const initialReduxState = {
 		userReducer: {
 			user: null,
@@ -85,27 +100,6 @@ export default async function RootLayout({
 			<body
 				className={`${epilogue.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
 			>
-				{/* SEO Enhancements */}
-				<Head>
-					<link rel="canonical" href="https://acrilc.com" />
-					<script
-						type="application/ld+json"
-						dangerouslySetInnerHTML={{
-							__html: JSON.stringify({
-								"@context": "https://schema.org",
-								"@type": "Organization",
-								"name": "Acrilc",
-								"url": "https://acrilc.com",
-								"logo": "https://i.ibb.co/JRkvH0XH/Project-20250516020412.png",
-								"sameAs": [
-									"https://twitter.com/acrilc", // Replace with real links
-									"https://www.instagram.com/acrilc"
-								]
-							})
-						}}
-					/>
-				</Head>
-
 				<ReduxProvider initialReduxState={initialReduxState}>
 					<ClientToaster />
 					<ClientUserLoader />
