@@ -44,7 +44,7 @@ const FeaturedArtists = ({ user }: { user: IUser }) => {
                 </div>
               </div>
             ))
-          : artists?.map((a, idx) => (
+          : artists?.reverse()?.map((a, idx) => (
               <Link
                 key={idx}
                 href={`/profile/${a.username}`}
