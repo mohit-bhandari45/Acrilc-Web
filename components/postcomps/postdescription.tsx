@@ -26,7 +26,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import MainLoader from "../universalcomps/mainloader";
+import { SkeletonPost } from "../utils/Skeleton";
 
 const PostDescription = ({
   post,
@@ -88,7 +88,7 @@ const PostDescription = ({
   };
 
   if (!post) {
-    return <MainLoader msg="Loading, please wait" />;
+    return <SkeletonPost/>
   }
 
   return (

@@ -31,8 +31,8 @@ const HomePage = () => {
       </div>
 
       <HomePageMobileNavBar user={user} />
-      <FeaturedArtists />
-      <LatestArtworks />
+      <FeaturedArtists user={user}/>
+      <LatestArtworks user={user}/>
       <FeaturedMarketplace />
       <Blog />
       <Footer />
