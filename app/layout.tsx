@@ -7,21 +7,18 @@ import ClientToaster from "./toaster";
 import ReduxProvider from "./provider";
 import ClientUserLoader from "../hooks/ClientUserLoader";
 import RouteGuard from "@/hooks/RouteGuard";
+import Head from "next/head";
 
-// Load Geist Mono (optional)
+// Load Fonts
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
 	subsets: ["latin"],
 });
-
-// Load Epilogue
 const epilogue = Epilogue({
 	variable: "--font-epilogue",
 	subsets: ["latin"],
 	weight: ["400", "500", "600", "700"],
 });
-
-// Load Poppins
 const poppins = Poppins({
 	variable: "--font-poppins",
 	subsets: ["latin"],
@@ -52,7 +49,7 @@ export const metadata: Metadata = {
 		siteName: "Acrilc",
 		images: [
 			{
-				url: "https://i.ibb.co/JRkvH0XH/Project-20250516020412.png", // Make sure this exists
+				url: "https://i.ibb.co/JRkvH0XH/Project-20250516020412.png",
 				width: 1200,
 				height: 630,
 				alt: "Acrilc Art Platform Preview"
@@ -88,6 +85,27 @@ export default async function RootLayout({
 			<body
 				className={`${epilogue.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
 			>
+				{/* SEO Enhancements */}
+				<Head>
+					<link rel="canonical" href="https://acrilc.com" />
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{
+							__html: JSON.stringify({
+								"@context": "https://schema.org",
+								"@type": "Organization",
+								"name": "Acrilc",
+								"url": "https://acrilc.com",
+								"logo": "https://i.ibb.co/JRkvH0XH/Project-20250516020412.png",
+								"sameAs": [
+									"https://twitter.com/acrilc", // Replace with real links
+									"https://www.instagram.com/acrilc"
+								]
+							})
+						}}
+					/>
+				</Head>
+
 				<ReduxProvider initialReduxState={initialReduxState}>
 					<ClientToaster />
 					<ClientUserLoader />
