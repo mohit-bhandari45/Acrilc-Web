@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import { useAppSelector } from "@/store/hooks";
 import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
@@ -13,33 +13,30 @@ import { IUser } from "@/types/types";
 export default function Profile() {
 	const { username } = useParams() as { username: string };
 
-	const { user: profileUser, loading: loadingProfile } = useUserByUsername({ username });
-
 	const { user: currentUser, loading: loadingCurrent } = useAppSelector(
 		(state) => state.userReducer
 	);
 
-	const [isSameUser, setIsSameUser] = useState(false);
-	useEffect(() => {
-		setIsSameUser(
-			!!currentUser && profileUser?.username === currentUser.username
-		);
-	}, [currentUser, profileUser]);
-
-
-	if (loadingProfile || loadingCurrent) {
+	if (loadingCurrent || !currentUser) {
 		return <MainLoader msg="Loading, please wait" />;
 	}
 
-	if (!profileUser) {
-		return <div>User not found. Please refresh and try again.</div>;
+	const isSameUser = currentUser.username === username;
+
+	const { user: profileUser, loading: loadingProfile } = useUserByUsername({
+		username,
+		skip: isSameUser,
+	});
+
+	if (loadingProfile) {
+		return <MainLoader msg="Loading, please wait" />;
 	}
 
-	if (isSameUser && !currentUser) {
-		return <MainLoader msg="Loading…" />;
+	if (!isSameUser && !profileUser) {
+		notFound();
 	}
 
-	const displayedUser = isSameUser ? (currentUser as IUser) : profileUser;
+	const displayedUser = (isSameUser ? currentUser : profileUser!) as IUser;
 
 	return (
 		<div className="font-[Helvetica]">

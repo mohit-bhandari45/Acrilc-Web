@@ -1,30 +1,31 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useAppSelector } from '@/store/hooks';
 import MainLoader from '@/components/universalcomps/mainloader';
 
 export default function RouteGuard({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { user, loading } = useAppSelector(state => state.userReducer);
+    const nextPath = searchParams.get("next");
 
     useEffect(() => {
         if (loading) return;
 
         const inAuthPath = pathname.startsWith('/auth');
-        const protectedRoutes = ["/home"];
-        
+        const protectedRoutes = ["/home", "/profile"];
         const isProtectedRoute = protectedRoutes.some(prefix =>
             pathname === prefix || pathname.startsWith(prefix + '/')
         );
-        
+
         if (!user && isProtectedRoute) {
             router.replace(`/auth/login?next=${encodeURIComponent(pathname)}`);
             return;
         }
-        
+
         if (user && inAuthPath) {
             if (!user.username) {
                 router.replace('/auth/username');
@@ -32,10 +33,14 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
                 router.replace('/auth/forte');
             } else if (!user.profilePicture) {
                 router.replace('/auth/profile-pic');
-            } else {
-                router.replace(`/home`);
+            } else if (nextPath) {
+                router.replace(nextPath);
             }
             return;
+        }
+
+        if (user && pathname === "/") {
+            router.replace(`/home`);
         }
     }, [user, loading, pathname, router]);
 

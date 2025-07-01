@@ -7,7 +7,7 @@ import ClientToaster from "./toaster";
 import ReduxProvider from "./provider";
 import ClientUserLoader from "../hooks/ClientUserLoader";
 import RouteGuard from "@/hooks/RouteGuard";
-import RouteProgress from "@/components/RouteProgress";
+// import RouteProgress from "@/components/RouteProgress";
 
 // Fonts
 const geistMono = Geist_Mono({
@@ -89,22 +89,14 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const initialReduxState = {
-		userReducer: {
-			user: null,
-			loading: false
-		},
-	};
-
 	return (
 		<html lang="en">
 			<body
 				className={`${epilogue.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
 			>
-				<ReduxProvider initialReduxState={initialReduxState}>
+				<ReduxProvider>
 					<ClientToaster />
 					<ClientUserLoader />
-					<RouteProgress/>
 					<RouteGuard>
 						{children}
 					</RouteGuard>

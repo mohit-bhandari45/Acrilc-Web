@@ -1,37 +1,44 @@
 import api, { GET_USER_PROFILE } from "@/apis/api";
 import { IUser } from "@/types/types";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
-const useUserByUsername = ({ username }: { username: string }) => {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
+interface Params {
+	username: string;
+	skip?: boolean;
+}
 
-  useEffect(() => {
-    async function getUser() {
-      try {
-        const response = await api.get(`${GET_USER_PROFILE}/${username}`);
+const useUserByUsername = ({ username, skip = false }: Params) => {
+	const [user, setUser] = useState<IUser | null>(null);
+	const [loading, setLoading] = useState(false);
 
-        if (response.status === 200) {
-          setUser(response.data.data);
-        }
-      } catch (error: unknown) {
-        console.log(error);
-        toast.error("Something went wrong. Try Again!");
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    }
+	useEffect(() => {
+		if (skip) {
+			setLoading(false);
+			return;
+		}
 
-    if (username) {
-      getUser();
-    }
-  }, [router, username]);
+		if (!username) {
+			setLoading(false);
+			return;
+		}
 
-  return { user, loading };
+		async function getUser() {
+			setLoading(true);
+			try {
+				const response = await api.get(`${GET_USER_PROFILE}/${username}`);
+				if (response.status === 200) setUser(response.data.data);
+			} catch (error: unknown) {
+				console.log(error);
+				setUser(null);
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		getUser();
+	}, [username, skip]);
+
+	return { user, loading };
 };
 
 export default useUserByUsername;

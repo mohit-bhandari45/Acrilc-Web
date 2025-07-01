@@ -11,18 +11,12 @@ import MobileHeaderHero from "@/components/landingpagecomps/mobilenavhero";
 import HeaderHero from "@/components/landingpagecomps/navHero";
 import TestimonialsSection from "@/components/landingpagecomps/testimonial";
 import MainLoader from "@/components/universalcomps/mainloader";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/store/hooks";
 
 const Main = () => {
-  const router = useRouter();
-  const { user, loading } = useAppSelector(state => state.userReducer);
-
-  useEffect(() => {
-    if (!loading && user) {
-      router.push("/home");
-    }
-  }, [loading, user, router]);
+  // const router = useRouter();
+  const { loading } = useAppSelector(state => state.userReducer);
 
   if (loading) {
     return <MainLoader msg="Loading, please wait" />;

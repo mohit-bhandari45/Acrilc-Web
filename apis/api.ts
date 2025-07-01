@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL: string = "http://localhost:8000";
-const BASE_URL: string = "https://api.acrilc.com";
+const BASE_URL: string = "http://localhost:8000";
+// const BASE_URL: string = "https://api.acrilc.com";
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -9,8 +9,8 @@ const api = axios.create({
 });
 
 // public apis
-const GET_FEATURED_ARTISTS = `${BASE_URL}/public/featured/artists`;
-const GET_FEATURED_ARTWORKS = `${BASE_URL}/public/featured/arts`;
+const GET_FEATURED_ARTISTS = `${BASE_URL}/public/artists/featured`;
+const GET_FEATURED_ARTWORKS = `${BASE_URL}/public/arts/featured`;
 const GET_FEATURED_MARKETS = `${BASE_URL}/public/featured/markets`;
 // const GET_FEATURED_ARTWORKS = `${BASE_URL}/public/featured/arts`;
 export { GET_FEATURED_ARTISTS, GET_FEATURED_ARTWORKS, GET_FEATURED_MARKETS };
@@ -27,7 +27,7 @@ export { SIGNUP_URL, LOGIN_URL, FORGET_PASSWORD_URL, ADD_USERNAME_URL, FORTE_URL
 // api apis
 const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`;
 const UPDATE_PROFILE = `${BASE_URL}/api/user`;
-const GET_USER_PROFILE = `${BASE_URL}/public`;
+const GET_USER_PROFILE = `${BASE_URL}/api/user`;
 const ADD_PROFILE_PIC = `${BASE_URL}/api/user/profile-pic`
 const ADD_Banner_PIC = `${BASE_URL}/api/user/banner-pic`
 export { GET_OWN_PROFILE, UPDATE_PROFILE, GET_USER_PROFILE, ADD_PROFILE_PIC, ADD_Banner_PIC };
