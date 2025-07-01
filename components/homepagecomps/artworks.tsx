@@ -1,9 +1,10 @@
 import api, { GET_FEATURED_ARTWORKS } from "@/apis/api";
+import useHandleNavigation from "@/hooks/useHandleNavigation";
 import { IPost, IUser } from "@/types/types";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const LatestArtworks = ({ user }: { user: IUser }) => {
+  const handleNavigation = useHandleNavigation();
   const [artworks, setArtworks] = useState<IPost[] | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -11,8 +12,8 @@ const LatestArtworks = ({ user }: { user: IUser }) => {
     const array = [];
     for (const key in arr) {
       if (arr.hasOwnProperty(key)) {
-          const value = arr[key][0];
-          if (value.author === user._id) continue;
+        const value = arr[key][0];
+        if (value.author === user._id) continue;
         array.push(value);
       }
     }
@@ -56,10 +57,10 @@ const LatestArtworks = ({ user }: { user: IUser }) => {
               </div>
             ))
           : artworks?.map((art, i) => (
-              <Link
+              <div
                 key={i}
-                href={`/content/${art._id}`}
-                className="bg-white rounded-xl overflow-hidden break-inside-avoid shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-[0.3s] ease-in-out"
+                onClick={() => handleNavigation(`/content/${art._id}`)}
+                className="bg-white rounded-xl overflow-hidden cursor-pointer break-inside-avoid shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-[0.3s] ease-in-out"
               >
                 {art.thumbnail ? (
                   <div className="aspect-w-16 aspect-h-9 w-full overflow-hidden">
@@ -76,7 +77,7 @@ const LatestArtworks = ({ user }: { user: IUser }) => {
                   <h4 className="font-semibold mb-1">{art.title}</h4>
                   <p className="text-gray-600 text-sm">by John Doe</p>
                 </div>
-              </Link>
+              </div>
             ))}
       </div>
     </section>

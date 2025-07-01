@@ -1,21 +1,21 @@
 "use client";
 
 import api, { LOGIN_URL, SIGNUP_URL } from "@/apis/api";
+import { auth } from "@/config/firebase";
+import useHandleNavigation from "@/hooks/useHandleNavigation";
+import { setUser } from "@/store/features/userSlice";
+import { useAppDispatch } from "@/store/hooks";
 import { ISignupDetails } from "@/types/types";
 import { validateForm } from "@/utils/auth";
 import { AxiosError } from "axios";
-import Link from "next/link";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Button } from "../ui/button";
 import AuthHead from "../universalcomps/authhead";
-import { useAppDispatch } from "@/store/hooks";
-import { setUser } from "@/store/features/userSlice";
 import { InputComp } from "./inputcomp";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "@/config/firebase";
 
 interface RightProps {
   labels: string[];
@@ -23,6 +23,7 @@ interface RightProps {
 }
 
 const Right = ({ labels, method }: RightProps) => {
+  const handleNavigation = useHandleNavigation();
   const [loading, setLoading] = useState<boolean>(false);
   const [formUser, setFormUser] = useState<ISignupDetails>({
     name: "",
@@ -189,16 +190,22 @@ const Right = ({ labels, method }: RightProps) => {
             {method === "Login" ? (
               <div>
                 Don&apos;t have an account?{" "}
-                <Link href="/auth/signup" className="hover:underline">
+                <Button
+                  onClick={() => handleNavigation("/auth/signup")}
+                  className="hover:underline font-semibold cursor-pointer p-0"
+                >
                   Sign up
-                </Link>
+                </Button>
               </div>
             ) : (
               <div>
                 Already have an account?{" "}
-                <Link href="/auth/login" className="hover:underline">
+                <Button
+                  onClick={() => handleNavigation("/auth/login")}
+                  className="hover:underline font-semibold cursor-pointer p-0"
+                >
                   Log in
-                </Link>
+                </Button>
               </div>
             )}
           </div>

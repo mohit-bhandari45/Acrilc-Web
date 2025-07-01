@@ -1,3 +1,4 @@
+//store/features/userSlice.tsx
 import { IUser } from "@/types/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -27,3 +28,4 @@ export const userSlice = createSlice({
 });
 
 export const { setUser, clearUser } = userSlice.actions;
+export default userSlice.reducer;

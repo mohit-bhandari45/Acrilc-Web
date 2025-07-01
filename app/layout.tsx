@@ -7,6 +7,7 @@ import ClientToaster from "./toaster";
 import ReduxProvider from "./provider";
 import ClientUserLoader from "../hooks/ClientUserLoader";
 import RouteGuard from "@/hooks/RouteGuard";
+import RouteProgress from "@/components/RouteProgress";
 
 // Fonts
 const geistMono = Geist_Mono({
@@ -103,6 +104,7 @@ export default async function RootLayout({
 				<ReduxProvider initialReduxState={initialReduxState}>
 					<ClientToaster />
 					<ClientUserLoader />
+					<RouteProgress/>
 					<RouteGuard>
 						{children}
 					</RouteGuard>
