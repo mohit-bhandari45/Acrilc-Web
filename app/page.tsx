@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import CtaSection from "@/components/landingpagecomps/ctasection";
 import FeaturedArtworks from "@/components/landingpagecomps/featured";
 import Footer from "@/components/landingpagecomps/footer";

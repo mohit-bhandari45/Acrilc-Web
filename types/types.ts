@@ -53,7 +53,11 @@ interface IComment {
 
 interface IPost {
     _id: string
-    author: string;
+    author: {
+        _id: string;
+        fullName: string;
+        profilePicture: string;
+    }
     title: string;
     subtitle: string;
     size: string;
@@ -101,8 +105,9 @@ export interface IUser {
     location?: string;
     story?: string;
     portfolioURL: string
-    followers?: string[];
-    following?: string[];
+    isFollowed: boolean;
+    totalFollowers: number;
+    totalFollowing: number;
     role?: "user" | "admin";
     preferences?: string[];
     services?: string[];

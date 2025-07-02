@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { AxiosError } from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { UserCircle } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -20,36 +20,48 @@ export default function UsernameChooser() {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const { user, loading: userLoading } = useAppSelector(state => state.userReducer);
-	const searchParams = useSearchParams();
-	const nextPath = searchParams.get("next") || "/auth/forte";
+
+	useEffect(() => {
+		if (!userLoading && user?.username) {
+			router.replace("/home");
+		}
+	}, [userLoading, user, router]);
 
 	if (userLoading) {
 		return <MainLoader msg="Loading, please wait" />;
+	}
+
+	if (user?.username) {
+		return null;
 	}
 
 	const handleSubmit = async () => {
 		if (!user) {
 			return;
 		}
-		if (!username.trim()) {
+		const clean = username.replace(/\s+/g, "");
+		if (!clean) {
 			setError("Username cannot be empty.");
 			return;
 		}
+		// if (!username.trim()) {
+		// 	setError("Username cannot be empty.");
+		// 	return;
+		// }
 		setLoading(true);
 		try {
 			const response = await api.post(ADD_USERNAME_URL, {
-				username: username.trim(),
+				username: clean,
 			});
 			const updatedUser = {
 				...user,
-				username: response.data.data
+				username: clean
 			};
 			if (response.status === 200) {
 				toast.success("UserName Added");
 				dispatch(setUser(updatedUser));
 				localStorage.setItem("username", response.data.data);
-				// router.push("/auth/forte");
-				router.replace(nextPath);
+				router.push("/auth/forte");
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {

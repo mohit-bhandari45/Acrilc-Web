@@ -17,7 +17,7 @@ import { IUser } from "@/types/types";
 import { Camera, MapPin } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
 	FaBehance,
@@ -30,6 +30,13 @@ import {
 	FaYoutube,
 } from "react-icons/fa";
 import { GridLoader } from "react-spinners";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/ui/tabs";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ArtistProfileProps {
 	user: IUser;
@@ -44,6 +51,11 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 	const pathname = usePathname();
 	const [bpLoader, setBpLoader] = useState(false);
 	const [ppLoader, setPpLoader] = useState(false);
+	const [followers, setFollowers] = useState(user?.totalFollowers || 0);
+	const [followed, setFollowed] = useState(user.isFollowed || false);
+	const [open, setOpen] = useState<"follower" | "following" | null>(null);
+	const [supporter, setSupporter] = useState<IUser[]>([]);
+	const [supporting, setSupporting] = useState<IUser[]>([]);
 
 	const handleProfileChange = async (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -121,11 +133,48 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 
 	const handleSupport = async () => {
 		try {
-
+			const { data } = await api.get(`/api/socials/${user._id}/follow`);
+			if (data.msg === "User Unfollowed" && followers > 0) {
+				setFollowers(prev => prev - 1);
+				setFollowed(false);
+			} else {
+				setFollowers(prev => prev + 1);
+				setFollowed(true);
+			}
+			toast.success(data.msg)
 		} catch (error) {
-
+			console.log(error);
+			toast.error("Something went wrong!!");
 		}
 	}
+
+	useEffect(() => {
+		let isMounted = true;
+
+		const fetchFollowers = async () => {
+			try {
+				const { data } = await api.get(`/api/socials/${user._id}/followers`);
+				const { data: followingData } = await api.get(
+					`/api/socials/${user._id}/following`
+				);
+
+				if (!isMounted) return;
+				setSupporter(data.data);
+				setSupporting(followingData.data);
+			} catch (err) {
+				console.error(err);
+				if (!isMounted) return;
+				setSupporter([]);
+				setSupporting([]);
+			}
+		};
+
+		fetchFollowers();
+
+		return () => {
+			isMounted = false;
+		};
+	}, [user._id]);
 
 	return (
 		<>
@@ -143,6 +192,122 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 				</div>
 			)}
 
+			<Dialog
+				open={["follower", "following"].includes(open ?? "")}
+				onOpenChange={(v) => setOpen(v ? "follower" : null)}
+			>
+				<DialogContent className="sm:max-w-md">
+					<DialogHeader>
+						<Tabs
+							defaultValue={open as "follower" | "following"}
+							orientation='vertical'
+							className='space-y-4'
+						>
+							<div className='w-full overflow-x-auto pb-2'>
+								<TabsList className="text-center">
+									<TabsTrigger
+										value="follower"
+										onClick={() => setOpen("follower")}
+										className="
+											px-4 py-2 text-sm font-medium text-gray-500
+											transition
+											data-[state=active]:text-gray-900
+											data-[state=active]:border-b-2
+											data-[state=active]:border-blue-500
+										"
+									>
+										<DialogTitle>
+											Supporters
+										</DialogTitle>
+									</TabsTrigger>
+									<TabsTrigger
+										value="following"
+										onClick={() => setOpen("following")}
+										className="
+											px-4 py-2 text-sm font-medium text-gray-500
+											transition
+											data-[state=active]:text-gray-900
+											data-[state=active]:border-b-2
+											data-[state=active]:border-blue-500
+										"
+									>
+										<DialogTitle>
+											Supportings
+										</DialogTitle>
+									</TabsTrigger>
+								</TabsList>
+							</div>
+							<div className="h-[50vh]">
+								<TabsContent className="border rounded-2xl h-full p-2" value="follower">
+									{supporter && supporter.length > 0 ? (
+										<ScrollArea className='-mr-4 h-full w-full py-1 pr-4'>
+											{supporter.map((item, index) => (
+												<div onClick={() => router.push(`/profile/${item.username}`)} key={index} className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl">
+													<Avatar className="w-12 h-12">
+														<AvatarImage
+															src={item?.profilePicture}
+															alt={item?.fullName}
+															className="object-cover"
+														/>
+														<AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
+															{item?.fullName
+																.split(" ")
+																.map((n) => n[0])
+																.join("")}
+														</AvatarFallback>
+													</Avatar>
+													<div>
+														<p className="text-md font-semibold">{item.fullName}</p>
+														<p className="text-sm">{item.email}</p>
+													</div>
+												</div>
+											))}
+										</ScrollArea>
+									) : (
+										<div className="flex justify-center items-center">
+											<p className="text-xl font-semibold">No supporter yet</p>
+										</div>
+									)}
+								</TabsContent>
+								<TabsContent className="border rounded-2xl h-full p-2" value="following">
+									{supporting && supporting.length > 0 ? (
+										<ScrollArea className='-mr-4 h-full w-full py-1 pr-4'>
+											{supporting.map((item, index) => (
+												<div onClick={() => router.push(`/profile/${item.username}`)} key={index} className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl">
+													<Avatar className="w-12 h-12">
+														<AvatarImage
+															src={item?.profilePicture}
+															alt={item?.fullName}
+															className="object-cover"
+														/>
+														<AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
+															{item?.fullName
+																.split(" ")
+																.map((n) => n[0])
+																.join("")}
+														</AvatarFallback>
+													</Avatar>
+													<div>
+														<p className="text-md font-semibold">{item.fullName}</p>
+														<p className="text-sm">{item.email}</p>
+													</div>
+												</div>
+											))}
+										</ScrollArea>
+									) : (
+										<div className="flex justify-center items-center">
+											<p className="text-xl font-semibold">Not supporting yet</p>
+										</div>
+									)}
+								</TabsContent>
+							</div>
+						</Tabs>
+					</DialogHeader>
+					<div className="flex items-center gap-2">
+					</div>
+				</DialogContent>
+			</Dialog>
+
 			<div className="w-full max-w-6xl mx-auto p-3 sm:p-5 mt-22 lg:mt-25">
 				<Card className="relative overflow-hidden shadow-lg mb-4 sm:mb-8 border-0">
 					{/* Banner Section */}
@@ -151,8 +316,8 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 						<div
 							className="w-full h-full bg-gradient-to-r from-gray-200 to-gray-300"
 							style={{
-								backgroundImage: user.bannerPicture
-									? `url(${user.bannerPicture})`
+								backgroundImage: user?.bannerPicture
+									? `url(${user?.bannerPicture})`
 									: undefined,
 								backgroundSize: "cover",
 								backgroundPosition: "center",
@@ -183,12 +348,12 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 								{/* Avatar and fallback */}
 								<Avatar className="w-full h-full">
 									<AvatarImage
-										src={user.profilePicture}
-										alt={user.fullName}
+										src={user?.profilePicture}
+										alt={user?.fullName}
 										className="object-cover"
 									/>
 									<AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
-										{user.fullName
+										{user?.fullName
 											.split(" ")
 											.map((n) => n[0])
 											.join("")}
@@ -256,7 +421,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 													</Link>
 												) : (
 													<Button onClick={handleSupport} className="w-full sm:w-auto bg-black cursor-pointer hover:bg-gray-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-200 hover:-translate-y-1">
-														Support
+														{followed ? "UnFollow" : "Support"}
 													</Button>
 												)}
 												{isSame ? (
@@ -356,22 +521,22 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 									<CardContent className="p-4 sm:p-6 md:p-8">
 										{/* Stats */}
 										<div className="flex justify-center gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
-											<div className="text-center">
+											<button onClick={() => setOpen("follower")} className="text-center">
 												<div className="text-lg sm:text-xl font-bold text-gray-900">
-													{user.followers?.length || 0}
+													{followers}
 												</div>
 												<div className="text-xs sm:text-sm text-gray-600">
 													Supporters
 												</div>
-											</div>
-											<div className="text-center">
+											</button>
+											<button onClick={() => setOpen("following")} className="text-center">
 												<div className="text-lg sm:text-xl font-bold text-gray-900">
-													{user.following?.length || 0}
+													{user.totalFollowing || 0}
 												</div>
 												<div className="text-xs sm:text-sm text-gray-600">
 													Supporting
 												</div>
-											</div>
+											</button>
 											<div className="text-center">
 												<div className="text-lg sm:text-xl font-bold text-gray-900">
 													{user.posts || 0}

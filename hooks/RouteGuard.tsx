@@ -31,10 +31,12 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
                 router.replace('/auth/username');
             } else if (!user.preferences?.length) {
                 router.replace('/auth/forte');
-            } else if (!user.profilePicture) {
+            } else if (!user.profilePicture && localStorage.getItem("profile-skip") !== "true") {
                 router.replace('/auth/profile-pic');
             } else if (nextPath) {
                 router.replace(nextPath);
+            } else {
+                router.replace(`/home`);
             }
             return;
         }

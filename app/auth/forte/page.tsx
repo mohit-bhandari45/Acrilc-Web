@@ -3,8 +3,8 @@
 import api, { FORTE_URL } from "@/apis/api";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { PREFERENCE_ENUM } from "./data";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -17,11 +17,19 @@ export default function FortePage() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const { user, loading: userLoading } = useAppSelector(state => state.userReducer);
-	const searchParams = useSearchParams();
-	const nextPath = searchParams.get("next") || "/auth/profile-pic";
 
-	if (userLoading) {
+	useEffect(() => {
+		if (!userLoading && user?.preferences && user.preferences.length > 0) {
+			router.replace("/home");
+		}
+	}, [userLoading, user, router]);
+
+	if (userLoading || (user && (user?.preferences && user.preferences.length > 0))) {
 		return <MainLoader msg="Loading, please wait" />;
+	}
+
+	if (user?.preferences && user.preferences.length > 0) {
+		return null;
 	}
 
 	const toggleSelection = (forte: string) => {
@@ -46,8 +54,7 @@ export default function FortePage() {
 				};
 				dispatch(setUser(updatedUser));
 				toast.success("Forte Added");
-				// router.push("/auth/profile-pic");
-				router.replace(nextPath);
+				router.push("/auth/profile-pic");
 			}
 		} catch (error) {
 			console.log(error)

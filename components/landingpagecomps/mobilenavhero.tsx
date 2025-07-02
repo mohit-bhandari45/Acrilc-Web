@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { heroImages } from "./data";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 export default function MobileHeaderHero() {
+	const router = useRouter();
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [backgroundImage, setBackgroundImage] = useState("");
@@ -140,7 +142,7 @@ export default function MobileHeaderHero() {
 						"bg-white text-[#E2725B] border-2 border-[#E2725B] px-6 py-3 rounded-[50px] font-medium transition-all duration-300",
 						"hover:bg-[#E2725B] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.2)]"
 					)}
-					onClick={() => console.log("Sign in clicked")}
+					onClick={() => router.push("/auth/login")}
 				>
 					Sign In
 				</button>

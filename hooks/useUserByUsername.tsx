@@ -4,19 +4,13 @@ import { useEffect, useState } from "react";
 
 interface Params {
 	username: string;
-	skip?: boolean;
 }
 
-const useUserByUsername = ({ username, skip = false }: Params) => {
+const useUserByUsername = ({ username }: Params) => {
 	const [user, setUser] = useState<IUser | null>(null);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		if (skip) {
-			setLoading(false);
-			return;
-		}
-
 		if (!username) {
 			setLoading(false);
 			return;
@@ -36,7 +30,7 @@ const useUserByUsername = ({ username, skip = false }: Params) => {
 		}
 
 		getUser();
-	}, [username, skip]);
+	}, [username]);
 
 	return { user, loading };
 };
