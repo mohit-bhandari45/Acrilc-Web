@@ -7,6 +7,7 @@ import ClientToaster from "./toaster";
 import ReduxProvider from "./provider";
 import ClientUserLoader from "../hooks/ClientUserLoader";
 import RouteGuard from "@/hooks/RouteGuard";
+import RouteProgress from "@/components/RouteProgress";
 // import RouteProgress from "@/components/RouteProgress";
 
 // Fonts
@@ -97,6 +98,7 @@ export default async function RootLayout({
 				<ReduxProvider>
 					<ClientToaster />
 					<ClientUserLoader />
+					<RouteProgress />
 					<RouteGuard>
 						{children}
 					</RouteGuard>
