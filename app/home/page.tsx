@@ -9,20 +9,20 @@ import Navbar from "@/components/homepagecomps/navbar";
 import Footer from "@/components/landingpagecomps/footer";
 import MainLoader from "@/components/universalcomps/mainloader";
 import { useAppSelector } from "@/store/hooks";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const HomePage = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const { user, loading } = useAppSelector((state) => state.userReducer);
 
-  if (loading) {
+  if (!user || loading) {
     return <MainLoader msg="Loading, please wait" />;
   }
 
-  if (!user) {
-    router.back();
-    return null;
-  }
+  // if (!user) {
+  //   router.back();
+  //   return null;
+  // }
 
   return (
     <div className="min-h-screen">

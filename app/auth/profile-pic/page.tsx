@@ -130,6 +130,7 @@ export default function ProfilePicPage() {
 				<div className="flex justify-center items-center mt-6 gap-5">
 					<button
 						onClick={() => {
+							localStorage.setItem("profile-skip", "true");
 							router.push(`/home`);
 						}}
 						className="text-gray-600 cursor-pointer hover:text-gray-800 hover:underline text-sm sm:text-base transition"

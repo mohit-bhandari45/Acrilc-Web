@@ -2,22 +2,15 @@
 
 import { Provider } from "react-redux";
 import { useMemo, ReactNode } from "react";
-// import { makeStore } from "@/store";
-import { makeStore, RootState } from '@/store';
+import { makeStore } from '@/store';
 
 interface ReduxProviderProps {
-  children: ReactNode;
-  initialReduxState?:  RootState;
+	children: ReactNode;
 }
 
 export default function ReduxProvider({
-  children,
-  initialReduxState,
+	children,
 }: ReduxProviderProps) {
-  const store = useMemo(
-    () => makeStore(initialReduxState),
-    [initialReduxState]
-  );
-
-  return <Provider store={store}>{children}</Provider>;
+	const store = useMemo(() => makeStore(), []);
+	return <Provider store={store}>{children}</Provider>;
 }

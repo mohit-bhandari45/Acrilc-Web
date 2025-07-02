@@ -4,14 +4,33 @@ import api, { FORTE_URL } from "@/apis/api";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { PREFERENCE_ENUM } from "./data";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import MainLoader from "@/components/universalcomps/mainloader";
+import { setUser } from "@/store/features/userSlice";
 
 export default function FortePage() {
 	const [selected, setSelected] = useState<string[]>([]);
 	const router = useRouter();
 	const [loading, setLoading] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
+	const { user, loading: userLoading } = useAppSelector(state => state.userReducer);
+
+	useEffect(() => {
+		if (!userLoading && user?.preferences && user.preferences.length > 0) {
+			router.replace("/home");
+		}
+	}, [userLoading, user, router]);
+
+	if (userLoading || (user && (user?.preferences && user.preferences.length > 0))) {
+		return <MainLoader msg="Loading, please wait" />;
+	}
+
+	if (user?.preferences && user.preferences.length > 0) {
+		return null;
+	}
 
 	const toggleSelection = (forte: string) => {
 		if (selected.includes(forte)) {
@@ -22,10 +41,18 @@ export default function FortePage() {
 	};
 
 	const handleUpload = async () => {
+		if (!user) {
+			return;
+		}
 		setLoading(true);
 		try {
 			const res = await api.post(FORTE_URL, { preferences: selected });
 			if (res.status === 200) {
+				const updatedUser = {
+					...user,
+					preferences: res.data.data
+				};
+				dispatch(setUser(updatedUser));
 				toast.success("Forte Added");
 				router.push("/auth/profile-pic");
 			}

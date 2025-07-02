@@ -9,7 +9,7 @@ import MainLoader from "@/components/universalcomps/mainloader";
 import { IUser } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const CustomPortfolio = () => {
 	const params = useParams();
@@ -27,7 +27,7 @@ const CustomPortfolio = () => {
 				}
 			} catch (error: unknown) {
 				console.log(error);
-				toast.error("Something went wrong. Try Again!");
+				// toast.error("Something went wrong. Try Again!");
 				setUser(null);
 			} finally {
 				setLoading(false);
