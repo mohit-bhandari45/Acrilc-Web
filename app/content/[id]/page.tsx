@@ -12,53 +12,53 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Post = () => {
-  const router = useRouter();
-  const params = useParams();
-  const id = params.id;
-  const [post, setPost] = useState<IPost | null>(null);
-  // const [token, setToken] = useState<string | null>(null);
+	const router = useRouter();
+	const params = useParams();
+	const id = params.id;
+	const [post, setPost] = useState<IPost | null>(null);
+	// const [token, setToken] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   setToken(localStorage.getItem("token"));
-  // }, []);
+	// useEffect(() => {
+	//   setToken(localStorage.getItem("token"));
+	// }, []);
 
-  // const { currentUser, loading } = useCurrentUser({ token });
+	// const { currentUser, loading } = useCurrentUser({ token });
 
-  const { user: currentUser, loading } = useAppSelector(state => state.userReducer);
+	const { user: currentUser, loading } = useAppSelector(state => state.userReducer);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get(`${GET_POST}/${id}`);
-        setPost(response.data.data);
-      } catch (error) {
-        if (error) {
-          router.push(`/profile/${currentUser?.username}`);
-        }
-      }
-    };
+	useEffect(() => {
+		const getData = async () => {
+			try {
+				const response = await api.get(`${GET_POST}/${id}`);
+				setPost(response.data.data);
+			} catch (error) {
+				if (error) {
+					router.push(`/profile/${currentUser?.username}`);
+				}
+			}
+		};
 
-    getData();
-  }, [id, router, currentUser?.username]);
+		getData();
+	}, [id, router, currentUser?.username]);
 
-  if (!currentUser || loading) {
-    return (
-      <>
-        <InteractiveBackground />
-        <MainLoader msg="Loading, please wait" />;
-      </>
-    );
-  }
+	if (!currentUser || loading) {
+		return (
+			<>
+				<InteractiveBackground />
+				<MainLoader msg="Loading, please wait" />;
+			</>
+		);
+	}
 
-  return (
-    <>
-      <InteractiveBackground />
-      <div className="font-[Helvetica] relative z-10">
-        <Navbar currentUser={currentUser} show={true} portfolio={false} />
-        <PostDescription post={post} user={currentUser} />
-      </div>
-    </>
-  );
+	return (
+		<>
+			<InteractiveBackground />
+			<div className="font-[Helvetica] relative z-10">
+				<Navbar currentUser={currentUser} show={true} portfolio={false} />
+				<PostDescription post={post} user={currentUser} />
+			</div>
+		</>
+	);
 };
 
 export default Post;

@@ -56,7 +56,7 @@ const LatestArtworks = ({ user }: { user: IUser }) => {
 							</div>
 						</div>
 					))
-					: artworks?.map((art, i) => (
+					: artworks?.filter(a => a.author != null)?.map((art, i) => (
 						<div
 							key={i}
 							onClick={() => handleNavigation(`/content/${art._id}`)}

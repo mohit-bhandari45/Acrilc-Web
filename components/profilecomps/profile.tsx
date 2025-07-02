@@ -619,9 +619,11 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 													</Button>
 												</Link>
 											)}
-											<Button onClick={() => router.replace(`/auth/forte?next=${encodeURIComponent(pathname)}`)} className="w-full sm:w-auto bg-black cursor-pointer hover:bg-gray-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg text-sm sm:text-base lg:text-lg font-semibold transition-all duration-200 hover:-translate-y-1">
-												Edit Forte
-											</Button>
+											{!user.preferences || user.preferences.length == 0 && (
+												<Button onClick={() => router.replace(`/auth/forte?next=${encodeURIComponent(pathname)}`)} className="w-full sm:w-auto bg-black cursor-pointer hover:bg-gray-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg text-sm sm:text-base lg:text-lg font-semibold transition-all duration-200 hover:-translate-y-1">
+													Edit Forte
+												</Button>
+											)}
 										</div>
 									</CardContent>
 								</Card>

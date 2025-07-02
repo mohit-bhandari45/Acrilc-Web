@@ -52,10 +52,10 @@ const FeaturedArtists = ({ user }: { user: IUser }) => {
 							className="bg-white rounded-[20px] cursor-pointer shadow-lg overflow-hidden transform transition hover:-translate-y-2 duration-[0.3s] ease-in-out hover:shadow-2xl"
 						>
 							<div className="relative h-72">
-								{a.profilePicture ? (
+								{a.bannerPicture ? (
 									<div className="w-full aspect-w-16 aspect-h-9 overflow-hidden">
 										<img
-											src={a.profilePicture}
+											src={a.bannerPicture}
 											alt={a.fullName}
 											className="absolute inset-0 object-cover w-full h-full"
 										/>
