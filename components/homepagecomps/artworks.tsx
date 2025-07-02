@@ -7,7 +7,6 @@ const LatestArtworks = ({ user }: { user: IUser }) => {
 	const handleNavigation = useHandleNavigation();
 	const [artworks, setArtworks] = useState<IPost[] | null>(null);
 	const [loading, setLoading] = useState(true);
-
 	
 	useEffect(() => {
 		const pushToArray = (arr: Record<string, IPost[]>) => {
@@ -28,7 +27,7 @@ const LatestArtworks = ({ user }: { user: IUser }) => {
 			setLoading(false);
 		};
 		getFeaturedArtworks();
-	}, []);
+	}, [user._id]);
 
 	const skeletonCount = 8;
 	const skeletonHeights = [220, 410, 260, 180, 490, 340, 170, 360];

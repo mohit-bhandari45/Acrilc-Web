@@ -176,6 +176,11 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 		};
 	}, [user._id]);
 
+	const tabDefs = [
+		{ value: "follower", label: "Supporters" },
+		{ value: "following", label: "Supportings" },
+	];
+
 	return (
 		<>
 			{(bpLoader || ppLoader) && (
@@ -205,101 +210,75 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
 						>
 							<div className='w-full overflow-x-auto pb-2'>
 								<TabsList className="text-center">
-									<TabsTrigger
-										value="follower"
-										onClick={() => setOpen("follower")}
-										className="
-											px-4 py-2 text-sm font-medium text-gray-500
-											transition
-											data-[state=active]:text-gray-900
-											data-[state=active]:border-b-2
-											data-[state=active]:border-blue-500
-										"
-									>
-										<DialogTitle>
-											Supporters
-										</DialogTitle>
-									</TabsTrigger>
-									<TabsTrigger
-										value="following"
-										onClick={() => setOpen("following")}
-										className="
-											px-4 py-2 text-sm font-medium text-gray-500
-											transition
-											data-[state=active]:text-gray-900
-											data-[state=active]:border-b-2
-											data-[state=active]:border-blue-500
-										"
-									>
-										<DialogTitle>
-											Supportings
-										</DialogTitle>
-									</TabsTrigger>
+									{tabDefs.map(({ value, label }) => (
+										<TabsTrigger
+											key={value}
+											value={value}
+											onClick={() => setOpen(value as "follower" | "following")}
+											className="
+												px-4 py-2 text-sm font-medium text-gray-500
+												transition
+												data-[state=active]:text-gray-900
+												data-[state=active]:border-b-2
+												data-[state=active]:border-blue-500
+												"
+										>
+											<DialogTitle>{label}</DialogTitle>
+										</TabsTrigger>
+									))}
 								</TabsList>
 							</div>
 							<div className="h-[50vh]">
-								<TabsContent className="border rounded-2xl h-full p-2" value="follower">
-									{supporter && supporter.length > 0 ? (
-										<ScrollArea className='-mr-4 h-full w-full py-1 pr-4'>
-											{supporter.map((item, index) => (
-												<div onClick={() => router.push(`/profile/${item.username}`)} key={index} className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl">
-													<Avatar className="w-12 h-12">
-														<AvatarImage
-															src={item?.profilePicture}
-															alt={item?.fullName}
-															className="object-cover"
-														/>
-														<AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
-															{item?.fullName
-																.split(" ")
-																.map((n) => n[0])
-																.join("")}
-														</AvatarFallback>
-													</Avatar>
-													<div>
-														<p className="text-md font-semibold">{item.fullName}</p>
-														<p className="text-sm">{item.email}</p>
-													</div>
+								{(["follower", "following"] as const).map((val, index) => {
+									const panes = {
+										follower: {
+											users: supporter,
+											empty: "No supporter yet",
+										},
+										following: {
+											users: supporting,
+											empty: "Not supporting yet",
+										},
+									} as const;
+									const { users, empty } = panes[val];
+									return (
+										<TabsContent key={index} className="border rounded-2xl h-full p-2" value={val}>
+											{users && users.length > 0 ? (
+												<ScrollArea className='-mr-4 h-full w-full py-1 pr-4'>
+													{users.map((item, index) => (
+														<div
+															onClick={() => router.push(`/profile/${item.username}`)}
+															key={index}
+															className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl"
+														>
+															<Avatar className="w-12 h-12">
+																<AvatarImage
+																	src={item?.profilePicture}
+																	alt={item?.fullName}
+																	className="object-cover"
+																/>
+																<AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
+																	{item?.fullName
+																		.split(" ")
+																		.map((n) => n[0])
+																		.join("")}
+																</AvatarFallback>
+															</Avatar>
+															<div>
+																<p className="text-md font-semibold">{item.fullName}</p>
+																<p className="text-sm">{item.email}</p>
+															</div>
+														</div>
+													))}
+												</ScrollArea>
+											) : (
+												<div className="flex justify-center items-center">
+													<p className="text-xl font-semibold">{empty}</p>
 												</div>
-											))}
-										</ScrollArea>
-									) : (
-										<div className="flex justify-center items-center">
-											<p className="text-xl font-semibold">No supporter yet</p>
-										</div>
-									)}
-								</TabsContent>
-								<TabsContent className="border rounded-2xl h-full p-2" value="following">
-									{supporting && supporting.length > 0 ? (
-										<ScrollArea className='-mr-4 h-full w-full py-1 pr-4'>
-											{supporting.map((item, index) => (
-												<div onClick={() => router.push(`/profile/${item.username}`)} key={index} className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl">
-													<Avatar className="w-12 h-12">
-														<AvatarImage
-															src={item?.profilePicture}
-															alt={item?.fullName}
-															className="object-cover"
-														/>
-														<AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
-															{item?.fullName
-																.split(" ")
-																.map((n) => n[0])
-																.join("")}
-														</AvatarFallback>
-													</Avatar>
-													<div>
-														<p className="text-md font-semibold">{item.fullName}</p>
-														<p className="text-sm">{item.email}</p>
-													</div>
-												</div>
-											))}
-										</ScrollArea>
-									) : (
-										<div className="flex justify-center items-center">
-											<p className="text-xl font-semibold">Not supporting yet</p>
-										</div>
-									)}
-								</TabsContent>
+											)}
+										</TabsContent>
+									)
+								})}
 							</div>
 						</Tabs>
 					</DialogHeader>
