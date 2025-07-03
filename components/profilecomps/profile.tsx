@@ -171,156 +171,116 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
     };
   }, [user._id]);
 
-  return (
-    <>
-      {(bpLoader || ppLoader) && (
-        <div className="fixed inset-0 flex flex-col gap-4 sm:gap-8 justify-center z-60 items-center bg-[#171617cc] p-4">
-          <GridLoader
-            color="#FAA21B"
-            size={50}
-            speedMultiplier={1.1}
-            className="hidden sm:block"
-          />
-          <div className="font-bold text-lg sm:text-2xl text-white text-center">
-            {bpLoader ? "Updating Banner Pic..." : "Updating Profile Pic..."}
-          </div>
-        </div>
-      )}
+	const tabDefs = [
+		{ value: "follower", label: "Supporters" },
+		{ value: "following", label: "Supportings" },
+	];
 
-      <Dialog
-        open={["follower", "following"].includes(open ?? "")}
-        onOpenChange={(v) => setOpen(v ? "follower" : null)}
-      >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <Tabs
-              defaultValue={open as "follower" | "following"}
-              orientation="vertical"
-              className="space-y-4"
-            >
-              <div className="w-full overflow-x-auto pb-2">
-                <TabsList className="text-center">
-                  <TabsTrigger
-                    value="follower"
-                    onClick={() => setOpen("follower")}
-                    className="
-											px-4 py-2 text-sm font-medium text-gray-500
-											transition
-											data-[state=active]:text-gray-900
-											data-[state=active]:border-b-2
-											data-[state=active]:border-blue-500
-										"
-                  >
-                    <DialogTitle>Supporters</DialogTitle>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="following"
-                    onClick={() => setOpen("following")}
-                    className="
-											px-4 py-2 text-sm font-medium text-gray-500
-											transition
-											data-[state=active]:text-gray-900
-											data-[state=active]:border-b-2
-											data-[state=active]:border-blue-500
-										"
-                  >
-                    <DialogTitle>Supportings</DialogTitle>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-              <div className="h-[50vh]">
-                <TabsContent
-                  className="border rounded-2xl h-full p-2"
-                  value="follower"
-                >
-                  {supporter && supporter.length > 0 ? (
-                    <ScrollArea className="-mr-4 h-full w-full py-1 pr-4">
-                      {supporter.map((item, index) => (
-                        <div
-                          onClick={() =>
-                            router.push(`/profile/${item.username}`)
-                          }
-                          key={index}
-                          className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl"
-                        >
-                          <Avatar className="w-12 h-12">
-                            <AvatarImage
-                              src={item?.profilePicture}
-                              alt={item?.fullName}
-                              className="object-cover"
-                            />
-                            <AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
-                              {item?.fullName
-                                .split(" ")
-                                .map((n) => n[0])
-                                .join("")}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="text-md font-semibold">
-                              {item.fullName}
-                            </p>
-                            <p className="text-sm">{item.email}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </ScrollArea>
-                  ) : (
-                    <div className="flex justify-center items-center">
-                      <p className="text-xl font-semibold">No supporter yet</p>
-                    </div>
-                  )}
-                </TabsContent>
-                <TabsContent
-                  className="border rounded-2xl h-full p-2"
-                  value="following"
-                >
-                  {supporting && supporting.length > 0 ? (
-                    <ScrollArea className="-mr-4 h-full w-full py-1 pr-4">
-                      {supporting.map((item, index) => (
-                        <div
-                          onClick={() =>
-                            router.push(`/profile/${item.username}`)
-                          }
-                          key={index}
-                          className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl"
-                        >
-                          <Avatar className="w-12 h-12">
-                            <AvatarImage
-                              src={item?.profilePicture}
-                              alt={item?.fullName}
-                              className="object-cover"
-                            />
-                            <AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
-                              {item?.fullName
-                                .split(" ")
-                                .map((n) => n[0])
-                                .join("")}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="text-md font-semibold">
-                              {item.fullName}
-                            </p>
-                            <p className="text-sm">{item.email}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </ScrollArea>
-                  ) : (
-                    <div className="flex justify-center items-center">
-                      <p className="text-xl font-semibold">
-                        Not supporting yet
-                      </p>
-                    </div>
-                  )}
-                </TabsContent>
-              </div>
-            </Tabs>
-          </DialogHeader>
-          <div className="flex items-center gap-2"></div>
-        </DialogContent>
-      </Dialog>
+	return (
+		<>
+			{(bpLoader || ppLoader) && (
+				<div className="fixed inset-0 flex flex-col gap-4 sm:gap-8 justify-center z-60 items-center bg-[#171617cc] p-4">
+					<GridLoader
+						color="#FAA21B"
+						size={50}
+						speedMultiplier={1.1}
+						className="hidden sm:block"
+					/>
+					<div className="font-bold text-lg sm:text-2xl text-white text-center">
+						{bpLoader ? "Updating Banner Pic..." : "Updating Profile Pic..."}
+					</div>
+				</div>
+			)}
+
+			<Dialog
+				open={["follower", "following"].includes(open ?? "")}
+				onOpenChange={(v) => setOpen(v ? "follower" : null)}
+			>
+				<DialogContent className="sm:max-w-md">
+					<DialogHeader>
+						<Tabs
+							defaultValue={open as "follower" | "following"}
+							orientation='vertical'
+							className='space-y-4'
+						>
+							<div className='w-full overflow-x-auto pb-2'>
+								<TabsList className="text-center">
+									{tabDefs.map(({ value, label }) => (
+										<TabsTrigger
+											key={value}
+											value={value}
+											onClick={() => setOpen(value as "follower" | "following")}
+											className="
+												px-4 py-2 text-sm font-medium text-gray-500
+												transition
+												data-[state=active]:text-gray-900
+												data-[state=active]:border-b-2
+												data-[state=active]:border-blue-500
+												"
+										>
+											<DialogTitle>{label}</DialogTitle>
+										</TabsTrigger>
+									))}
+								</TabsList>
+							</div>
+							<div className="h-[50vh]">
+								{(["follower", "following"] as const).map((val, index) => {
+									const panes = {
+										follower: {
+											users: supporter,
+											empty: "No supporter yet",
+										},
+										following: {
+											users: supporting,
+											empty: "Not supporting yet",
+										},
+									} as const;
+									const { users, empty } = panes[val];
+									return (
+										<TabsContent key={index} className="border rounded-2xl h-full p-2" value={val}>
+											{users && users.length > 0 ? (
+												<ScrollArea className='-mr-4 h-full w-full py-1 pr-4'>
+													{users.map((item, index) => (
+														<div
+															onClick={() => router.push(`/profile/${item.username}`)}
+															key={index}
+															className="cursor-pointer flex justify-start items-center gap-2 hover:bg-slate-200 p-2 rounded-2xl"
+														>
+															<Avatar className="w-12 h-12">
+																<AvatarImage
+																	src={item?.profilePicture}
+																	alt={item?.fullName}
+																	className="object-cover"
+																/>
+																<AvatarFallback className="bg-gray-300 text-gray-600 text-sm sm:text-lg md:text-2xl font-semibold">
+																	{item?.fullName
+																		.split(" ")
+																		.map((n) => n[0])
+																		.join("")}
+																</AvatarFallback>
+															</Avatar>
+															<div>
+																<p className="text-md font-semibold">{item.fullName}</p>
+																<p className="text-sm">{item.email}</p>
+															</div>
+														</div>
+													))}
+												</ScrollArea>
+											) : (
+												<div className="flex justify-center items-center">
+													<p className="text-xl font-semibold">{empty}</p>
+												</div>
+											)}
+										</TabsContent>
+									)
+								})}
+							</div>
+						</Tabs>
+					</DialogHeader>
+					<div className="flex items-center gap-2">
+					</div>
+				</DialogContent>
+			</Dialog>
 
       <div className="w-full max-w-6xl mx-auto p-3 sm:p-5 mt-22 lg:mt-25">
         <Card className="relative overflow-hidden shadow-lg mb-4 sm:mb-8 border-0">
@@ -439,7 +399,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({
                             onClick={handleSupport}
                             className="w-full sm:w-auto bg-black cursor-pointer hover:bg-gray-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base transition-all duration-200 hover:-translate-y-1"
                           >
-                            {followed ? "UnFollow" : "Support"}
+                            {followed ? "Stop-Supporting" : "Support"}
                           </Button>
                         )}
                         {isSame ? (
