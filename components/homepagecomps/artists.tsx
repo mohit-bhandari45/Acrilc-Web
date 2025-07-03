@@ -22,6 +22,8 @@ const FeaturedArtists = ({ user }: { user: IUser }) => {
 		getFeaturedArists();
 	}, [user._id]);
 
+	console.log(artists);
+
 	return (
 		<section id="artists" className="py-16 px-8 max-w-7xl mx-auto">
 			<h2 className="text-[2.5rem] font-bold text-center mb-12 text-gray-700">
@@ -63,9 +65,9 @@ const FeaturedArtists = ({ user }: { user: IUser }) => {
 								) : (
 									<div className="h-full bg-gradient-to-tr from-[#f093fb] to-[#f5576c]" />
 								)}
-								<div className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2.5 rounded-full text-sm font-semibold">
-									{a.totalFollowers || 0} Followers
-								</div>
+								{/* <div className="absolute top-4 right-4 bg-blue-500 text-white px-4 py-2.5 rounded-full text-sm font-semibold">
+									{a.followers?.length || 0} Followers
+								</div> */}
 							</div>
 							<div className="p-6">
 								<div className="flex items-center gap-3 mb-2">
