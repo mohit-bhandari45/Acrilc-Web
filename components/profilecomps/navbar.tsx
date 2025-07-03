@@ -302,7 +302,7 @@ export default function Header({
 							</Link>
 
 							<Link
-								href="/settings"
+								href="/settings/general"
 								onClick={closeProfileMenu}
 								className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200 group"
 							>

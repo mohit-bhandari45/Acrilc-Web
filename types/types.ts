@@ -112,8 +112,10 @@ export interface IUser {
     story?: string;
     portfolioURL: string
     isFollowed: boolean;
-    totalFollowers: number;
-    totalFollowing: number;
+    followers?: string[];
+    following?: string[];
+    totalFollowers?: number;
+    totalFollowing?: number;
     role?: "user" | "admin";
     preferences?: string[];
     services?: string[];
