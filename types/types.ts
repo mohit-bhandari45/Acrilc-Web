@@ -56,6 +56,7 @@ interface IPost {
     author: {
         _id: string;
         fullName: string;
+        username: string
         profilePicture: string;
     }
     title: string;
@@ -68,7 +69,12 @@ interface IPost {
     thumbnail?: string;
     media: IMedia[];
     forte: string;
-    applauds: string[];
+    applauds: {
+        _id: string;
+        fullName: string;
+        username: string
+        profilePicture: string;
+    }[]
     comments: IComment[];
     location: Location;
     score: number;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL: string = "http://localhost:8000";
-const BASE_URL: string = "https://api.acrilc.com";
+const BASE_URL: string = "http://localhost:8000";
+// const BASE_URL: string = "https://api.acrilc.com";
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -58,6 +58,11 @@ const GET_SINGLE_Market_PROJECT = `${MARKETBASE}/project`;
 const GET_ALL_API_Market_PROJECT = `${MARKETBASE}`;
 const GET_ALL_Market_PROJECT = `${BASE_URL}/public/user`;
 export { ADD_TO_MARKET, GET_SINGLE_Market_PROJECT, GET_ALL_API_Market_PROJECT, GET_ALL_Market_PROJECT };
+
+/* Social Interaction Routes */
+const SOCIALBASE = `${BASE_URL}/api/socials`
+const LIKE_POST = `${SOCIALBASE}/post`;
+export { LIKE_POST };
 
 /* Utils Apis */
 const GET_KEYWORDS_API = `${BASE_URL}/api/utils/get-keywords`;

@@ -1,306 +1,341 @@
 "use client";
 
-import api, { DELETE_POST } from "@/apis/api";
+import api, { DELETE_POST, LIKE_POST } from "@/apis/api";
 import { IPost, IUser } from "@/types/types";
 import {
-	ChevronLeft,
-	ChevronRight,
-	Edit2,
-	Heart,
-	MessageCircle,
-	MoreVertical,
-	Share,
-	ThumbsUp,
-	Trash2,
+  Bookmark,
+  Calendar,
+  Edit2,
+  Heart,
+  MessageCircle,
+  MoreVertical,
+  Trash2,
+  X,
 } from "lucide-react";
-import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { Button } from "../ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "../ui/dialog";
-import { SkeletonPost } from "../utils/Skeleton";
+import ShareOption from "../utils/Share";
 
 const PostDescription = ({
-	post,
-	user,
+  user,
+  post,
+  getData,
 }: {
-	post: IPost | null;
-	user: IUser;
+  user: IUser;
+  post: IPost | null;
+  getData: () => Promise<void>;
 }) => {
-	const [currentImageIndex, setCurrentImageIndex] = useState(0);
-	const [menuOpen, setMenuOpen] = useState(false);
-	const router = useRouter();
-	const menuRef = useRef<HTMLDivElement | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showFullStory, setShowFullStory] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const router = useRouter();
 
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-				setMenuOpen(false);
-			}
-		};
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
-		if (menuOpen) {
-			document.addEventListener("mousedown", handleClickOutside);
-		}
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
 
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [menuOpen]);
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
 
-	const toggleMenu = () => setMenuOpen(!menuOpen);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
 
-	const prevImage = () => {
-		if (post) {
-			setCurrentImageIndex((prev) =>
-				prev === 0 ? post.media.length - 1 : prev - 1
-			);
-		}
-	};
+  const handleLike = async () => {
+    const res = await api.get(`${LIKE_POST}/${post?._id}/applaud`);
 
-	const nextImage = () => {
-		if (post) {
-			setCurrentImageIndex((prev) =>
-				prev === post.media.length - 1 ? 0 : prev + 1
-			);
-		}
-	};
+    if (res.status === 200) {
+      toast.success(res.data.msg);
+      getData();
+    }
+  };
 
-	const handlerDelete = async () => {
-		try {
-			const res = await api.delete(`${DELETE_POST}/${post?._id}`);
+  const handleBookmark = () => {
+    setIsBookmarked(!isBookmarked);
+  };
 
-			if (res.status === 200) {
-				router.push(`/profile/${user.username}`);
-				toast.success("Post Deleted Successfully");
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  const handleDelete = async (id: string) => {
+    const res = await api.delete(`${DELETE_POST}/${id}`);
 
-	if (!post) {
-		return <SkeletonPost />
-	}
+    if (res.status === 200) {
+      router.push(`/profile/${user.username}`);
+      toast.success("Post Deleted Successfully");
+    }
+  };
 
-	return (
-		<div className="mt-20">
-			<div className="max-w-7xl mx-auto px-4 py-8">
-				{/* Main container with shadow */}
-				<div className="bg-white rounded-lg shadow-lg overflow-hidden">
-					<div className="flex flex-col lg:flex-row">
-						{/* Left side - Image */}
-						<div className="lg:w-1/2 relative">
-							<div className="relative bg-stone-300">
-								{post.media.length > 0 && (
-									<div className="relative bg-[]">
-										<Image
-											src={post.media[currentImageIndex].url}
-											alt={post.title}
-											width={800}
-											height={600}
-											className="w-full h-auto object-contain"
-											style={{ maxHeight: "600px" }}
-										/>
-									</div>
-								)}
+  if (!post || !user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-gray-500">Loading post...</p>
+      </div>
+    );
+  }
 
-								{post.media.length > 1 && (
-									<>
-										{/* Navigation arrows */}
-										<button
-											onClick={prevImage}
-											className="absolute left-2 top-1/2 cursor-pointer -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/70 transition"
-										>
-											<ChevronLeft size={24} />
-										</button>
-										<button
-											onClick={nextImage}
-											className="absolute right-2 top-1/2 cursor-pointer -translate-y-1/2 bg-white/50 p-2 rounded-full hover:bg-white/70 transition"
-										>
-											<ChevronRight size={24} />
-										</button>
+  return (
+    <div className="min-h-screen bg-gray-50 mt-20">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Image Section */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <div
+                className="aspect-[4/3] relative group cursor-pointer"
+                onClick={() => setIsImageModalOpen(true)}
+              >
+                <img
+                  src={post.media[0].url}
+                  alt={post.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            </div>
+          </div>
 
-										{/* Dots indicator */}
-										<div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-											{post.media.map((_, index) => (
-												<button
-													key={index}
-													onClick={() => setCurrentImageIndex(index)}
-													className={`w-2 h-2 rounded-full ${index === currentImageIndex
-															? "bg-white"
-															: "bg-white/50"
-														}`}
-												/>
-											))}
-										</div>
-									</>
-								)}
-							</div>
-						</div>
+          {/* Details Section */}
+          <div className="space-y-6">
+            {/* Author Info */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src={post.author.profilePicture}
+                    alt={post.author.fullName}
+                    onClick={() => setIsImageOpen(true)}
+                    className="w-12 h-12 rounded-full object-cover hover:border-2 cursor-pointer"
+                  />
+                  <div>
+                    <Link
+                      href={`/profile/${post.author.username}`}
+                      className="block"
+                    >
+                      <h3 className="font-semibold text-gray-900 origin-left hover:scale-105 transition-all duration-500 ease-in-out">
+                        {post.author.fullName}
+                      </h3>
+                    </Link>
+                    <p className="text-sm text-gray-600">
+                      @{post.author.username}
+                    </p>
+                  </div>
+                </div>
 
-						{/* Right side - Content */}
-						<div className="lg:w-1/2 p-8 relative">
-							{/* Dropdown menu (top right of content area) */}
-							{user._id === post.author._id && (
-								<div className="absolute top-4 right-4 z-20">
-									<button
-										onClick={toggleMenu}
-										className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition cursor-pointer"
-									>
-										<MoreVertical size={20} className="text-gray-700" />
-									</button>
+                <div className="relative" ref={menuRef}>
+                  <button
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    className="p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                  >
+                    <MoreVertical size={18} className="text-gray-600" />
+                  </button>
 
-									{menuOpen && (
-										<div
-											ref={menuRef}
-											className="absolute cursor-pointer transition duration-500 ease-in-out right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 text-sm z-30"
-										>
-											<Button
-												className="w-full flex cursor-pointer items-center justify-start gap-2 px-4 py-2 hover:bg-gray-100"
-												onClick={() => {
-													router.push(`/content/edit/${post._id}?type=post`);
-												}}
-											>
-												<Edit2 size={16} /> Edit
-											</Button>
-											<Button
-												className="w-full flex cursor-pointer items-center justify-start gap-2 px-4 py-2 text-red-600 hover:bg-gray-100"
-												onClick={handlerDelete}
-											>
-												<Trash2 size={16} /> Delete
-											</Button>
+                  {menuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-30 border border-gray-200">
+                      {user._id === post.author._id && (
+                        <button
+                          onClick={() => {
+                            router.push(`/content/edit/${post._id}?type=post`);
+                          }}
+                          className="w-full cursor-pointer flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors text-left text-sm"
+                        >
+                          <Edit2 size={16} className="text-blue-600" />
+                          <span>Edit Artwork</span>
+                        </button>
+                      )}
 
-											{/* Share Function */}
-											<Dialog>
-												<DialogTrigger asChild>
-													<Button className="w-full flex cursor-pointer items-center justify-start gap-2 px-4 py-2 text-blue-500 hover:bg-gray-100">
-														<Share size={16} /> Share
-													</Button>
-												</DialogTrigger>
-												<DialogContent className="mx-4 sm:mx-0 w-[calc(100vw-2rem)] sm:w-full max-w-md">
-													<DialogHeader>
-														<DialogTitle className="text-lg sm:text-xl">
-															Share Your Profile
-														</DialogTitle>
-														<DialogDescription className="text-sm sm:text-base">
-															Choose how you&apos;d like to share this
-															artist&apos;s profile.
-														</DialogDescription>
-													</DialogHeader>
+                      <ShareOption user={user} />
 
-													{/* Share via Web Share API if supported */}
-													<Button
-														onClick={() => {
-															const shareData = {
-																title: `${user.fullName}'s Profile`,
-																text: "Check out this artist Post!",
-																url:
-																	typeof window !== "undefined"
-																		? window.location.href
-																		: "",
-															};
+                      {user._id === post.author._id && (
+                        <>
+                          <hr className="my-2" />
+                          <button
+                            onClick={() => handleDelete(post._id)}
+                            className="w-full cursor-pointer flex items-center gap-3 px-4 py-2 hover:bg-red-50 transition-colors text-left text-sm text-red-600"
+                          >
+                            <Trash2 size={16} />
+                            <span>Delete</span>
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
 
-															if (navigator.share) {
-																navigator
-																	.share(shareData)
-																	.catch((err) =>
-																		console.error("Share failed:", err)
-																	);
-															} else {
-																toast.error(
-																	"Sharing is not supported on this device."
-																);
-															}
-														}}
-														className="w-full z-60 bg-black hover:bg-black cursor-pointer text-white rounded-lg transition-all duration-200 text-sm sm:text-base"
-													>
-														Share via Apps
-													</Button>
+              {/* Action Buttons */}
+              <div className="grid grid-cols-3 gap-3">
+                <button
+                  onClick={handleLike}
+                  className={`flex flex-col items-center cursor-pointer justify-center p-3 rounded-lg transition-all ${
+                    post.applauds.some((applaud) => applaud._id === user._id)
+                      ? "bg-red-50 text-red-600 border border-red-200"
+                      : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  <Heart
+                    size={18}
+                    className={`mb-1 ${
+                      post.applauds.some((applaud) => applaud._id === user._id)
+                        ? "fill-current"
+                        : ""
+                    }`}
+                  />
+                  <span className="text-xs font-medium">
+                    {post.applauds.length}
+                  </span>
+                </button>
 
-													{/* Copy Link Option */}
-													<Button
-														variant="outline"
-														onClick={() => {
-															const profileUrl =
-																typeof window !== "undefined"
-																	? window.location.href
-																	: "";
-															navigator.clipboard.writeText(profileUrl);
-															toast.success("Profile link copied!");
-														}}
-														className="w-full mt-2 cursor-pointer text-sm sm:text-base"
-													>
-														Copy Link
-													</Button>
-												</DialogContent>
-											</Dialog>
-										</div>
-									)}
-								</div>
-							)}
+                <button className="flex flex-col items-center justify-center p-3 rounded-lg bg-gray-50 hover:bg-blue-50 hover:text-blue-600 text-gray-700 transition-all">
+                  <MessageCircle size={18} className="mb-1" />
+                  <span className="text-xs font-medium">
+                    {post.comments.length}
+                  </span>
+                </button>
 
-							{/* Content */}
-							<div className="space-y-4 pr-12">
-								<h1 className="text-3xl font-bold">{post.title}</h1>
-								<p className="text-lg text-gray-700">{post.subtitle}</p>
-								<p className="text-lg text-gray-700">{post.size}</p>
+                <button
+                  onClick={handleBookmark}
+                  className={`flex flex-col items-center justify-center p-3 rounded-lg transition-all ${
+                    isBookmarked
+                      ? "bg-yellow-50 text-yellow-600 border border-yellow-200"
+                      : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  <Bookmark
+                    size={18}
+                    className={`mb-1 ${isBookmarked ? "fill-current" : ""}`}
+                  />
+                  <span className="text-xs font-medium">Save</span>
+                </button>
+              </div>
+            </div>
 
-								<div className="flex flex-wrap items-center gap-2">
-									{post.hashTags[0].split(" ").map((tag, index) => (
-										<div
-											key={index}
-											className="break-words bg-[#FAA21B] text-white text-sm px-3 py-1 rounded-lg"
-										>
-											{tag}
-										</div>
-									))}
-								</div>
+            {/* Artwork Details */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                {post.title}
+              </h1>
+              <p className="text-gray-600 mb-4">{post.story.split(".")[0]}</p>
 
-								<div className="py-2">
-									<h2 className="text-xl font-semibold">Story of the Art</h2>
-									<p className="mt-2 text-gray-700">{post.story}</p>
-								</div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
+                    <Calendar size={16} />
+                    <span>Year</span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-900">
+                    {new Date(post.createdAt).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                    })}
+                  </span>
+                </div>
 
-								{/* Action buttons */}
-								<div className="flex justify-between items-center pt-4 border-t border-gray-200">
-									<button className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
-										<ThumbsUp className="mr-2" size={20} />
-										<span>Applauds</span>
-									</button>
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center space-x-2 text-sm text-gray-600">
+                    <span>Dimensions</span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-900">
+                    {post.size}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-									<button className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
-										<MessageCircle className="mr-2" size={20} />
-										<span>Comment</span>
-									</button>
+            {/* Tags */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <h3 className="font-semibold text-gray-900 mb-3">Tags</h3>
+              <div className="flex flex-wrap gap-2">
+                {post.hashTags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-[#ffffff] text-[#ff8904] border-[0.5] hover:scale-105 cursor-pointer transition-all duration-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-									<button className="flex items-center px-4 py-2 hover:bg-gray-100 rounded-md">
-										<Heart className="mr-2" size={20} />
-										<span>Appreciate</span>
-									</button>
-								</div>
+            {/* Marketplace Button */}
+            {user._id === post.author._id && (
+              <button className="w-full py-3 bg-[#ff8904] hover:bg-[#ff7575] cursor-pointer text-white font-semibold rounded-xl transition-colors">
+                Move to Marketplace
+              </button>
+            )}
+          </div>
+        </div>
 
-								{/* Marketplace button */}
-								{user._id === post.author._id && (
-									<button className="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-md mt-4">
-										Move to Marketplace
-									</button>
-								)}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	);
+        {/* Story Section */}
+        <div className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+          <h2 className="text-xl font-bold mb-4 text-gray-900">
+            Story Behind the Art
+          </h2>
+          <div className="prose prose-gray max-w-none">
+            <p
+              className={`text-gray-700 leading-relaxed ${
+                !showFullStory && post.story.length > 300 ? "line-clamp-3" : ""
+              }`}
+            >
+              {post.story}
+            </p>
+            {post.story.length > 300 && (
+              <button
+                onClick={() => setShowFullStory(!showFullStory)}
+                className="mt-3 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
+              >
+                {showFullStory ? "Show less" : "Read more..."}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {isImageOpen && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/70 flex items-center justify-center"
+          onClick={() => setIsImageOpen(false)}
+        >
+          <div
+            className="relative p-4 rounded-xl shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={post.author.profilePicture}
+              alt={post.title}
+              className="w-80 h-80 object-cover rounded-full"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Full-screen image modal */}
+      {isImageModalOpen && (
+        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+          <div className="relative max-w-6xl max-h-full">
+            <img
+              src={post.media[0].url}
+              alt={post.title}
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setIsImageModalOpen(false)}
+              className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full p-2 hover:bg-white/20 transition-all duration-200"
+            >
+              <X size={24} className="text-white" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default PostDescription;
