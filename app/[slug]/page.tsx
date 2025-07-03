@@ -20,7 +20,7 @@ const CustomPortfolio = () => {
 	useEffect(() => {
 		async function getUser() {
 			try {
-				const response = await api.get(`${GET_PORTFOLIO}?url=${params.slug}`);
+				const response = await api.get(`${GET_PORTFOLIO}/${params.slug}`);
 
 				if (response.status === 200) {
 					setUser(response.data.data);
