@@ -78,7 +78,10 @@ export const metadata: Metadata = {
       "@type": "Organization",
       name: "Acrilc",
       url: "https://acrilc.com",
-      logo: "https://i.ibb.co/JRkvH0XH/Project-20250516020412.png",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://acrilc.com/favicon-dark.ico", // Use your domain, not i.ibb.co
+      },
       sameAs: [
         "https://twitter.com/acrilc",
         "https://www.instagram.com/acrilc",
