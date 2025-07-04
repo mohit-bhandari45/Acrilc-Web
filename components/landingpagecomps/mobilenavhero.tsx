@@ -3,9 +3,18 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { heroImages } from "./data";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+
+export const heroImages = [
+	"https://i.ibb.co/SwkLzLNd/image-from-rawpixel-id-3848165-jpeg.jpg",
+	"https://i.ibb.co/m51z94Hk/image-from-rawpixel-id-8961718-original.jpg",
+	"https://i.ibb.co/6SCZnCG/image-from-rawpixel-id-3076119-jpeg.jpg",
+	"https://i.ibb.co/vCYWQwG4/image-from-rawpixel-id-3844930-jpeg-1.jpg",
+	"https://i.ibb.co/n2qqdMR/image-from-rawpixel-id-3049257-jpeg.jpg",
+	"https://i.ibb.co/1G838n7r/image-from-rawpixel-id-6033811-original.jpg",
+	"https://i.ibb.co/LdJc3CVJ/image-from-rawpixel-id-3848277-jpeg.jpg",
+];
 
 export default function MobileHeaderHero() {
 	const router = useRouter();
