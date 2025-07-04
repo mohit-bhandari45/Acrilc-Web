@@ -36,9 +36,7 @@ const Right = ({ labels, method }: RightProps) => {
 	const searchParams = useSearchParams();
 	const nextPath = searchParams.get("next") || (method === "Login" ? "/home" : "/auth/username");
 	const signUpUrl = `/auth/signup?next=${encodeURIComponent(nextPath)}`;
-	console.log(signUpUrl);
 	const signInUrl = `/auth/login?next=${encodeURIComponent(nextPath)}`;
-	console.log(signInUrl);
 
 	const handleGoogleSignIn = async () => {
 		const provider = new GoogleAuthProvider();
@@ -193,7 +191,7 @@ const Right = ({ labels, method }: RightProps) => {
 							<div>
 								Don&apos;t have an account?{" "}
 								<Button
-									onClick={() => router.replace(signUpUrl)}
+									onClick={() => router.push(signUpUrl)}
 									className="hover:underline font-semibold cursor-pointer p-0"
 								>
 									Sign up
@@ -203,7 +201,7 @@ const Right = ({ labels, method }: RightProps) => {
 							<div>
 								Already have an account?{" "}
 								<Button
-									onClick={() => router.replace(signInUrl)}
+									onClick={() => router.push(signInUrl)}
 									className="hover:underline font-semibold cursor-pointer p-0"
 								>
 									Log in
