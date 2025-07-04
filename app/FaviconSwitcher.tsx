@@ -1,33 +1,31 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
+
+import { useEffect } from "react";
 
 export default function FaviconSwitcher() {
-  const { theme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
+    const darkModeMedia = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const updateFavicon = (isDark: boolean) => {
+      const favicon = document.querySelector("link[rel='icon']") || document.createElement("link");
+      favicon.setAttribute("rel", "icon");
+      favicon.setAttribute("type", "image/x-icon");
+      favicon.setAttribute("href", isDark ? "/favicon-light.ico" : "/favicon-dark.ico");
+
+      if (!favicon.parentNode) {
+        document.head.appendChild(favicon);
+      }
+    };
+
+    // Set on first load
+    updateFavicon(darkModeMedia.matches);
+
+    // Listen to changes
+    const listener = (e: MediaQueryListEvent) => updateFavicon(e.matches);
+    darkModeMedia.addEventListener("change", listener);
+
+    return () => darkModeMedia.removeEventListener("change", listener);
   }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
-    const currentTheme = theme === "system" ? resolvedTheme : theme;
-    const favicon =
-      document.querySelector("link[rel='icon']") ||
-      document.createElement("link");
-    favicon.setAttribute("rel", "icon");
-    favicon.setAttribute("type", "image/x-icon");
-    favicon.setAttribute(
-      "href",
-      currentTheme === "dark" ? "/favicon-white.ico" : "/favicon-black.ico"
-    );
-
-    if (!favicon.parentNode) {
-      document.head.appendChild(favicon);
-    }
-  }, [theme, resolvedTheme, mounted]);
 
   return null;
 }

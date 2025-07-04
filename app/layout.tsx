@@ -1,15 +1,14 @@
 export const dynamic = "force-dynamic";
 
-import type { Metadata } from "next";
-import { Geist_Mono, Epilogue, Poppins } from "next/font/google";
-import "./globals.css";
-import ClientToaster from "./toaster";
-import ReduxProvider from "./provider";
-import ClientUserLoader from "../hooks/ClientUserLoader";
-import RouteGuard from "@/hooks/RouteGuard";
 import RouteProgress from "@/components/RouteProgress";
+import RouteGuard from "@/hooks/RouteGuard";
+import type { Metadata } from "next";
+import { Epilogue, Geist_Mono, Poppins } from "next/font/google";
+import ClientUserLoader from "../hooks/ClientUserLoader";
 import FaviconSwitcher from "./FaviconSwitcher";
-import { ThemeProvider } from "next-themes";
+import "./globals.css";
+import ReduxProvider from "./provider";
+import ClientToaster from "./toaster";
 // import RouteProgress from "@/components/RouteProgress";
 
 // Fonts
@@ -103,7 +102,6 @@ export default async function RootLayout({
       <body
         className={`${epilogue.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ReduxProvider>
             <ClientToaster />
             <ClientUserLoader />
@@ -111,7 +109,6 @@ export default async function RootLayout({
             <FaviconSwitcher />
             <RouteGuard>{children}</RouteGuard>
           </ReduxProvider>
-        </ThemeProvider>
       </body>
     </html>
   );
