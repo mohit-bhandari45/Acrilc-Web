@@ -22,8 +22,6 @@ const FeaturedArtists = ({ user }: { user: IUser }) => {
 		getFeaturedArists();
 	}, [user._id]);
 
-	console.log(artists);
-
 	return (
 		<section id="artists" className="py-16 px-8 max-w-7xl mx-auto">
 			<h2 className="text-[2.5rem] font-bold text-center mb-12 text-gray-700">
