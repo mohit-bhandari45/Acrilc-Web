@@ -220,13 +220,21 @@ export default function AdminPage() {
     }
 
     useEffect(() => {
-        setFilter({
-            ...filter,
-            keyword: keyword || "",
-            role: role || "",
-        });
-        setCounts({ ...counts, currentPage: Number(page) || 1 });
-    }, [searchParams, filter, keyword, role, counts, page]);
+        setFilter({ keyword: keyword || "", role: role || "" })
+    }, [keyword, role]);
+
+    useEffect(() => {
+        setCounts(c => ({ ...c, currentPage: Number(page) || 1 }))
+    }, [page]);
+
+    // useEffect(() => {
+    //     setFilter({
+    //         ...filter,
+    //         keyword: keyword || "",
+    //         role: role || "",
+    //     });
+    //     setCounts({ ...counts, currentPage: Number(page) || 1 });
+    // }, [searchParams, filter, keyword, role, counts, page]);
 
     useEffect(() => {
         const queryParams = [
