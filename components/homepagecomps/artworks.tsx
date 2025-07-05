@@ -1,10 +1,10 @@
 import api, { GET_FEATURED_ARTWORKS } from "@/apis/api";
-import useHandleNavigation from "@/hooks/useHandleNavigation";
 import { IPost, IUser } from "@/types/types";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const LatestArtworks = ({ user }: { user: IUser }) => {
-	const handleNavigation = useHandleNavigation();
+	const router = useRouter();
 	const [artworks, setArtworks] = useState<IPost[] | null>(null);
 	const [loading, setLoading] = useState(true);
 	
@@ -58,7 +58,7 @@ const LatestArtworks = ({ user }: { user: IUser }) => {
 					: artworks?.filter(a => a.author != null)?.map((art, i) => (
 						<div
 							key={i}
-							onClick={() => handleNavigation(`/content/${art._id}`)}
+							onClick={() => router.push(`/content/${art._id}`)}
 							className="bg-white rounded-xl overflow-hidden cursor-pointer break-inside-avoid shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-[0.3s] ease-in-out"
 						>
 							{art.thumbnail ? (

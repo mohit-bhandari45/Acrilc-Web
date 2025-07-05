@@ -191,6 +191,7 @@ const Right = ({ labels, method }: RightProps) => {
 							<div>
 								Don&apos;t have an account?{" "}
 								<Button
+									type="button"
 									onClick={() => router.push(signUpUrl)}
 									className="hover:underline font-semibold cursor-pointer p-0"
 								>
@@ -201,6 +202,7 @@ const Right = ({ labels, method }: RightProps) => {
 							<div>
 								Already have an account?{" "}
 								<Button
+									type="button"
 									onClick={() => router.push(signInUrl)}
 									className="hover:underline font-semibold cursor-pointer p-0"
 								>

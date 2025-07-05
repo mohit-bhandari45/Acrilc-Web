@@ -10,35 +10,33 @@ import MobileHeaderHero from "@/components/landingpagecomps/mobilenavhero";
 import HeaderHero from "@/components/landingpagecomps/navHero";
 import TestimonialsSection from "@/components/landingpagecomps/testimonial";
 import MainLoader from "@/components/universalcomps/mainloader";
-// import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/store/hooks";
 
 const Main = () => {
-  // const router = useRouter();
-  const { loading } = useAppSelector(state => state.userReducer);
+	const { loading } = useAppSelector(state => state.userReducer);
 
-  if (loading) {
-    return <MainLoader msg="Loading, please wait" />;
-  }
+	if (loading) {
+		return <MainLoader msg="Loading, please wait" />;
+	}
 
-  return (
-    <div className="min-h-screen">
-      {/* Desktop Header and Hero */}
-      <div className="hidden md:block">
-        <HeaderHero />
-      </div>
+	return (
+		<div className="min-h-screen">
+			{/* Desktop Header and Hero */}
+			<div className="hidden md:block">
+				<HeaderHero />
+			</div>
 
-      {/* Mobile Header and Hero */}
-      <MobileHeaderHero />
-      <FeaturesSection />
-      <TestimonialsSection />
-      <CompareSection />
-      <HowItWorksMain />
-      <FeaturedArtworks />
-      <CtaSection />
-      <Footer />
-    </div>
-  );
+			{/* Mobile Header and Hero */}
+			<MobileHeaderHero />
+			<FeaturesSection />
+			<TestimonialsSection />
+			<CompareSection />
+			<HowItWorksMain />
+			<FeaturedArtworks />
+			<CtaSection />
+			<Footer />
+		</div>
+	);
 };
 
 export default Main;
