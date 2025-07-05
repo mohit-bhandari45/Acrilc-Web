@@ -7,11 +7,10 @@ import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
 import { useAppSelector } from "@/store/hooks";
 import { IPost } from "@/types/types";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 const Post = () => {
-	const router = useRouter();
 	const params = useParams();
 	const id = params.id;
 	const [post, setPost] = useState<IPost | null>(null);
@@ -26,7 +25,7 @@ const Post = () => {
 		} catch (error) {
 			console.log(error);
 		}
-	}, [currentUser?.username, id, router]);
+	}, [id]);
 
 	useEffect(() => {
 		getData();

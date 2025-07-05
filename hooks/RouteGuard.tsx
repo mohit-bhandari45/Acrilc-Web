@@ -16,7 +16,7 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
         if (loading) return;
 
         const inAuthPath = pathname.startsWith('/auth');
-        const protectedRoutes = ["/home", "/profile", "/content", "/settings"];
+        const protectedRoutes = ["/home", "/profile", "/content", "/settings", "/admin"];
         const isProtectedRoute = protectedRoutes.some(prefix =>
             pathname === prefix || pathname.startsWith(prefix + '/')
         );
@@ -24,6 +24,12 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
         if (!user && isProtectedRoute) {
             router.replace(`/auth/login?next=${encodeURIComponent(pathname)}`);
             return;
+        }
+
+        const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/')
+        if (user && isAdminRoute && user.role !== 'admin') {
+            router.replace('/home')
+            return
         }
 
         if (user && inAuthPath) {
