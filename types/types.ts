@@ -122,4 +122,5 @@ export interface IUser {
     services?: string[];
     posts: number
     socialLinks: Map<string, string>;
+    createdAt: Date;
 }
