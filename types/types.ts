@@ -106,6 +106,7 @@ export interface IUser {
     fullName: string;
     profilePicture?: string;
     bannerPicture?: string;
+    password?:string;
     bio?: string;
     email?: string;
     location?: string;
