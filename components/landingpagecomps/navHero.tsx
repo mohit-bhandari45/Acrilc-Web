@@ -1,9 +1,9 @@
 "use client";
 
-import useHandleNavigation from "@/hooks/useHandleNavigation";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 export const heroImages = [
 	"https://i.ibb.co/SwkLzLNd/image-from-rawpixel-id-3848165-jpeg.jpg",
@@ -22,7 +22,7 @@ interface HeaderHeroProps {
 export default function HeaderHero({ className }: HeaderHeroProps) {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [backgroundImage, setBackgroundImage] = useState("");
-	const handleNavigation = useHandleNavigation();
+	const router = useRouter();
 
 	// Set random background image on mount
 	useEffect(() => {
@@ -94,7 +94,7 @@ export default function HeaderHero({ className }: HeaderHeroProps) {
 
 					{/* Sign Up */}
 					<Button
-						onClick={() => handleNavigation("/auth/signup")}
+						onClick={() => router.push("/auth/signup")}
 						className={cn(
 							"px-8 py-6 cursor-pointer rounded-[50px] font-medium no-underline transition-all duration-300 ease-out border-2",
 							"hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.2)]",
@@ -132,14 +132,14 @@ export default function HeaderHero({ className }: HeaderHeroProps) {
 
 					<div className="cta-buttons flex gap-4 justify-center">
 						<button
-							onClick={() => handleNavigation("/auth/login")}
+							onClick={() => router.push("/auth/login")}
 							className="btn btn-primary px-8 py-4 rounded-[50px] font-medium no-underline transition-all duration-300 ease-out bg-gradient-to-r from-[#E2725B] to-[#D4A373] text-white border-none hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.3)]"
 						>
 							Join as an Artist
 						</button>
 
 						<button
-							onClick={() => handleNavigation("/coming")}
+							onClick={() => router.push("/coming")}
 							className="btn btn-secondary bg-white text-[#E2725B] border-2 border-[#E2725B] px-8 py-4 rounded-[50px] font-medium no-underline transition-all duration-300 ease-out hover:bg-[#E2725B] hover:text-white hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(226,114,91,0.2)]"
 						>
 							Create Your AI Portfolio

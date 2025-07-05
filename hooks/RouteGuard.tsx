@@ -26,7 +26,7 @@ export default function RouteGuard({ children }: { children: ReactNode }) {
             return;
         }
 
-        const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/')
+        const isAdminRoute = pathname.startsWith('/admin')
         if (user && isAdminRoute && user.role !== 'admin') {
             router.replace('/home')
             return

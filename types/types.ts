@@ -111,6 +111,8 @@ export interface IUser {
     email?: string;
     location?: string;
     story?: string;
+    isOnline: boolean;
+    visibility: string;
     portfolioURL: string
     isFollowed: boolean;
     followers?: string[];
