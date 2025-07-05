@@ -22,7 +22,8 @@ const FORGET_PASSWORD_URL = `${BASE_URL}/api/user/change-password`
 const ADD_USERNAME_URL: string = `${BASE_URL}/api/user/username`;
 const FORTE_URL: string = `${BASE_URL}/api/user/preferences`;
 const ADD_PROFILE_PIC_URL: string = `${BASE_URL}/api/user/profile-pic`;
-export { SIGNUP_URL, LOGIN_URL, FORGET_PASSWORD_URL, ADD_USERNAME_URL, FORTE_URL, ADD_PROFILE_PIC_URL };
+const VERIFY_EMAIL: string = `${BASE_URL}/auth/verify-email`;
+export { SIGNUP_URL, LOGIN_URL, FORGET_PASSWORD_URL, ADD_USERNAME_URL, FORTE_URL, ADD_PROFILE_PIC_URL, VERIFY_EMAIL };
 
 // api apis
 const GET_OWN_PROFILE = `${BASE_URL}/api/user/me`;
@@ -67,5 +68,12 @@ export { LIKE_POST };
 /* Utils Apis */
 const GET_KEYWORDS_API = `${BASE_URL}/api/utils/get-keywords`;
 export { GET_KEYWORDS_API };
+
+/* settings */
+const SETTING_BASE_URL = `${BASE_URL}/api/user`;
+const ADD_PASSWORD = `${SETTING_BASE_URL}/set-password`;
+const UPDATE_EMAIL = `${SETTING_BASE_URL}/change-email`;
+const UPDATE_PASSWORD = `${SETTING_BASE_URL}/change-password`;
+export { ADD_PASSWORD, UPDATE_EMAIL, UPDATE_PASSWORD };
 
 export default api;

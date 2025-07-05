@@ -19,6 +19,15 @@ import { useAppSelector } from "@/store/hooks";
 import toast from "react-hot-toast";
 import api, { UPDATE_PROFILE } from "@/apis/api";
 
+// Preferences (fortes) enum
+const PREFERENCE_ENUM = [
+    "Woolen Craft", "Poetry", "Exclusive", "Paintings", "Sculptures",
+    "Wooden Crafts", "Textile Art", "Ceramics", "Jewelry Design", "Glass Art",
+    "Metalwork", "Paper Crafts", "Mixed Media", "Photography", "Digital Art",
+    "Calligraphy", "Printmaking", "Mosaic Art", "Leatherwork", "Pottery",
+    "Fiber Art", "Illustration", "Installation Art",
+];
+
 interface SocialLink {
     platform: string;
     url: string;
@@ -33,6 +42,7 @@ const GeneralSettings = () => {
         bio: "",
         story: "",
         location: "",
+        preferences: [] as string[],
     });
     const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
 
@@ -40,25 +50,20 @@ const GeneralSettings = () => {
 
     useEffect(() => {
         if (user) {
-            setFormData((prev) => {
-                return {
-                    ...prev,
-                    fullName: user.fullName || "",
-                    username: user.username || "",
-                    bio: user.bio || "",
-                    story: user.story || "",
-                    location: prev.location,
-                };
-            });
+            setFormData((prev) => ({
+                ...prev,
+                fullName: user.fullName || "",
+                username: user.username || "",
+                bio: user.bio || "",
+                story: user.story || "",
+                location: prev.location,
+                preferences: user.preferences || [],
+            }));
 
             if (user.socialLinks) {
                 const linksArray = Object.entries(user.socialLinks).map(
-                    ([platform, url]) => ({
-                        platform,
-                        url,
-                    })
+                    ([platform, url]) => ({ platform, url })
                 );
-
                 setSocialLinks(linksArray);
             }
         }
@@ -90,12 +95,13 @@ const GeneralSettings = () => {
     };
 
     const handleSubmit = async () => {
+        console.log(formData);
         if (formData.bio.length > 400) {
-            toast.error("Bio cannot exceed 100 characters");
+            toast.error("Bio cannot exceed 400 characters");
             return;
         }
         if (formData.story.length > 1000) {
-            toast.error("Storyboard cannot exceed 500 characters");
+            toast.error("Storyboard cannot exceed 1000 characters");
             return;
         }
 
@@ -105,10 +111,12 @@ const GeneralSettings = () => {
         try {
             const res = await api.put(UPDATE_PROFILE, data);
             if (res.status === 200) {
-                router.push(`/profile/${user?.username}`);
+                window.location.href = `/profile/${user?.username}`;
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoader(false);
         }
     };
 
@@ -164,10 +172,7 @@ const GeneralSettings = () => {
                         />
                         <div className="flex justify-between text-xs text-gray-500">
                             <p>Brief description for your profile. URLs are hyperlinked.</p>
-                            <span
-                                className={`${formData.bio.length > 400 ? "text-red-500" : "text-gray-500"
-                                    }`}
-                            >
+                            <span className={formData.bio.length > 400 ? "text-red-500" : ""}>
                                 {formData.bio.length}/400
                             </span>
                         </div>
@@ -188,10 +193,7 @@ const GeneralSettings = () => {
                         />
                         <div className="flex justify-between text-xs text-gray-500">
                             <p>Share more about yourself and your work.</p>
-                            <span
-                                className={`${formData.story.length > 1000 ? "text-red-500" : "text-gray-500"
-                                    }`}
-                            >
+                            <span className={formData.story.length > 1000 ? "text-red-500" : ""}>
                                 {formData.story.length}/1000
                             </span>
                         </div>
@@ -203,11 +205,7 @@ const GeneralSettings = () => {
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-medium">Social Links</h3>
-                            <Button
-                                variant="outline"
-                                onClick={handleAddSocialLink}
-                                size="sm"
-                            >
+                            <Button variant="outline" onClick={handleAddSocialLink} size="sm">
                                 Add Link
                             </Button>
                         </div>
@@ -229,14 +227,8 @@ const GeneralSettings = () => {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {[
-                                                "Instagram",
-                                                "Twitter",
-                                                "LinkedIn",
-                                                "Facebook",
-                                                "YouTube",
-                                                "TikTok",
-                                                "Pinterest",
-                                                "Behance",
+                                                "Instagram", "Twitter", "LinkedIn", "Facebook",
+                                                "YouTube", "TikTok", "Pinterest", "Behance",
                                             ].map((plat) => (
                                                 <SelectItem key={plat} value={plat}>
                                                     {plat}
@@ -273,6 +265,48 @@ const GeneralSettings = () => {
                         </div>
                     </div>
 
+                    <Separator className="my-8" />
+
+                    {/* Fortes Section */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-medium">Your Fortes</h3>
+                        <p className="text-sm text-gray-500">Choose up to 4 fortes.</p>
+                        <div className="flex flex-wrap gap-2">
+                            {PREFERENCE_ENUM.map((forte) => {
+                                const selected = formData.preferences.includes(forte);
+                                return (
+                                    <Button
+                                        key={forte}
+                                        variant={selected ? "default" : "outline"}
+                                        className={selected ? "bg-[#FAA21B] text-white hover:bg-amber-500 cursor-pointer" : " cursor-pointer"}
+                                        size="sm"
+                                        onClick={() => {
+                                            setFormData((prev) => {
+                                                const isSelected = prev.preferences.includes(forte);
+                                                if (isSelected) {
+                                                    return {
+                                                        ...prev,
+                                                        preferences: prev.preferences.filter((f) => f !== forte),
+                                                    };
+                                                } else if (prev.preferences.length < 4) {
+                                                    return {
+                                                        ...prev,
+                                                        preferences: [...prev.preferences, forte],
+                                                    };
+                                                } else {
+                                                    toast.error("You can select up to 4 fortes only.");
+                                                    return prev;
+                                                }
+                                            });
+                                        }}
+                                    >
+                                        {forte}
+                                    </Button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
                     {/* Actions */}
                     <div className="mt-8 flex flex-col gap-3">
                         <Button
@@ -300,7 +334,7 @@ const GeneralSettings = () => {
                 </CardContent>
             </Card>
         </div>
-    )
-}
+    );
+};
 
 export default GeneralSettings;
