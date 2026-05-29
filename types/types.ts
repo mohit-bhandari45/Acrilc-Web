@@ -111,6 +111,8 @@ export interface IUser {
     email?: string;
     location?: string;
     story?: string;
+    isOnline: boolean;
+    visibility: string;
     portfolioURL: string
     isFollowed: boolean;
     followers?: string[];
@@ -122,4 +124,5 @@ export interface IUser {
     services?: string[];
     posts: number
     socialLinks: Map<string, string>;
+    createdAt: Date;
 }

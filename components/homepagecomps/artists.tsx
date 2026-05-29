@@ -1,12 +1,12 @@
 "use client";
 
 import api, { GET_FEATURED_ARTISTS } from "@/apis/api";
-import useHandleNavigation from "@/hooks/useHandleNavigation";
 import { IUser } from "@/types/types";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const FeaturedArtists = ({ user }: { user: IUser }) => {
-	const handleNavigation = useHandleNavigation();
+	const router = useRouter();
 	const [artists, setArtists] = useState<IUser[] | null>(null);
 	const [loading, setLoading] = useState(true);
 
@@ -48,7 +48,7 @@ const FeaturedArtists = ({ user }: { user: IUser }) => {
 					: artists?.reverse()?.map((a, idx) => (
 						<div
 							key={idx}
-							onClick={() => handleNavigation(`/profile/${a.username}`)}
+							onClick={() => router.push(`/profile/${a.username}`)}
 							className="bg-white rounded-[20px] cursor-pointer shadow-lg overflow-hidden transform transition hover:-translate-y-2 duration-[0.3s] ease-in-out hover:shadow-2xl"
 						>
 							<div className="relative h-72">
