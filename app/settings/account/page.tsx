@@ -101,25 +101,25 @@ const AccountSettings = () => {
       <h2 className="text-2xl font-bold mb-4">Account Settings</h2>
 
       {/* Add Password (if user has no password) */}
-      {/* {!user?.password && ( */}
-      <Card>
-        <CardContent className="space-y-4 p-6">
-          <h3 className="text-lg font-semibold">Add Password</h3>
-          <PasswordInput
-            placeholder="New password"
-            value={newAddedPassword}
-            onChange={(e) => setNewAddedPassword(e.target.value)}
-          />
-          <Button
-            className="cursor-pointer border-2 border-transparent hover:border-black transition-all duration-300 ease-in-out"
-            onClick={handleAddPassword}
-            disabled={loadingAddPassword}
-          >
-            {loadingAddPassword ? "Adding…" : "Add Password"}
-          </Button>
-        </CardContent>
-      </Card>
-      {/* )} */}
+      {!user?.password && (
+        <Card>
+          <CardContent className="space-y-4 p-6">
+            <h3 className="text-lg font-semibold">Add Password</h3>
+            <PasswordInput
+              placeholder="New password"
+              value={newAddedPassword}
+              onChange={(e) => setNewAddedPassword(e.target.value)}
+            />
+            <Button
+              className="cursor-pointer border-2 border-transparent hover:border-black transition-all duration-300 ease-in-out"
+              onClick={handleAddPassword}
+              disabled={loadingAddPassword}
+            >
+              {loadingAddPassword ? "Adding…" : "Add Password"}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Change Email */}
       <Card>
