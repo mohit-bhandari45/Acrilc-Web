@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.NODE_ENV === "production" ? "https://acrilc-backend.onrender.com" : "http://localhost:8000";
+export const BASE_URL = process.env.NODE_ENV === "production" ? "https://acrilc-backend.onrender.com" : "http://localhost:8000";
 
 const api = axios.create({
     baseURL: BASE_URL,

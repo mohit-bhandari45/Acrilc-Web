@@ -27,9 +27,7 @@ const navItems: NavItem[] = [
 	{ href: "#about", label: "About", linksTo: "/about" },
 	{ href: "#gallery", label: "Gallery", linksTo: "/profile" },
 	{ href: "#shop", label: "Marketplace", linksTo: "/profile" },
-	{ href: "#", label: "Explore", id: "exploreBtn", linksTo: "/explore" },
 	{ href: "#", label: "Blog", linksTo: "/profile" },
-	{ href: "#", label: "Collections", linksTo: "/profile" },
 ];
 
 interface HeaderProps {
