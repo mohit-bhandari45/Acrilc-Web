@@ -24,7 +24,7 @@ export default function FortePage() {
 		}
 	}, [userLoading, user, router]);
 
-	if (userLoading || (user && (user?.preferences && user.preferences.length > 0))) {
+	if (userLoading || (user && user?.preferences && user.preferences.length > 0)) {
 		return <MainLoader msg="Loading, please wait" />;
 	}
 
@@ -40,73 +40,52 @@ export default function FortePage() {
 		}
 	};
 
-	const handleUpload = async () => {
-		if (!user) {
-			return;
-		}
+	const handleSaveFortes = async () => {
+		if (!user) return;
 		setLoading(true);
 		try {
 			const res = await api.post(FORTE_URL, { preferences: selected });
 			if (res.status === 200) {
-				const updatedUser = {
-					...user,
-					preferences: res.data.data
-				};
+				const updatedUser = { ...user, preferences: res.data.data };
 				dispatch(setUser(updatedUser));
 				toast.success("Forte Added");
-				router.push("/auth/profile-pic");
+				router.replace("/auth/profile-pic");
 			}
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 			toast.error("Something went wrong. Try Again!");
 		} finally {
 			setLoading(false);
 		}
 	};
 
+	const remaining = 4 - selected.length;
+
 	return (
-		<div className="flex justify-center items-center min-h-screen px-4 font-sans bg-orange-50 relative overflow-hidden bg-gradient-to-br from-orange-50 via-yellow-50 to-amber-50">
-			{/* Ambient lighting blobs */}
-			<div className="absolute inset-0 pointer-events-none z-0">
-				<div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-200/20 rounded-full blur-[160px] animate-float-slow" />
-				<div className="absolute bottom-[-15%] right-[-10%] w-[600px] h-[600px] bg-yellow-100/30 rounded-full blur-[180px] animate-float-medium" />
-				<div className="absolute top-[30%] right-[15%] w-[300px] h-[300px] bg-amber-100/25 rounded-full blur-[100px] animate-float-fast" />
-			</div>
+		<div className="relative isolate flex min-h-screen items-start justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(226,114,91,0.14),_transparent_34%),linear-gradient(180deg,_#fbf7f2_0%,_#f2e7dc_100%)] px-4 py-10">
+			<div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#E2725B]/12 blur-3xl" />
+			<div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-[#D4A373]/15 blur-3xl" />
+			<div className="absolute inset-0 pointer-events-none bg-[linear-gradient(135deg,rgba(255,255,255,0.32)_0%,transparent_45%,rgba(255,255,255,0.18)_100%)]" />
 
-			{/* Floating particles */}
-			<div className="absolute inset-0 pointer-events-none z-0">
-				{[...Array(6)].map((_, i) => (
-					<div
-						key={i}
-						className="absolute w-2 h-2 bg-orange-300/40 rounded-full animate-particle-float"
-						style={{
-							left: `${15 + i * 13}%`,
-							top: `${20 + Math.sin(i) * 25}%`,
-							animationDelay: `${i * 1.1}s`,
-							animationDuration: `${4 + (i % 3)}s`,
-						}}
-					/>
-				))}
-			</div>
-
-			{/* Subtle noise layer */}
-			<div className="absolute inset-0 bg-[url('/noise.svg')] opacity-10 z-0 pointer-events-none" />
-
-			{/* Main content card */}
-			<div className="max-w-6xl mx-auto px-4 py-12 w-full z-10 font-[Helvetica]">
-				{/* Header */}
-				<div className="text-center mb-10">
-					<h1 className="text-3xl md:text-4xl font-bold text-gray-800">
-						Select Your Fortes <span className="text-[#FF7A00]">(max 4)</span>
-					</h1>
-					<p className="mt-2 text-sm text-gray-500">
-						Choose the qualities that best represent you.
-					</p>
+			<div className="relative z-10 w-full max-w-4xl">
+				<div className="mb-6 text-center">
+					<span className="font-poppins text-3xl font-bold text-[#5e3c2f]">acrilc</span>
 				</div>
 
-				{/* Forte Selection Grid */}
-				<div className="bg-[#fafafa44] p-6 rounded-3xl shadow-md w-full">
-					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
+				<div className="w-full rounded-[2rem] border border-white/70 bg-white/72 px-6 py-8 shadow-[0_24px_80px_rgba(89,59,43,0.18)] backdrop-blur-2xl sm:px-8">
+					<div className="mb-7 flex flex-col items-center text-center">
+						<div className="mb-1 inline-flex items-center rounded-full border border-[#ebd9ca] bg-white/75 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8f6c57] shadow-sm">
+							Tell us about yourself
+						</div>
+						<h1 className="font-playfair text-2xl font-bold text-[#5e3c2f] md:text-3xl">
+							Select Your Fortes
+						</h1>
+						<p className="mt-1.5 text-xs leading-5 text-[#7d6152] sm:text-sm">
+							Choose up to 4 that best represent your creative style.
+						</p>
+					</div>
+
+					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3">
 						{PREFERENCE_ENUM.map((forte) => {
 							const isSelected = selected.includes(forte);
 							const isDisabled = selected.length >= 4 && !isSelected;
@@ -114,14 +93,14 @@ export default function FortePage() {
 								<button
 									key={forte}
 									onClick={() => toggleSelection(forte)}
-									className={cn(
-										"rounded-lg border cursor-pointer text-sm px-4 py-3 font-medium text-center transition-all duration-200 ease-in-out",
-										isSelected
-											? "bg-[#FFE9D6] text-[#FF7A00] border-[#FF7A00] shadow-sm ring-2 ring-[#FF7A00]/50"
-											: "bg-white text-gray-700 border-gray-300 hover:border-[#FF7A00] hover:shadow-sm",
-										isDisabled && "opacity-50 cursor-not-allowed"
-									)}
 									disabled={isDisabled}
+									className={cn(
+										"rounded-full border px-4 py-2.5 text-sm font-medium text-center transition-all duration-200 cursor-pointer",
+										isSelected
+											? "bg-[#f5e2d8] border-[#834C3D] text-[#834C3D] shadow-sm ring-2 ring-[#834C3D]/20"
+											: "bg-white/80 border-[#ead7c9] text-[#5e3c2f] hover:border-[#c98d68] hover:bg-[#fff7f2]",
+										isDisabled && "opacity-40 cursor-not-allowed"
+									)}
 								>
 									{forte}
 								</button>
@@ -129,122 +108,30 @@ export default function FortePage() {
 						})}
 					</div>
 
-					{/* Helper Text */}
-					<p className="text-xs text-gray-500 mt-4 text-center">
+					<p className="mt-5 text-center text-xs text-[#9a8578]">
 						{selected.length === 4
-							? "You've selected the maximum number of fortes."
-							: `${4 - selected.length} selection${4 - selected.length > 1 ? "s" : ""
-							} remaining`}
+							? "Maximum fortes selected."
+							: `${remaining} selection${remaining !== 1 ? "s" : ""} remaining`}
 					</p>
-				</div>
 
-				{/* Navigation Button */}
-				<div className="mt-12 flex justify-center">
-					<Button
-						className={cn(
-							"bg-[#FAA21B] hover:bg-[#fa921b] text-white font-semibold cursor-pointer px-8 py-3 rounded-xl transition shadow-md hover:shadow-lg",
-							(selected.length === 0 || loading) &&
-							"opacity-50 cursor-not-allowed"
-						)}
-						disabled={selected.length === 0 || loading}
-						onClick={handleUpload}
-					>
-						{loading ? (
-							<div className="flex items-center gap-2">
-								<div>Adding...</div>
-								<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-							</div>
-						) : (
-							"Add"
-						)}
-					</Button>
+					<div className="mt-6 flex justify-center">
+						<Button
+							onClick={handleSaveFortes}
+							disabled={selected.length === 0 || loading}
+							className="h-12 w-full max-w-xs cursor-pointer rounded-full border border-[#8f5b42]/10 bg-[linear-gradient(135deg,#834C3D_0%,#a8664f_55%,#d38d67_100%)] text-base font-semibold text-white shadow-[0_16px_30px_rgba(131,76,61,0.28)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(131,76,61,0.34)] disabled:cursor-not-allowed disabled:opacity-70"
+						>
+							{loading ? (
+								<div className="flex items-center gap-2">
+									<span>Saving...</span>
+									<div className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+								</div>
+							) : (
+								"Continue"
+							)}
+						</Button>
+					</div>
 				</div>
 			</div>
-
-			<style jsx>{`
-        @keyframes float-slow {
-          0%,
-          100% {
-            transform: translate(0, 0) rotate(0deg);
-          }
-          33% {
-            transform: translate(30px, -30px) rotate(120deg);
-          }
-          66% {
-            transform: translate(-20px, 20px) rotate(240deg);
-          }
-        }
-
-        @keyframes float-medium {
-          0%,
-          100% {
-            transform: translate(0, 0) rotate(0deg);
-          }
-          50% {
-            transform: translate(-40px, -20px) rotate(180deg);
-          }
-        }
-
-        @keyframes float-fast {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
-          }
-          25% {
-            transform: translate(20px, -25px) scale(1.1);
-          }
-          50% {
-            transform: translate(-15px, -10px) scale(0.9);
-          }
-          75% {
-            transform: translate(-25px, 15px) scale(1.05);
-          }
-        }
-
-        @keyframes particle-float {
-          0%,
-          100% {
-            transform: translateY(0px) translateX(0px) scale(1);
-            opacity: 0.3;
-          }
-          50% {
-            transform: translateY(-30px) translateX(20px) scale(1.2);
-            opacity: 1;
-          }
-        }
-
-        @keyframes shake {
-          0%,
-          100% {
-            transform: translateX(0);
-          }
-          25% {
-            transform: translateX(-5px);
-          }
-          75% {
-            transform: translateX(5px);
-          }
-        }
-
-        .animate-float-slow {
-          animation: float-slow 15s ease-in-out infinite;
-        }
-        .animate-float-medium {
-          animation: float-medium 12s ease-in-out infinite;
-        }
-        .animate-float-fast {
-          animation: float-fast 8s ease-in-out infinite;
-        }
-        .animate-particle-float {
-          animation: particle-float linear infinite;
-        }
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-        .shadow-3xl {
-          box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
-        }
-      `}</style>
 		</div>
 	);
 }

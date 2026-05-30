@@ -39,6 +39,8 @@ export default function SettingsLayout({
     try {
       await api.get(`/auth/logout`);
       dispatch(clearUser());
+      localStorage.removeItem("profile-skip");
+      localStorage.removeItem("username");
       toast.success("Logged out successfully");
       router.push("/");
     } catch (error) {

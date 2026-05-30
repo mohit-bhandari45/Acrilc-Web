@@ -73,6 +73,8 @@
 /* CSS Custom Properties */
 :root {
 	--background: #FAFAF9;
+	--primary: #834C3D;
+	--primary-foreground: #ffffff;
 	--text-primary: #2C3E50;
 	--text-secondary: #4A4A4A;
 	--accent-terracotta: #E2725B;
