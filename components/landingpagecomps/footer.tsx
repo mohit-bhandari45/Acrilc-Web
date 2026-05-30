@@ -43,7 +43,7 @@ export default function Footer({ className }: FooterProps) {
 
   return (
     <>
-      <footer className={cn("bg-[#2C3E50] text-white py-16", className)}>
+      <footer className={cn("bg-[#2e1a10] text-white py-16", className)}>
         <div className="container mx-auto max-w-7xl px-4 flex gap-12">
           <div className="newsletter rounded-xl w-[40%]">
             <h3 className="text-xl md:text-2xl font-['Cormorant_Garamond',serif] font-semibold text-white mb-3">
@@ -69,7 +69,7 @@ export default function Footer({ className }: FooterProps) {
               />
               <button
                 type="submit"
-                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-[#E2725B] text-white font-medium text-base border-[1.5px] border-[#E2725B] hover:bg-[#D4A373] hover:border-[#D4A373] transition-all duration-200"
+                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-[linear-gradient(135deg,#834C3D_0%,#a8664f_55%,#d38d67_100%)] text-white font-medium text-base border border-[#8f5b42]/30 shadow-[0_4px_14px_rgba(131,76,61,0.35)] hover:-translate-y-0.5 hover:shadow-[0_6px_18px_rgba(131,76,61,0.45)] transition-all duration-200"
               >
                 Subscribe
               </button>
@@ -194,7 +194,7 @@ export default function Footer({ className }: FooterProps) {
       </footer>
       <div
         className={cn(
-          "bg-[#2C3E50] text-white py-10 footer-copyright text-center border-t-[0.5px] border-white",
+          "bg-[#2e1a10] text-white/70 py-6 footer-copyright text-center border-t border-white/10",
           className
         )}
       >

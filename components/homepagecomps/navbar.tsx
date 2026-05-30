@@ -116,37 +116,36 @@ const Navbar = ({ className, user }: HeaderHeroProps) => {
 
 					{/* Sign In Button */}
 					{user ? (
-						<div className="h-9 w-9 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-black relative">
-							<div
-								onClick={() => {
-									if (user.username) {
-										router.push(`/profile/${user.username}`)
-									} else {
-										router.replace(`/auth/username?next=${encodeURIComponent(pathname)}`)
-									}
-								}}
-							>
-								{user.profilePicture ? (
-									<Image
-										src={user.profilePicture}
-										alt="Profile"
-										fill
-										unoptimized
-										className="object-cover cursor-pointer"
-									/>
-								) : (
-									<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-										<circle cx="50" cy="50" r="50" fill="#e5e7eb" />
-
-										<circle cx="50" cy="35" r="18" fill="#9ca3af" />
-
-										<path
-											d="M20 85 Q20 65 35 58 Q42.5 55 50 55 Q57.5 55 65 58 Q80 65 80 85 L80 100 L20 100 Z"
-											fill="#9ca3af"
-										/>
-									</svg>
-								)}
-							</div>
+						<div
+							onClick={() => {
+								if (user.username) {
+									router.push(`/profile/${user.username}`)
+								} else {
+									router.replace(`/auth/username?next=${encodeURIComponent(pathname)}`)
+								}
+							}}
+							className="h-9 w-9 sm:h-11 sm:w-11 rounded-full overflow-hidden relative cursor-pointer bg-[#ead7c9] ring-2 ring-white/70 shadow-[0_2px_8px_rgba(89,59,43,0.2)] transition hover:ring-[#E2725B]/40 hover:shadow-[0_4px_12px_rgba(89,59,43,0.28)]"
+						>
+							{user.profilePicture ? (
+								<Image
+									src={user.profilePicture}
+									alt="Profile"
+									fill
+									unoptimized
+									className="object-cover"
+								/>
+							) : (
+								<div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#834C3D_0%,#a8664f_55%,#d38d67_100%)]">
+									<span className="text-sm font-bold text-white sm:text-base select-none">
+										{user.fullName
+											.split(" ")
+											.map((n) => n[0])
+											.slice(0, 2)
+											.join("")
+											.toUpperCase()}
+									</span>
+								</div>
+							)}
 						</div>
 					) : (
 						<div onClick={() => router.push("/auth/signup")}>

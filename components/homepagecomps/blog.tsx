@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const Blog = () => {
     const posts = [
         {
@@ -24,37 +22,38 @@ const Blog = () => {
             image: 'https://images.unsplash.com/photo-1659559325892-de7b0822a023?q=80&w=1262&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
         },
     ];
+
     return (
         <section id="blog" className="py-16 px-8 max-w-7xl mx-auto">
-            <h2 className="text-[2.5rem] font-bold text-center mb-12 text-gray-700">From Our Blog</h2>
+            <h2 className="text-[2.5rem] font-bold text-center mb-12 text-[#3d2b1f]">From Our Blog</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {posts.map((post, idx) => (
                     <article
                         key={idx}
-                        className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-[0.3s] ease-in-out"
+                        className="group bg-white rounded-[20px] border border-[#ead7c9]/60 overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(89,59,43,0.16)]"
                     >
-                        <div className="aspect-w-16 aspect-h-9 w-full overflow-hidden">
-                            <Image
+                        <div className="h-48 overflow-hidden">
+                            <img
                                 src={post.image}
                                 alt={post.title}
-                                height={100}
-                                width={100}
-                                className="object-cover w-full h-full"
+                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                         </div>
-                        <div className="p-6">
-                            <h3 className="text-xl font-bold mb-2">{post.title}</h3>
-                            <p className="text-gray-500 mb-6 text-sm">{post.excerpt}</p>
-                            <div className="flex justify-between text-gray-500 text-xs">
-                                <span>{post.author}</span>
-                                <span>{post.readTime}</span>
+                        <div className="p-5 flex flex-col gap-2">
+                            <h3 className="font-bold text-base text-[#2e1f14] leading-snug">{post.title}</h3>
+                            <p className="text-sm text-[#7a5a49] leading-relaxed line-clamp-3">{post.excerpt}</p>
+                            <div className="flex items-center justify-between pt-1">
+                                <span className="text-xs font-semibold text-[#834C3D]">{post.author}</span>
+                                <span className="inline-flex items-center rounded-full bg-[#f5e6dc] px-2.5 py-0.5 text-xs font-medium text-[#834C3D]">
+                                    {post.readTime}
+                                </span>
                             </div>
                         </div>
                     </article>
                 ))}
             </div>
         </section>
-    )
+    );
 }
 
 export default Blog;
