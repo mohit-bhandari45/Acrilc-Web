@@ -91,9 +91,9 @@ const MarketContent = () => {
 	}
 
 	return (
-		<>
+		<div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(226,114,91,0.10)_0%,_transparent_50%),linear-gradient(180deg,_#f5e8dc_0%,_#eedad0_60%,_#e5cfc0_100%)]">
 			<Navbar currentUser={currentUser} show={true} portfolio={false} />
-			<main className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 px-4 mt-32 mb-10">
+			<main className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 px-4 sm:px-6 pt-28 pb-16">
 				{/* Left: Artwork Image and Artist Info */}
 				<div className="flex-1 flex flex-col items-start">
 					{/* Artist Info */}
@@ -146,7 +146,7 @@ const MarketContent = () => {
 				{/* Right: Product Details */}
 				<MarketRight data={project} />
 			</main>
-		</>
+		</div>
 	);
 };
 

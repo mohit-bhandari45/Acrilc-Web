@@ -35,7 +35,7 @@ const Create = () => {
   dispatch(setUser(currentUser));
 
   return (
-    <div className="font-[Helvetica]">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(226,114,91,0.10)_0%,_transparent_50%),linear-gradient(180deg,_#f5e8dc_0%,_#eedad0_60%,_#e5cfc0_100%)]">
       <Navbar currentUser={currentUser} show={true} portfolio={false} />
       <CreateContent type={type} setType={setType} isCreate={true} />
     </div>

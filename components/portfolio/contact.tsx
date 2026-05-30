@@ -1,261 +1,117 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Facebook, Instagram, Twitter } from 'lucide-react';
-import Link from 'next/link';
-import React, { useState } from 'react';
-
-interface ContactFormData {
-  name: string;
-  email: string;
-  message: string;
-  newsletter: boolean;
-}
-
-interface Event {
-  date: string;
-  title: string;
-  description: string;
-}
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
+import React, { useState } from "react";
 
 const ContactSection: React.FC = () => {
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: '',
-    email: '',
-    message: '',
-    newsletter: false,
-  });
+	const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+	const [submitting, setSubmitting] = useState(false);
+	const [sent, setSent] = useState(false);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+	const handleInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+	};
 
-  const events: Event[] = [
-    {
-      date: 'May 15–20, 2023',
-      title: 'Portland Ceramic Arts Festival',
-      description: 'Booth #42, Portland Convention Center',
-    },
-    {
-      date: 'June 8, 2023',
-      title: 'Studio Workshop: Glazing Techniques',
-      description: 'Limited spots available',
-    },
-  ];
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setSubmitting(true);
+		await new Promise(r => setTimeout(r, 1000));
+		setSent(true);
+		setSubmitting(false);
+		setFormData({ name: "", email: "", message: "" });
+	};
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+	const inputCls = "h-11 rounded-lg border-gray-200 bg-gray-50 px-4 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:border-gray-900 focus-visible:ring-1 focus-visible:ring-gray-900";
 
-  const handleCheckboxChange = (checked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      newsletter: checked,
-    }));
-  };
+	return (
+		<section id="contact" className="py-24 px-6 lg:px-16 bg-gray-50">
+			<div className="max-w-6xl mx-auto">
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log('Form submitted:', formData);
-    
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      message: '',
-      newsletter: false,
-    });
-    
-    setIsSubmitting(false);
-  };
+				<div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
 
-  return (
-    <section 
-      id="contact" 
-      className="min-h-screen flex items-center justify-center py-20 px-10 bg-white"
-    >
-      <div className="max-w-6xl w-full mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
-          {/* Left: Contact Form */}
-          <div className="lg:col-span-3 space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-4xl font-bold text-gray-900 font-serif">
-                Get in Touch
-              </h2>
-              <p className="text-gray-600 text-base leading-relaxed">
-                Have questions about my work or interested in commissioning a custom piece? 
-                I&apos;d love to hear from you.
-              </p>
-            </div>
+					{/* Left — Form */}
+					<div className="lg:col-span-3">
+						<p className="text-xs tracking-[0.3em] uppercase text-gray-400 font-medium mb-4">Contact</p>
+						<h2 className="font-serif text-4xl lg:text-5xl font-normal text-gray-900 mb-4">Get in Touch</h2>
+						<p className="text-gray-500 text-base leading-relaxed mb-10">
+							Interested in a commission or have a question about my work? I'd love to hear from you.
+						</p>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium text-gray-900">
-                  Name
-                </Label>
-                <Input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="border-gray-300 focus:border-black focus:ring-black rounded-md"
-                />
-              </div>
+						{sent ? (
+							<div className="py-12 text-center border border-gray-200 rounded-2xl bg-white">
+								<p className="font-serif text-2xl text-gray-900 mb-2">Thank you!</p>
+								<p className="text-gray-500 text-sm">Your message has been received. I'll be in touch soon.</p>
+							</div>
+						) : (
+							<form onSubmit={handleSubmit} className="space-y-4">
+								<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+									<div className="space-y-1.5">
+										<label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Name</label>
+										<Input name="name" value={formData.name} onChange={handleInput} required placeholder="Your name" className={inputCls} />
+									</div>
+									<div className="space-y-1.5">
+										<label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Email</label>
+										<Input type="email" name="email" value={formData.email} onChange={handleInput} required placeholder="your@email.com" className={inputCls} />
+									</div>
+								</div>
+								<div className="space-y-1.5">
+									<label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Message</label>
+									<Textarea name="message" value={formData.message} onChange={handleInput} required rows={5}
+										placeholder="Tell me about your project or question…"
+										className="rounded-lg border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:border-gray-900 focus-visible:ring-1 focus-visible:ring-gray-900 resize-none"
+									/>
+								</div>
+								<button
+									type="submit"
+									disabled={submitting}
+									className="px-8 py-3 bg-black text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-colors duration-300 disabled:opacity-60 cursor-pointer"
+								>
+									{submitting ? "Sending…" : "Send Message →"}
+								</button>
+							</form>
+						)}
+					</div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium text-gray-900">
-                  Email
-                </Label>
-                <Input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="border-gray-300 focus:border-black focus:ring-black rounded-md"
-                />
-              </div>
+					{/* Right — Info */}
+					<div className="lg:col-span-2 space-y-10 pt-2 lg:pt-[72px]">
+						<div>
+							<h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Follow Along</h3>
+							<div className="flex gap-3">
+								{[
+									{ href: "https://www.instagram.com/theacrilc?igsh=NjRndzAydDdqcnF0", label: "Instagram", path: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" },
+									{ href: "https://www.facebook.com/share/16CThH4ZMU/", label: "Facebook", path: "M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" },
+									{ href: "#", label: "Twitter", path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" },
+								].map(({ href, label, path }) => (
+									<Link key={label} href={href} target="_blank" aria-label={label}
+										className="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-600 hover:bg-black hover:text-white hover:border-black transition-all duration-300"
+									>
+										<svg viewBox="0 0 24 24" className="w-3.5 h-3.5" fill="currentColor"><path d={path} /></svg>
+									</Link>
+								))}
+							</div>
+						</div>
 
-              <div className="space-y-2">
-                <Label htmlFor="message" className="text-sm font-medium text-gray-900">
-                  Message
-                </Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  className="border-gray-300 focus:border-black focus:ring-black rounded-md resize-none"
-                />
-              </div>
+						<div>
+							<h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Response Time</h3>
+							<p className="text-sm text-gray-600 leading-relaxed">
+								I typically respond to enquiries within 2–3 business days.
+							</p>
+						</div>
 
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="newsletter"
-                  checked={formData.newsletter}
-                  onCheckedChange={handleCheckboxChange}
-                  className="border-gray-300 data-[state=checked]:bg-black data-[state=checked]:border-black"
-                />
-                <Label 
-                  htmlFor="newsletter" 
-                  className="text-sm text-gray-700 font-normal leading-relaxed"
-                >
-                  Subscribe to my newsletter for updates on new work and exhibitions
-                </Label>
-              </div>
+						<div className="p-6 bg-white rounded-2xl border border-gray-100">
+							<p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Commission Enquiries</p>
+							<p className="text-sm text-gray-600 leading-relaxed">
+								Each commission is unique. Please share your vision, dimensions, and timeline in your message and I'll get back with availability and pricing.
+							</p>
+						</div>
+					</div>
 
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-full font-medium transition-colors duration-300"
-              >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-              </Button>
-            </form>
-
-            <p className="text-xs text-gray-500 mt-6">
-              This is a sample contact form. In a real implementation, form submissions would be processed securely.
-            </p>
-          </div>
-
-          {/* Right: Info Card */}
-          <div className="lg:col-span-2">
-            <Card className="bg-gray-50 border-gray-200 shadow-sm">
-              <CardContent className="p-8 space-y-8">
-                {/* Connect Section */}
-                <div className="space-y-4">
-                  <h3 className="text-base font-bold text-gray-900">Connect</h3>
-                  <div className="flex space-x-3">
-                    <Link
-                      href="https://www.instagram.com/theacrilc?igsh=NjRndzAydDdqcnF0"
-                      target='_blank' 
-                      className="w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200"
-                      aria-label="Instagram"
-                    >
-                      <Instagram size={16} className="text-gray-700" />
-                    </Link>
-                    <Link
-                      href="https://www.facebook.com/share/16CThH4ZMU/"
-                      target='_blank' 
-                      className="w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200"
-                      aria-label="Facebook"
-                    >
-                      <Facebook size={16} className="text-gray-700" />
-                    </Link>
-                    <Link
-                      href="#"
-                      className="w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200"
-                      aria-label="Twitter"
-                    >
-                      <Twitter size={16} className="text-gray-700" />
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Visit Section */}
-                <div className="space-y-3">
-                  <h3 className="text-base font-bold text-gray-900">Visit</h3>
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-700 leading-relaxed">
-                      Portland Ceramic Studio<br />
-                      2145 NW Everett St, Portland, OR 97210
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Open for studio visits by appointment only
-                    </p>
-                  </div>
-                </div>
-
-                {/* Upcoming Events */}
-                <div className="space-y-4">
-                  <h3 className="text-base font-bold text-gray-900">Upcoming Events</h3>
-                  <div className="space-y-3">
-                    {events.map((event, index) => (
-                      <div
-                        key={index}
-                        className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm"
-                      >
-                        <div className="space-y-1">
-                          <p className="text-xs font-semibold text-amber-600">
-                            {event.date}
-                          </p>
-                          <h4 className="text-sm font-semibold text-gray-900">
-                            {event.title}
-                          </h4>
-                          <p className="text-xs text-gray-600">
-                            {event.description}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+				</div>
+			</div>
+		</section>
+	);
 };
 
 export default ContactSection;

@@ -30,6 +30,13 @@ const navItems: NavItem[] = [
 	{ href: "#", label: "Blog", linksTo: "/profile" },
 ];
 
+const portfolioNavItems: NavItem[] = [
+	{ href: "#about", label: "About", linksTo: "/profile" },
+	{ href: "#gallery", label: "Gallery", linksTo: "/profile" },
+	{ href: "#shop", label: "Shop", linksTo: "/profile" },
+	{ href: "#contact", label: "Contact", linksTo: "/profile" },
+];
+
 interface HeaderProps {
 	currentUser: IUser;
 	className?: string;
@@ -119,7 +126,7 @@ export default function Header({
 					{/* Navigation */}
 					<nav className="hidden md:flex items-center gap-8">
 						{show &&
-							navItems.map((item) => {
+							(portfolio ? portfolioNavItems : navItems).map((item) => {
 								const isActive = activeLink === item.href;
 								const linkClasses = cn(
 									"relative text-gray-600 font-normal transition-all duration-300",

@@ -1,7 +1,6 @@
 "use client";
 
 import api, { GET_POST } from "@/apis/api";
-import { InteractiveBackground } from "@/components/bgs/InteractiveBG";
 import PostDescription from "@/components/postcomps/postdescription";
 import Navbar from "@/components/profilecomps/navbar";
 import MainLoader from "@/components/universalcomps/mainloader";
@@ -15,9 +14,8 @@ const Post = () => {
 	const id = params.id;
 	const [post, setPost] = useState<IPost | null>(null);
 
-	const { user: currentUser, loading } = useAppSelector(
-		(state) => state.userReducer
-	);
+	const { user: currentUser, loading } = useAppSelector((state) => state.userReducer);
+
 	const getData = useCallback(async () => {
 		try {
 			const response = await api.get(`${GET_POST}/${id}`);
@@ -32,22 +30,14 @@ const Post = () => {
 	}, [getData]);
 
 	if (!currentUser || loading) {
-		return (
-			<>
-				<InteractiveBackground />
-				<MainLoader msg="Loading, please wait" />;
-			</>
-		);
+		return <MainLoader msg="Loading, please wait" />;
 	}
 
 	return (
-		<>
-			<InteractiveBackground />
-			<div className="font-[Helvetica] relative z-10">
-				<Navbar currentUser={currentUser} show={true} portfolio={false} />
-				<PostDescription post={post} user={currentUser} getData={getData} />
-			</div>
-		</>
+		<div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(226,114,91,0.08)_0%,_transparent_50%),linear-gradient(180deg,_#f5e8dc_0%,_#eedad0_60%,_#e5cfc0_100%)]">
+			<Navbar currentUser={currentUser} show={true} portfolio={false} />
+			<PostDescription post={post} user={currentUser} getData={getData} />
+		</div>
 	);
 };
 
