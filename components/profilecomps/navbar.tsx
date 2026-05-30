@@ -107,8 +107,8 @@ export default function Header({
 			<header
 				className={cn(
 					"fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-					"bg-white/95 backdrop-blur-md border-b border-black/10",
-					scrolled && "shadow-sm",
+					"bg-[#fbf7f2]/95 backdrop-blur-md border-b border-[#e8d5c4]/60",
+					scrolled && "shadow-[0_2px_12px_rgba(89,59,43,0.08)]",
 					className
 				)}
 			>
@@ -163,24 +163,17 @@ export default function Header({
 						{/* Profile Picture */}
 						<button
 							onClick={toggleProfileMenu}
-							className="flex items-center hover:opacity-80 transition-opacity cursor-pointer"
+							className="flex items-center cursor-pointer"
 						>
-							<div className="h-9 w-9 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-black relative">
-								{!currentUser.profilePicture ? (
-									<Image
-										src="/assets/empty.png"
-										alt="Profile Avatar"
-										fill
-										className="object-cover"
-									/>
+							<div className="relative h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-[#ead7c9] shadow-sm transition-all duration-200 hover:ring-[#E2725B]/50">
+								{currentUser.profilePicture ? (
+									<Image src={currentUser.profilePicture} alt="Profile" fill unoptimized className="object-cover" />
 								) : (
-									<Image
-										src={currentUser.profilePicture}
-										alt="Profile"
-										fill
-										unoptimized
-										className="object-cover"
-									/>
+									<div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#834C3D_0%,#a8664f_55%,#d38d67_100%)] select-none">
+										<span className="text-xs font-bold text-white sm:text-sm">
+											{currentUser.fullName?.trim().split(/\s+/).filter(Boolean).slice(0, 2).map(n => n[0].toUpperCase()).join("") || "?"}
+										</span>
+									</div>
 								)}
 							</div>
 						</button>
@@ -189,24 +182,17 @@ export default function Header({
 					{/* Mobile Menu Button */}
 					<button
 						onClick={toggleProfileMenu}
-						className="flex items-center hover:opacity-80 transition-opacity md:hidden cursor-pointer"
+						className="flex items-center cursor-pointer md:hidden"
 					>
-						<div className="h-9 w-9 sm:h-12 sm:w-12 rounded-full overflow-hidden bg-black relative">
-							{!currentUser.profilePicture ? (
-								<Image
-									src="/assets/empty.png"
-									alt="Profile Avatar"
-									fill
-									className="object-cover"
-								/>
+						<div className="relative h-9 w-9 sm:h-11 sm:w-11 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-[#ead7c9] shadow-sm transition-all duration-200 hover:ring-[#E2725B]/50">
+							{currentUser.profilePicture ? (
+								<Image src={currentUser.profilePicture} alt="Profile" fill unoptimized className="object-cover" />
 							) : (
-								<Image
-									src={currentUser.profilePicture}
-									alt="Profile"
-									fill
-									unoptimized
-									className="object-cover"
-								/>
+								<div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#834C3D_0%,#a8664f_55%,#d38d67_100%)] select-none">
+									<span className="text-xs font-bold text-white sm:text-sm">
+										{currentUser.fullName?.trim().split(/\s+/).filter(Boolean).slice(0, 2).map(n => n[0].toUpperCase()).join("") || "?"}
+									</span>
+								</div>
 							)}
 						</div>
 					</button>
@@ -222,68 +208,47 @@ export default function Header({
 					/>
 					<div
 						className={cn(
-							"fixed right-0 top-0 h-full w-80 bg-white shadow-xl",
+							"fixed right-0 top-0 h-full w-80 bg-[#fbf7f2] shadow-xl",
 							"transform transition-all duration-500 ease-in-out",
 							"animate-in slide-in-from-right",
 							isProfileMenuOpen ? "translate-x-0" : "translate-x-full"
 						)}
 					>
-						{/* Profile Menu Header */}
-						<div className="flex items-center justify-between p-4 border-b border-gray-200">
-							<h2 className="text-xl font-semibold text-gray-900">Account</h2>
-							<Button
-								variant="ghost"
-								size="sm"
+						{/* Header */}
+						<div className="flex items-center justify-between px-5 py-4 border-b border-[#e8d5c4]">
+							<h2 className="text-lg font-bold text-[#3d2b1f]">Account</h2>
+							<button
 								onClick={closeProfileMenu}
-								className="hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+								className="flex h-8 w-8 items-center justify-center rounded-full text-[#8a7060] hover:bg-[#f0ddd0] hover:text-[#5e3c2f] transition-colors cursor-pointer"
 							>
-								<svg
-									width="24"
-									height="24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								>
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
 									<path d="M18 6L6 18M6 6l12 12" />
 								</svg>
-							</Button>
+							</button>
 						</div>
 
-						{/* Profile Section */}
-						<div className="p-4 border-b border-gray-200">
+						{/* Profile info */}
+						<div className="px-5 py-4 border-b border-[#e8d5c4]">
 							<div className="flex items-center gap-3">
-								<div className="h-14 w-14 rounded-full overflow-hidden bg-black relative flex-shrink-0">
-									{!currentUser.profilePicture ? (
-										<Image
-											src="/assets/empty.png"
-											alt="Profile Avatar"
-											fill
-											className="object-cover"
-										/>
+								<div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-[#ead7c9] shadow-sm">
+									{currentUser.profilePicture ? (
+										<Image src={currentUser.profilePicture} alt="Profile" fill unoptimized className="object-cover" />
 									) : (
-										<Image
-											src={currentUser.profilePicture}
-											alt="Profile"
-											fill
-											unoptimized
-											className="object-cover"
-											onError={(e) => {
-												const target = e.target as HTMLImageElement;
-												target.src = "https://via.placeholder.com/56";
-											}}
-										/>
+										<div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#834C3D_0%,#a8664f_55%,#d38d67_100%)] select-none">
+											<span className="text-sm font-bold text-white">
+												{currentUser.fullName?.trim().split(/\s+/).filter(Boolean).slice(0, 2).map(n => n[0].toUpperCase()).join("") || "?"}
+											</span>
+										</div>
 									)}
 								</div>
 								<div className="flex-1 min-w-0">
-									<h3 className="font-semibold text-gray-900 truncate">
+									<p className="font-bold text-[#2e1f14] truncate">
 										{currentUser.fullName || currentUser.username}
-									</h3>
-									<p className="text-sm text-gray-500 truncate">
+									</p>
+									<p className="text-sm text-[#834C3D] font-medium truncate">
 										@{currentUser.username}
 									</p>
-									<p className="text-sm text-gray-500 truncate">
+									<p className="text-xs text-[#9a8578] truncate mt-0.5">
 										{currentUser.email}
 									</p>
 								</div>
@@ -291,32 +256,34 @@ export default function Header({
 						</div>
 
 						{/* Menu Items */}
-						<nav className="p-4 space-y-1">
+						<nav className="p-3 space-y-0.5">
 							<Link
 								href={`/profile/${currentUser.username}`}
 								onClick={closeProfileMenu}
-								className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200 group"
+								className="flex items-center gap-3 px-3 py-3 text-[#5e3c2f] hover:bg-[#f0ddd0] rounded-xl transition-all duration-200 group"
 							>
-								<User className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-								<span className="font-medium">Your Profile</span>
+								<User className="w-4 h-4 text-[#834C3D] group-hover:scale-110 transition-transform duration-200" />
+								<span className="font-medium text-sm">Your Profile</span>
 							</Link>
 
 							<Link
 								href="/settings/general"
 								onClick={closeProfileMenu}
-								className="flex items-center gap-3 px-3 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-all duration-200 group"
+								className="flex items-center gap-3 px-3 py-3 text-[#5e3c2f] hover:bg-[#f0ddd0] rounded-xl transition-all duration-200 group"
 							>
-								<Settings className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-								<span className="font-medium">Settings</span>
+								<Settings className="w-4 h-4 text-[#834C3D] group-hover:scale-110 transition-transform duration-200" />
+								<span className="font-medium text-sm">Settings</span>
 							</Link>
 
-							<button
-								onClick={handleLogOut}
-								className="flex items-center cursor-pointer gap-3 px-3 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 w-full text-left group"
-							>
-								<LogOut className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-								<span className="font-medium">Logout</span>
-							</button>
+							<div className="pt-2 mt-2 border-t border-[#e8d5c4]">
+								<button
+									onClick={handleLogOut}
+									className="flex items-center cursor-pointer gap-3 px-3 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all duration-200 w-full text-left group"
+								>
+									<LogOut className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+									<span className="font-medium text-sm">Logout</span>
+								</button>
+							</div>
 						</nav>
 					</div>
 				</div>

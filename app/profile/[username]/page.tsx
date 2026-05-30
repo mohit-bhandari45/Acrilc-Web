@@ -30,18 +30,14 @@ export default function Profile() {
 
 	if (!profileUser) {
 		return (
-			<div className="h-screen w-full flex flex-col justify-center items-center relative overflow-hidden transition-colors duration-500">
-
-				<div className="absolute inset-0">
-					<div className="absolute inset-0 bg-gradient-to-br from-white via-yellow-100 to-orange-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"></div>
-					<div className="absolute inset-0 bg-gradient-to-tl from-orange-200/50 via-yellow-200/30 to-white/40 dark:from-gray-700/50 dark:via-gray-600/30 dark:to-gray-800/40 animate-gradient-move"></div>
-					<div className="absolute inset-0 bg-gradient-to-tr from-yellow-200/40 via-orange-100/50 to-yellow-50/60 dark:from-gray-600/40 dark:via-gray-700/50 dark:to-gray-800/60 animate-gradient-move-reverse"></div>
-				</div>
-
-				<div className="relative z-10 flex flex-col items-center">
-					<h1 className="text-5xl text-gray-800 dark:text-gray-200 font-bold">404</h1>
-					<p className="mt-4 text-gray-800 dark:text-gray-200 text-xl">Sorry, this page does not exist.</p>
-					<Link href="/" className="mt-6 text-gray-800 dark:text-gray-200 underline">
+			<div className="relative isolate flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(226,114,91,0.14),_transparent_34%),linear-gradient(180deg,_#fbf7f2_0%,_#f2e7dc_100%)]">
+				<div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-[#E2725B]/12 blur-3xl" />
+				<div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-[#D4A373]/15 blur-3xl" />
+				<div className="relative z-10 flex flex-col items-center text-center px-4">
+					<span className="font-poppins text-3xl font-bold text-[#5e3c2f] mb-8">acrilc</span>
+					<h1 className="font-playfair text-7xl font-bold text-[#834C3D] mb-4">404</h1>
+					<p className="text-lg text-[#7d6152] mb-6">Sorry, this page does not exist.</p>
+					<Link href="/" className="rounded-full border border-[#8f5b42]/10 bg-[linear-gradient(135deg,#834C3D_0%,#a8664f_55%,#d38d67_100%)] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(131,76,61,0.22)] transition hover:-translate-y-0.5">
 						Go back home
 					</Link>
 				</div>
@@ -56,7 +52,7 @@ export default function Profile() {
 	const displayedUser = isSameUser ? (currentUser as IUser) : profileUser;
 
 	return (
-		<div className="font-[Helvetica]">
+		<div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(226,114,91,0.18)_0%,_transparent_50%),linear-gradient(180deg,_#f5e8dc_0%,_#eedad0_50%,_#e5cfc0_100%)] pb-16">
 			{currentUser && <Navbar currentUser={currentUser} show portfolio={false} />}
 			<ArtistProfile user={displayedUser} isSame={isSameUser} />
 			<GallerySection user={displayedUser} isSame={isSameUser} />

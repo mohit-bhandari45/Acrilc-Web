@@ -51,28 +51,27 @@ const ArtistProfileTabs: React.FC<ArtistProfileTabsProps> = ({
 	return (
 		<div
 			ref={tabsRef}
-			className={`bg-white rounded-xl shadow-lg mb-8 mx-auto max-w-6xl w-full ${className || ""
-				}`}
+			className={`bg-white rounded-[20px] border border-[#ead7c9]/60 shadow-md mb-8 mx-auto max-w-6xl w-full ${className || ""}`}
 		>
 			<Tabs value={tabValue} onValueChange={handleTabChange} className="w-full">
 				{/* Responsive Tabs List */}
-				<div className="w-full border-b border-gray-200 px-4 sm:px-6 md:px-8 overflow-x-auto">
+				<div className="w-full border-b border-[#f0ddd0] px-4 sm:px-6 md:px-8 overflow-x-auto">
 					<TabsList className="inline-flex flex-nowrap gap-2 sm:gap-4 bg-transparent rounded-none h-auto p-0">
 						<TabsTrigger
 							value="showcase"
-							className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-500 data-[state=active]:text-black hover:text-black transition-colors"
+							className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-[#834C3D] data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-[#9a8578] data-[state=active]:text-[#834C3D] hover:text-[#5e3c2f] transition-colors"
 						>
 							Showcase
 						</TabsTrigger>
 						<TabsTrigger
 							value="storyboard"
-							className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-500 data-[state=active]:text-black hover:text-black transition-colors"
+							className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-[#834C3D] data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-[#9a8578] data-[state=active]:text-[#834C3D] hover:text-[#5e3c2f] transition-colors"
 						>
 							Storyboard
 						</TabsTrigger>
 						<TabsTrigger
 							value="marketplace"
-							className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-500 data-[state=active]:text-black hover:text-black transition-colors"
+							className="whitespace-nowrap rounded-none border-b-2 border-transparent data-[state=active]:border-b-[#834C3D] data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold text-[#9a8578] data-[state=active]:text-[#834C3D] hover:text-[#5e3c2f] transition-colors"
 						>
 							Marketplace
 						</TabsTrigger>
@@ -80,13 +79,13 @@ const ArtistProfileTabs: React.FC<ArtistProfileTabsProps> = ({
 				</div>
 
 				{/* Tab Contents */}
-				<TabsContent value="showcase" className="p-4 sm:p-6 md:p-8 mt-0">
+				<TabsContent value="showcase" className="p-4 sm:p-6 md:p-8 mt-0 min-h-[400px]">
 					<Showcase user={user} isSame={isSame} />
 				</TabsContent>
-				<TabsContent value="storyboard" className="p-4 sm:p-6 md:p-8 mt-0">
+				<TabsContent value="storyboard" className="p-4 sm:p-6 md:p-8 mt-0 min-h-[400px]">
 					<Storyboard user={user} isSame={isSame} />
 				</TabsContent>
-				<TabsContent value="marketplace" className="p-4 sm:p-6 md:p-8 mt-0">
+				<TabsContent value="marketplace" className="p-4 sm:p-6 md:p-8 mt-0 min-h-[400px]">
 					<ShopSection user={user} isSame={isSame} />
 				</TabsContent>
 			</Tabs>
