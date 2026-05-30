@@ -19,6 +19,7 @@ const Left = () => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % images.length);
     }, 7000); // Changed to 7 seconds to match original
+    
     return () => clearInterval(interval);
   }, []);
 
@@ -39,7 +40,7 @@ const Left = () => {
         }
       `}</style>
       
-      <div className="relative w-full h-[425px] min-h-[250px] sm:min-h-[300px] md:min-h-[400px] lg:min-h-screen lg:w-[50%] bg-gray-50 overflow-hidden">
+      <div className="relative w-full h-[280px] sm:h-[320px] md:h-[360px] lg:min-h-screen lg:w-[50%] bg-gray-50 overflow-hidden">
         {/* Slideshow background */}
         <div className="absolute top-0 left-0 w-full h-full z-[1]">
           {images.map((url, i) => (
@@ -64,17 +65,17 @@ const Left = () => {
         {/* Logo in top-left corner */}
         <Link
           href="/"
-          className="absolute text-white top-10 left-10 z-30 font-bold text-3xl transition-all duration-300 ease-out no-underline font-poppins"
+          className="absolute text-white top-6 left-6 z-30 font-bold text-2xl transition-all duration-300 ease-out no-underline font-poppins sm:top-8 sm:left-8 sm:text-3xl"
         >
           acrilc
         </Link>
 
         {/* Centered Image Content */}
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
-          <div className="text-white text-3xl sm:text-4xl font-semibold mb-2">
+          <div className="text-white text-2xl sm:text-3xl font-semibold mb-2">
             Bring Your Art to the World
           </div>
-          <div className="text-white text-sm sm:text-lg">
+          <div className="text-white text-xs sm:text-sm">
             Where creativity meets opportunity
           </div>
         </div>

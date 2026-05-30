@@ -29,11 +29,11 @@ export const InputComp = ({
 
     return (
         <div
-            className={`${width} flex flex-col px-3 justify-center items-start gap-1`}
+            className={`${width} flex flex-col justify-center gap-1 px-1 sm:px-2`}
         >
             <label
                 htmlFor={fieldName}
-                className="text-[rgba(172,82,9,1)] font-semibold"
+                className="px-3 text-sm font-semibold tracking-wide text-[#765240]"
             >
                 {label}
             </label>
@@ -43,7 +43,7 @@ export const InputComp = ({
                 name={fieldName}
                 value={user[fieldName] || ""}
                 placeholder={`Enter Your ${label}`}
-                className="rounded-full border-black placeholder:text-gray-600 px-5 h-14 focus-visible:ring-orange-500"
+                className="h-12 rounded-full border-[#ead7c9] bg-white/90 px-5 text-[15px] shadow-[0_8px_20px_rgba(89,59,43,0.06)] placeholder:text-[#9a8578] focus-visible:border-[#c98d68] focus-visible:ring-2 focus-visible:ring-[#e8b08f]/30"
                 type={type}
                 autoComplete={fieldName === "password" ? "current-password" : fieldName}
             />
